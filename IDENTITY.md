@@ -12,7 +12,7 @@ Three colours and one neutral. Nothing else.
 | --- | --- | --- | --- |
 | Ink navy | `#1B2433` | Text, lines, buttons | The navy from our engagement photos |
 | Cream | `#F5EEE3` | Backgrounds, paper | Warm, like linen |
-| Cocoa | `#6A4636` | Accent only: the "&", one highlighted word | The hot chocolate from our first (and second first) date |
+| Cocoa | `#6A4636` | Accent only: the "&", one highlighted word | The hot chocolate from our first date, at Dark Sugars |
 | Stone | `#D9CFC1` | Hairlines, quiet fills | A neutral that sits between cream and navy |
 
 Lighter cream for cards and inputs: `#FBF8F2`. Secondary text: `#4A5263`.
