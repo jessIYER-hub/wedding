@@ -46,7 +46,7 @@ Position and size them in `styles.css` under `.decor-slot--flowers` and `.decor-
 
 ## Changing colours and fonts
 
-All colours are CSS variables at the top of `styles.css` (`--ivory`, `--navy`, `--dusty-blue`, `--gold` and friends). Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
+Colours and fonts come from the **SHARED THEME** block at the top of `styles.css`, which is identical to the one in the main site's `styles.css`. Fonts are `--font-display` (Instrument Serif) and `--font-sans` (Inter). See the root README.
 
 ## Countdown date
 

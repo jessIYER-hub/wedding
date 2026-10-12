@@ -7,56 +7,48 @@
    SHARED THEME · keep this block identical in /styles.css and
    /save-the-date/styles.css so both sites look like one family.
 
-   Taken from our engagement photos: the navy of the dress and shirt, linen
-   and park stone, leafy greens by the lake, and late golden-hour light.
+   Modern and minimal. Colours come from our engagement photos: the navy of
+   the dress and shirt, linen and park stone, and a little leafy green.
    ========================================================================== */
 :root {
-  /* Paper & light */
-  --ivory: #fbf7ef;
-  --ivory-deep: #f4ecdc;
-  --cream: #efe4cf;
+  /* Paper */
+  --ivory: #faf7f1;
+  --ivory-deep: #f3eee4;
   --linen: #ece5d6;
-  --paper: #fffdf8;
-  --paper-shadow: rgba(60, 48, 25, 0.10);
-  --photo-paper: #fdfcf9;
-  --sunlight: rgba(244, 215, 150, 0.55);
-  --sunlight-soft: rgba(244, 215, 150, 0.25);
+  --paper: #fffdf9;
+  --paper-shadow: rgba(30, 44, 76, 0.08);
 
   /* Ink */
   --navy: #1e2c4c;
-  --navy-soft: #3a4a69;
+  --navy-soft: #45526c;
+  --muted: #7a8396;
   --dusty-blue: #6f88aa;
-  --dusty-blue-soft: #b8c6d6;
-  --dusty-blue-mist: #e4eaf0;
+  --dusty-blue-mist: #e8edf3;
 
-  /* Park greens */
+  /* Accents, used sparingly */
   --sage: #7f8f62;
-  --sage-soft: #b9c3a1;
-  --sage-mist: rgba(127, 143, 98, 0.14);
-
-  /* Gold-style line work */
   --gold: #b8975a;
-  --gold-soft: #d8c48f;
-  --gold-faint: rgba(184, 151, 90, 0.35);
+
+  /* Lines */
+  --line: rgba(30, 44, 76, 0.14);
+  --line-strong: rgba(30, 44, 76, 0.32);
 
   /* States */
   --error: #9a4a4a;
 
-  /* Page background: warm sun from the top right, leaves at the bottom left */
+  /* Page background: plain warm paper with the faintest late-afternoon light */
   --page-bg:
-    radial-gradient(70% 50% at 92% 0%, var(--sunlight) 0%, transparent 70%),
-    radial-gradient(120% 80% at 50% 0%, var(--paper) 0%, transparent 60%),
-    radial-gradient(80% 60% at 0% 100%, var(--sage-mist) 0%, transparent 70%),
+    radial-gradient(60% 40% at 100% 0%, rgba(244, 222, 175, 0.28) 0%, transparent 70%),
     linear-gradient(180deg, var(--ivory) 0%, var(--ivory-deep) 100%);
 
-  /* Photos: soft, warm film, like the engagement shoot */
-  --photo-filter: saturate(0.92) contrast(1.03) sepia(0.08) brightness(1.01);
-  --grain-opacity: 0.07;
+  /* Photos: a soft, warm film finish, like the engagement shoot */
+  --photo-filter: saturate(0.92) contrast(1.03) sepia(0.06);
+  --grain-opacity: 0.045;
 
   /* Type */
-  --font-script: "Pinyon Script", "Great Vibes", cursive;
-  --font-serif: "Cormorant Garamond", "Cormorant", Georgia, serif;
-  --caps-tracking: 0.24em;
+  --font-display: "Instrument Serif", "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --label-tracking: 0.16em;
 
   /* Motion: slow, soft, never bouncy */
   --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -65,7 +57,7 @@
   --dur-quick: 0.8s;
 }
 
-/* Fine film grain over everything, like the photos */
+/* Very fine film grain, like the photos */
 body::after {
   content: "";
   position: fixed;
@@ -77,20 +69,34 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.2 0 0 0 0 0.12 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Bow Bridge-inspired band of linked rings, used as a divider */
-.band {
-  display: block;
-  height: 22px;
-  width: min(100%, 360px);
-  margin: 1.6rem auto;
-  opacity: 0.8;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='22' viewBox='0 0 36 22'%3E%3Cg fill='none' stroke='%23b8975a' stroke-width='0.8'%3E%3Ccircle cx='9' cy='11' r='8.5'/%3E%3Ccircle cx='27' cy='11' r='8.5'/%3E%3Ccircle cx='18' cy='11' r='8.5' stroke-opacity='0.55'/%3E%3Cpath d='M9 7.6c1.2 1.4 1.2 2 0 3.4-1.2-1.4-1.2-2 0-3.4zM9 14.4c1.2-1.4 1.2-2 0-3.4-1.2 1.4-1.2 2 0 3.4zM5.6 11c1.4-1.2 2-1.2 3.4 0-1.4 1.2-2 1.2-3.4 0zM12.4 11c-1.4-1.2-2-1.2-3.4 0 1.4 1.2 2 1.2 3.4 0z' stroke-width='0.6'/%3E%3C/g%3E%3Cpath d='M0 0.5H36M0 21.5H36' stroke='%23b8975a' stroke-opacity='0.5' stroke-width='0.6'/%3E%3C/svg%3E") repeat-x center / auto 100%;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+/* Display type: names and headings */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+/* Small uppercase labels */
+.caps {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--label-tracking);
+  color: var(--muted);
 }
 /* ==================== END SHARED THEME ==================== */
 
 :root {
+  /* Older tokens this page still uses */
+  --cream: #efe4cf;
+  --photo-paper: #fdfcf9;
+  --navy-soft: #45526c;
+  --dusty-blue-soft: #b8c6d6;
+  --gold-soft: #d8c48f;
+  --gold-faint: rgba(184, 151, 90, 0.35);
+
   /* Sizing (this site only) */
   --gutter: 16px;
   --strip-w: min(34vw, 15vh, 160px);
@@ -112,7 +118,7 @@ body {
   background-color: var(--ivory);
   background-image: var(--page-bg);
   background-attachment: fixed;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 18px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -125,20 +131,12 @@ img { display: block; max-width: 100%; }
 button, input, select, textarea { font: inherit; color: inherit; }
 
 .script {
-  font-family: var(--font-script);
+  font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.1;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
 }
 
-.caps {
-  font-family: var(--font-serif);
-  font-variant: small-caps;
-  text-transform: lowercase;
-  letter-spacing: var(--caps-tracking);
-  font-weight: 500;
-  color: var(--dusty-blue);
-}
 
 .eyebrow {
   margin: 0 0 0.4rem;
@@ -460,14 +458,14 @@ body.is-locked .music-toggle { visibility: hidden; }
 }
 .std__title {
   margin: 0;
-  font-size: clamp(2.6rem, 12vw, 3.8rem);
+  font-size: clamp(2.2rem, 10vw, 3.2rem);
   color: var(--navy);
   line-height: 1.05;
 }
 .std__date {
   margin: 0.7rem 0 0;
-  font-size: clamp(1.3rem, 5.6vw, 1.7rem);
-  letter-spacing: 0.12em;
+  font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+  letter-spacing: 0.08em;
   color: var(--navy);
   font-weight: 500;
   white-space: nowrap;
@@ -499,7 +497,7 @@ body.is-locked .music-toggle { visibility: hidden; }
 }
 .locket--two { margin-left: -20px; margin-top: 10px; }
 .locket__initial {
-  font-family: var(--font-script);
+  font-family: var(--font-display);
   font-size: 34px;
   fill: var(--navy);
   text-anchor: middle;
@@ -592,9 +590,8 @@ body.is-locked .music-toggle { visibility: hidden; }
   border-radius: 999px;
   background: transparent;
   color: var(--navy);
-  font-variant: small-caps;
-  text-transform: lowercase;
-  letter-spacing: var(--caps-tracking);
+  text-transform: uppercase;
+  letter-spacing: var(--label-tracking);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -750,8 +747,6 @@ textarea.field__input { resize: vertical; min-height: 2.8em; }
 .thanks__update { margin: 0 0 0.6rem; font-style: italic; color: var(--navy-soft); }
 
 .signoff { margin-top: 2rem; }
-.signoff .band { margin: 0 auto 1rem; }
-.gate .band { width: 70%; margin: 1.2rem auto 0; }
 .signoff__script { margin: 0; font-size: 2rem; color: var(--dusty-blue); }
 
 /* --------------------------------------------------------------------------

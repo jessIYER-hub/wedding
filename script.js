@@ -185,25 +185,10 @@ const CONFIG = {
     return /^[a-z][a-z0-9+.-]*:/i.test(s) ? "" : s;
   }
 
-  function svgUse(id, cls, viewBox) {
-    const ns = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("viewBox", viewBox);
-    svg.setAttribute("class", cls);
-    svg.setAttribute("aria-hidden", "true");
-    svg.setAttribute("focusable", "false");
-    const use = document.createElementNS(ns, "use");
-    use.setAttribute("href", "#" + id);
-    svg.appendChild(use);
-    return svg;
-  }
-  const motif = (extra = "") => svgUse("ring-divider", `motif ${extra}`.trim(), "0 0 120 40");
-
   function sectionHeading(id, text, eyebrow) {
     return h("header", { class: "section__head reveal" },
       eyebrow ? h("p", { class: "caps eyebrow", text: eyebrow }) : null,
-      h("h2", { class: "script section__title", id, text }),
-      motif("motif--divider"));
+      h("h2", { class: "display section__title", id, text }));
   }
 
   function scrollToId(id, smooth = true) {
@@ -387,7 +372,7 @@ const CONFIG = {
   /* ---------- Home ---------- */
   function renderHome(c) {
     const names = String(c.names || CONFIG.couple.names).split("&").map((s) => s.trim());
-    const title = h("h1", { class: "hero__names script reveal r-rise", id: "home-title" },
+    const title = h("h1", { class: "hero__names display reveal r-rise", id: "home-title" },
       names.length === 2
         ? [h("span", { text: names[0] }), h("span", { class: "hero__amp", text: "&" }), h("span", { text: names[1] })]
         : names.join(" & "));
@@ -406,14 +391,10 @@ const CONFIG = {
 
     const photo = has(c.heroImage)
       ? h("figure", { class: "hero__photo reveal r-fade", style: "--delay:0.3s" },
-          h("div", { class: "arch" }, h("img", { src: safeSrc(c.heroImage), alt: c.heroAlt || "", loading: "eager", style: focus({ focus: c.heroFocus }) })),
-          svgUse("ring-flower", "hero__bloom hero__bloom--a", "0 0 40 40"),
-          svgUse("ring-flower", "hero__bloom hero__bloom--b", "0 0 40 40"))
+          h("div", { class: "hero__frame" }, h("img", { src: safeSrc(c.heroImage), alt: c.heroAlt || "", loading: "eager", style: focus({ focus: c.heroFocus }) })))
       : null;
 
     $("#home").replaceChildren(
-      svgUse("sprig", "sprig sprig--tl", "0 0 120 120"),
-      svgUse("sprig", "sprig sprig--br", "0 0 120 120"),
       h("div", { class: "hero" },
         h("div", { class: "hero__text" },
           has(c.eyebrow) ? h("p", { class: "caps eyebrow reveal r-rise", text: c.eyebrow }) : null,
@@ -422,8 +403,7 @@ const CONFIG = {
           has(c.dates) ? h("p", { class: "hero__dates reveal r-rise", style: "--delay:0.2s", text: c.dates }) : null,
           has(c.venue) ? h("p", { class: "caps hero__venue reveal r-rise", style: "--delay:0.3s", text: c.venue }) : null,
           countdown,
-          has(c.welcome) ? h("p", { class: "hero__welcome reveal r-rise", style: "--delay:0.8s", text: c.welcome }) : null,
-          h("span", { class: "band reveal r-fade", style: "--delay:1s", "aria-hidden": "true" })),
+          has(c.welcome) ? h("p", { class: "hero__welcome reveal r-rise", style: "--delay:0.8s", text: c.welcome }) : null),
         photo));
 
     startCountdown(c.countdownTarget);
@@ -481,7 +461,7 @@ const CONFIG = {
       photos.map((p, j) =>
         h("figure", { class: `polaroid ${(i + j) % 2 ? "polaroid--right" : "polaroid--left"}` },
           h("img", { src: safeSrc(p.src), alt: p.alt || "", loading: "lazy", style: focus(p) }),
-          has(p.caption) ? h("figcaption", { class: "script", text: p.caption }) : h("span", { class: "polaroid__blank", "aria-hidden": "true" }))));
+          has(p.caption) ? h("figcaption", { class: "display", text: p.caption }) : h("span", { class: "polaroid__blank", "aria-hidden": "true" }))));
   }
 
   /* ---------- Schedule ---------- */
@@ -494,7 +474,7 @@ const CONFIG = {
           h("article", { class: "day-card reveal r-rise", style: `--delay:${(i * 0.15).toFixed(2)}s` },
             h("header", { class: "day-card__head" },
               has(day.weekday) ? h("p", { class: "caps day-card__weekday", text: day.weekday }) : null,
-              h("h3", { class: "script day-card__date", text: day.date || "" }),
+              h("h3", { class: "display day-card__date", text: day.date || "" }),
               has(day.dressCode)
                 ? h("p", { class: "day-card__dress" }, h("span", { class: "caps", text: (c.dressCodeLabel || "Dress code") + " " }), day.dressCode)
                 : null),
@@ -529,7 +509,7 @@ const CONFIG = {
 
     const venueCard = h("article", { class: "card card--venue reveal r-rise" },
       has(v.label) ? h("p", { class: "caps eyebrow", text: v.label }) : null,
-      h("h3", { class: "script card__venue-name", text: v.name || "" }),
+      h("h3", { class: "display card__venue-name", text: v.name || "" }),
       has(v.place) ? h("p", { class: "caps card__place", text: v.place }) : null,
       h("p", { class: "card__links" }, link(v.website, v.websiteLabel), link(v.mapUrl, v.mapLabel)));
 
@@ -560,7 +540,7 @@ const CONFIG = {
         has(hol.text) ? card(hol.title, para(hol.text)) : null),
       (ins.groups || []).length
         ? h("div", { class: "inspiration reveal r-rise" },
-            h("h3", { class: "script inspiration__title", text: ins.title || "" }),
+            h("h3", { class: "display inspiration__title", text: ins.title || "" }),
             para(ins.intro, "section__intro"),
             h("div", { class: "inspiration__groups" },
               ins.groups.filter((gr) => has(gr.items)).map((gr) =>
@@ -570,7 +550,7 @@ const CONFIG = {
                     h("li", null,
                       h("span", { class: "plain-list__name", text: i.name || "" }),
                       has(i.note) ? h("span", { class: "plain-list__note", text: i.note }) : null)))))),
-            has(ins.tip) ? h("p", { class: "tip" }, svgUse("ring-flower", "tip__bloom", "0 0 40 40"), h("span", { text: ins.tip })) : null)
+            has(ins.tip) ? h("p", { class: "tip", text: ins.tip }) : null)
         : null);
   }
 
@@ -662,7 +642,7 @@ const CONFIG = {
         h("span", { class: "pill__sending", text: R.sending })));
 
     const thanks = h("div", { class: "thanks", id: "rsvp-thanks", hidden: true, tabindex: "-1" },
-      h("p", { class: "script thanks__title", id: "thanks-title" }),
+      h("p", { class: "display thanks__title", id: "thanks-title" }),
       h("p", { class: "thanks__text", id: "thanks-text" }),
       h("span", { class: "rule rule--short", "aria-hidden": "true" }),
       h("button", { class: "link-button caps", id: "rsvp-again", type: "button", text: CONFIG.thanks.again }));

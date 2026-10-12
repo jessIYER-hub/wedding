@@ -50,14 +50,11 @@ Around 1200px on the long side is plenty. Keep each under ~300 KB so the site lo
 
 ## The look (shared with the save-the-date)
 
-The style comes from our engagement photos: navy from the dress and shirt, linen and park-stone neutrals, leafy sage greens, and golden-hour light. You'll see it as a warm sun glow in the top corner, a fine film grain, and photos with a soft, warm film finish. The motifs are all original line drawings:
-- a band of linked rings, after the Bow Bridge railings
-- the flower from the engagement ring, an asymmetric blossom (seven pear-shaped petals in different sizes, with tiny golden seed pods at the centre), used as the divider under every heading, sitting on a fine gold line like the ring's band
-- leafy sprigs with the same little flowers
+Modern and minimal: a clean serif for names and headings, a simple sans for everything else, fine hairlines instead of ornaments, straight photos, and plenty of space. The colours come from our engagement photos: the navy of the dress and shirt, and linen and park-stone neutrals. Photos get a soft, warm film finish and there's a very fine film grain over the page.
 
 ## Colours and fonts
 
-All colours, the page background, the photo finish (`--photo-filter`) and the grain strength (`--grain-opacity`) are CSS variables in the **SHARED THEME** block at the top of `styles.css`. The same block sits at the top of `save-the-date/styles.css`. **Keep the two identical**: if you change one, paste it over the other so both sites stay on the same page. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html`, and put `"Great Vibes"` first in `--font-script`.
+All colours, the page background, the photo finish (`--photo-filter`) and the grain strength (`--grain-opacity`) are CSS variables in the **SHARED THEME** block at the top of `styles.css`. The same block sits at the top of `save-the-date/styles.css`. **Keep the two identical**: if you change one, paste it over the other so both sites stay on the same page. Fonts are `--font-display` (Instrument Serif, for names and headings) and `--font-sans` (Inter, for everything else). To swap one, change the Google Fonts link in `index.html` (and in `save-the-date/index.html`) and put the new name first in the matching variable.
 
 ## Countdown
 
