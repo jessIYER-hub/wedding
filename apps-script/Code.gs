@@ -33,7 +33,8 @@ const CONTENT = {
     welcome:
       "We're so happy you'll be with us. Everything you need for our three days in Udaipur is here, and we'll keep adding to it as plans come together.",
     heroImage: 'assets/hero.jpg',
-    heroAlt: 'Jessica and Gaurav',
+    heroAlt: 'Jessica and Gaurav hugging on a bridge in Central Park at golden hour',
+    heroFocus: '50% 68%', // which part of the photo to keep when it's cropped
     // The countdown counts down to this moment. +05:30 is India time.
     countdownTarget: '2027-11-06T12:00:00+05:30',
     countdownLabel: 'Until we celebrate together',
@@ -47,21 +48,22 @@ const CONTENT = {
     blocks: [
       {
         text: 'We met at university in 2018 and hit it off straight away. Friendship soon became something more, and our first date was over hot chocolate.',
-        frame: 'polaroid', // 'polaroid' or 'strip'
-        photos: [{ src: 'assets/story-1.jpg', alt: '', caption: '' }],
+        // frame: 'polaroid' or 'strip'. focus: which part of a photo to keep when cropped.
+        frame: 'polaroid',
+        photos: [{ src: 'assets/story-1.jpg', alt: 'Jessica laughing as Gaurav hugs her on a wooden bench', caption: '', focus: '50% 50%' }],
       },
       {
         text: 'Life took us in different directions for a while, but in 2021, a message about that hot chocolate led to a second "first date". As we caught up, we discovered that London, for all its size, had tucked us just around the corner from each other. That corner of the city has been home ever since. It\'s where we found each other again, and where two separate homes eventually became one.',
         frame: 'strip',
         photos: [
-          { src: 'assets/story-2.jpg', alt: '' },
-          { src: 'assets/story-3.jpg', alt: '' },
+          { src: 'assets/story-2.jpg', alt: 'Walking up stone steps hand in hand', focus: '50% 62%' },
+          { src: 'assets/story-3.jpg', alt: 'Smiling at each other under the trees by a lamppost', focus: '45% 60%' },
         ],
       },
       {
         text: "Five years together have turned those early feelings into a deeper love. On a work trip to New York, a proposal in Central Park began our next chapter. Now we're planning our wedding, and we would love for you to be part of it.",
         frame: 'polaroid',
-        photos: [{ src: 'assets/story-4.jpg', alt: '', caption: '' }],
+        photos: [{ src: 'assets/story-4.jpg', alt: 'A kiss by the lake in Central Park', caption: '', focus: '50% 58%' }],
       },
     ],
   },

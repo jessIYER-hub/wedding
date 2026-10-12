@@ -406,9 +406,9 @@ const CONFIG = {
 
     const photo = has(c.heroImage)
       ? h("figure", { class: "hero__photo reveal r-fade", style: "--delay:0.3s" },
-          h("div", { class: "arch" }, h("img", { src: safeSrc(c.heroImage), alt: c.heroAlt || "", loading: "eager" })),
-          svgUse("bloom", "hero__bloom hero__bloom--a", "0 0 40 40"),
-          svgUse("bloom", "hero__bloom hero__bloom--b", "0 0 40 40"))
+          h("div", { class: "arch" }, h("img", { src: safeSrc(c.heroImage), alt: c.heroAlt || "", loading: "eager", style: focus({ focus: c.heroFocus }) })),
+          svgUse("ring-flower", "hero__bloom hero__bloom--a", "0 0 40 40"),
+          svgUse("ring-flower", "hero__bloom hero__bloom--b", "0 0 40 40"))
       : null;
 
     $("#home").replaceChildren(
@@ -422,7 +422,8 @@ const CONFIG = {
           has(c.dates) ? h("p", { class: "hero__dates reveal r-rise", style: "--delay:0.2s", text: c.dates }) : null,
           has(c.venue) ? h("p", { class: "caps hero__venue reveal r-rise", style: "--delay:0.3s", text: c.venue }) : null,
           countdown,
-          has(c.welcome) ? h("p", { class: "hero__welcome reveal r-rise", style: "--delay:0.8s", text: c.welcome }) : null),
+          has(c.welcome) ? h("p", { class: "hero__welcome reveal r-rise", style: "--delay:0.8s", text: c.welcome }) : null,
+          h("span", { class: "band reveal r-fade", style: "--delay:1s", "aria-hidden": "true" })),
         photo));
 
     startCountdown(c.countdownTarget);
@@ -464,17 +465,22 @@ const CONFIG = {
             has(b.text) ? h("p", { class: "story-block__text reveal r-rise", style: "--delay:0.25s", text: b.text }) : null))));
   }
 
+  // Optional focus point for cropping, e.g. focus: "50% 30%".
+  function focus(p) {
+    return /^[\d.]+% [\d.]+%$/.test(String(p.focus || "")) ? `object-position:${p.focus}` : null;
+  }
+
   function storyFrame(block, i) {
     const photos = block.photos.filter((p) => has(p.src));
     if (block.frame === "strip") {
       return h("div", { class: "booth-strip" },
-        photos.map((p) => h("img", { src: safeSrc(p.src), alt: p.alt || "", loading: "lazy" })),
+        photos.map((p) => h("img", { src: safeSrc(p.src), alt: p.alt || "", loading: "lazy", style: focus(p) })),
         h("span", { class: "booth-strip__caption caps", text: CONFIG.couple.initials }));
     }
     return h("div", { class: "polaroids" },
       photos.map((p, j) =>
         h("figure", { class: `polaroid ${(i + j) % 2 ? "polaroid--right" : "polaroid--left"}` },
-          h("img", { src: safeSrc(p.src), alt: p.alt || "", loading: "lazy" }),
+          h("img", { src: safeSrc(p.src), alt: p.alt || "", loading: "lazy", style: focus(p) }),
           has(p.caption) ? h("figcaption", { class: "script", text: p.caption }) : h("span", { class: "polaroid__blank", "aria-hidden": "true" }))));
   }
 
@@ -564,7 +570,7 @@ const CONFIG = {
                     h("li", null,
                       h("span", { class: "plain-list__name", text: i.name || "" }),
                       has(i.note) ? h("span", { class: "plain-list__note", text: i.note }) : null)))))),
-            has(ins.tip) ? h("p", { class: "tip" }, svgUse("bloom", "tip__bloom", "0 0 40 40"), h("span", { text: ins.tip })) : null)
+            has(ins.tip) ? h("p", { class: "tip" }, svgUse("ring-flower", "tip__bloom", "0 0 40 40"), h("span", { text: ins.tip })) : null)
         : null);
   }
 

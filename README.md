@@ -37,7 +37,7 @@ Don't put anything in `script.js` that you want kept private. Anyone can read th
 
 ## Swapping the photos
 
-Replace the files in `assets/`, keeping the same names:
+These are already our engagement photos. To change one, replace the file in `assets/` and keep the same name:
 
 | File | Where it shows | Best shape |
 | --- | --- | --- |
@@ -46,11 +46,18 @@ Replace the files in `assets/`, keeping the same names:
 | `story-2.jpg`, `story-3.jpg` | photo-booth strip next to the second paragraph | landscape, about 4:3 |
 | `story-4.jpg` | polaroid next to the third paragraph | portrait, about 5:6 |
 
-Around 1200px on the long side is plenty. Keep each under ~300 KB so the site loads quickly on phones. To add a handwritten caption under a polaroid, set `caption` for that photo in `CONTENT.story`. Set `alt` to a short description for screen readers.
+Around 1200px on the long side is plenty. Keep each under ~300 KB so the site loads quickly on phones. To add a handwritten caption under a polaroid, set `caption` for that photo in `CONTENT.story`. Set `alt` to a short description for screen readers. When a photo is cropped to fit its frame, `focus` (e.g. `'50% 60%'`, across then down) chooses which part is kept. For the home photo it's `heroFocus`.
+
+## The look (shared with the save-the-date)
+
+The style comes from our engagement photos: navy from the dress and shirt, linen and park-stone neutrals, leafy sage greens, and golden-hour light. You'll see it as a warm sun glow in the top corner, a fine film grain, and photos with a soft, warm film finish. The motifs are all original line drawings:
+- a band of linked rings, after the Bow Bridge railings
+- a six-petal flower, after the engagement ring
+- a lotus and leafy sprigs
 
 ## Colours and fonts
 
-All colours are CSS variables at the top of `styles.css` (`--ivory`, `--navy`, `--dusty-blue`, `--gold` and friends). They match the save-the-date. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html`, and put `"Great Vibes"` first in `--font-script`.
+All colours, the page background, the photo finish (`--photo-filter`) and the grain strength (`--grain-opacity`) are CSS variables in the **SHARED THEME** block at the top of `styles.css`. The same block sits at the top of `save-the-date/styles.css`. **Keep the two identical**: if you change one, paste it over the other so both sites stay on the same page. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html`, and put `"Great Vibes"` first in `--font-script`.
 
 ## Countdown
 

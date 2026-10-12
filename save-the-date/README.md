@@ -29,7 +29,7 @@ Replace the files in `assets/` with your own, keeping the same names:
 | `strip-1.jpg`, `strip-2.jpg`, `strip-3.jpg` | photo strip inside the frame on the first screen |
 | `strip-4.jpg`, `strip-5.jpg`, `strip-6.jpg` | tilted strip on the save-the-date screen |
 
-Landscape photos (about 4:3) fit best. They're shown in black and white automatically, so colour originals are fine. Around 800px wide is plenty; keep them under ~300 KB each so the site loads quickly on phones.
+Landscape photos (about 4:3) fit best. They get the same soft, warm film look as the main site (`--photo-filter` in `styles.css`). Around 800px wide is plenty; keep them under ~300 KB each so the site loads quickly on phones.
 
 ## Adding the flowers / ribbon
 

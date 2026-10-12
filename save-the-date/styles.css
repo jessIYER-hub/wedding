@@ -3,19 +3,36 @@
    All colours, fonts and timings live in :root. Change them here.
    ========================================================================== */
 
+/* ==========================================================================
+   SHARED THEME · keep this block identical in /styles.css and
+   /save-the-date/styles.css so both sites look like one family.
+
+   Taken from our engagement photos: the navy of the dress and shirt, linen
+   and park stone, leafy greens by the lake, and late golden-hour light.
+   ========================================================================== */
 :root {
-  /* Paper */
+  /* Paper & light */
   --ivory: #fbf7ef;
-  --ivory-deep: #f5eedf;
+  --ivory-deep: #f4ecdc;
   --cream: #efe4cf;
+  --linen: #ece5d6;
+  --paper: #fffdf8;
   --paper-shadow: rgba(60, 48, 25, 0.10);
+  --photo-paper: #fdfcf9;
+  --sunlight: rgba(244, 215, 150, 0.55);
+  --sunlight-soft: rgba(244, 215, 150, 0.25);
 
   /* Ink */
-  --navy: #1f2d4a;
+  --navy: #1e2c4c;
   --navy-soft: #3a4a69;
-  --dusty-blue: #7b93b0;
+  --dusty-blue: #6f88aa;
   --dusty-blue-soft: #b8c6d6;
   --dusty-blue-mist: #e4eaf0;
+
+  /* Park greens */
+  --sage: #7f8f62;
+  --sage-soft: #b9c3a1;
+  --sage-mist: rgba(127, 143, 98, 0.14);
 
   /* Gold-style line work */
   --gold: #b8975a;
@@ -24,6 +41,17 @@
 
   /* States */
   --error: #9a4a4a;
+
+  /* Page background: warm sun from the top right, leaves at the bottom left */
+  --page-bg:
+    radial-gradient(70% 50% at 92% 0%, var(--sunlight) 0%, transparent 70%),
+    radial-gradient(120% 80% at 50% 0%, var(--paper) 0%, transparent 60%),
+    radial-gradient(80% 60% at 0% 100%, var(--sage-mist) 0%, transparent 70%),
+    linear-gradient(180deg, var(--ivory) 0%, var(--ivory-deep) 100%);
+
+  /* Photos: soft, warm film, like the engagement shoot */
+  --photo-filter: saturate(0.92) contrast(1.03) sepia(0.08) brightness(1.01);
+  --grain-opacity: 0.07;
 
   /* Type */
   --font-script: "Pinyon Script", "Great Vibes", cursive;
@@ -35,8 +63,35 @@
   --dur-slow: 1.4s;
   --dur: 1.1s;
   --dur-quick: 0.8s;
+}
 
-  /* Sizing */
+/* Fine film grain over everything, like the photos */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.2 0 0 0 0 0.12 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Bow Bridge-inspired band of linked rings, used as a divider */
+.band {
+  display: block;
+  height: 22px;
+  width: min(100%, 360px);
+  margin: 1.6rem auto;
+  opacity: 0.8;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='22' viewBox='0 0 36 22'%3E%3Cg fill='none' stroke='%23b8975a' stroke-width='0.8'%3E%3Ccircle cx='9' cy='11' r='8.5'/%3E%3Ccircle cx='27' cy='11' r='8.5'/%3E%3Ccircle cx='18' cy='11' r='8.5' stroke-opacity='0.55'/%3E%3Cpath d='M9 7.6c1.2 1.4 1.2 2 0 3.4-1.2-1.4-1.2-2 0-3.4zM9 14.4c1.2-1.4 1.2-2 0-3.4-1.2 1.4-1.2 2 0 3.4zM5.6 11c1.4-1.2 2-1.2 3.4 0-1.4 1.2-2 1.2-3.4 0zM12.4 11c-1.4-1.2-2-1.2-3.4 0 1.4 1.2 2 1.2 3.4 0z' stroke-width='0.6'/%3E%3C/g%3E%3Cpath d='M0 0.5H36M0 21.5H36' stroke='%23b8975a' stroke-opacity='0.5' stroke-width='0.6'/%3E%3C/svg%3E") repeat-x center / auto 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+/* ==================== END SHARED THEME ==================== */
+
+:root {
+  /* Sizing (this site only) */
   --gutter: 16px;
   --strip-w: min(34vw, 15vh, 160px);
 }
@@ -55,10 +110,7 @@ body {
   margin: 0;
   color: var(--navy);
   background-color: var(--ivory);
-  background-image:
-    radial-gradient(120% 80% at 50% 0%, #fffdf8 0%, transparent 60%),
-    radial-gradient(90% 70% at 100% 100%, rgba(239, 228, 207, 0.7) 0%, transparent 70%),
-    linear-gradient(180deg, var(--ivory) 0%, var(--ivory-deep) 100%);
+  background-image: var(--page-bg);
   background-attachment: fixed;
   font-family: var(--font-serif);
   font-size: 18px;
@@ -344,7 +396,7 @@ body.is-locked .music-toggle { visibility: hidden; }
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
+  filter: var(--photo-filter);
   background: #ddd;
 }
 .strip__caption {
@@ -720,6 +772,8 @@ textarea.field__input { resize: vertical; min-height: 2.8em; }
 .thanks__update { margin: 0 0 0.6rem; font-style: italic; color: var(--navy-soft); }
 
 .signoff { margin-top: 2rem; }
+.signoff .band { margin: 0 auto 1rem; }
+.gate .band { width: 70%; margin: 1.2rem auto 0; }
 .signoff__script { margin: 0; font-size: 2rem; color: var(--dusty-blue); }
 
 /* --------------------------------------------------------------------------
