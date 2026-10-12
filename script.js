@@ -162,7 +162,8 @@ const CONFIG = {
       const value = lookup(el.dataset.copy);
       if (typeof value === "string") el.textContent = value;
     });
-    $("#gate-input").placeholder = CONFIG.gate.placeholder;
+    const gateInput = $("#gate-input");
+    if (gateInput) gateInput.placeholder = CONFIG.gate.placeholder;
     document.title = `${CONFIG.namesLine} · Save the Date`;
   }
 
@@ -413,7 +414,8 @@ const CONFIG = {
   function initRsvp() {
     const opener = $("#rsvp-open");
     const sheet = $("#rsvp-sheet");
-    const scroller = $("#sheet-scroll");
+    // On the standalone RSVP page there is no sheet; the page itself scrolls.
+    const scroller = $("#sheet-scroll") || document.scrollingElement;
     const form = $("#rsvp-form");
     const ifAttending = $("#if-attending");
     const party = $("#rsvp-party");
@@ -467,8 +469,10 @@ const CONFIG = {
     function onKey(e) {
       if (e.key === "Escape") closeSheet();
     }
-    opener.addEventListener("click", openSheet);
-    $$("[data-close]", sheet).forEach((el) => el.addEventListener("click", closeSheet));
+    if (opener && sheet) {
+      opener.addEventListener("click", openSheet);
+      $$("[data-close]", sheet).forEach((el) => el.addEventListener("click", closeSheet));
+    }
 
     function attendingValue() {
       const checked = form.querySelector('input[name="attending"]:checked');
@@ -605,6 +609,11 @@ const CONFIG = {
 
   /* ---------- Go ---------- */
   applyCopy();
+  // rsvp.html: just the form, no password screen (guests arrive from the Canva site).
+  if (document.body.dataset.page === "rsvp") {
+    initRsvp();
+    return;
+  }
   initSaveTheDate();
   initVenue();
   initToran();

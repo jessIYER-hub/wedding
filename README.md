@@ -97,6 +97,16 @@ It isn't case sensitive.
 
 ---
 
+## The RSVP page for the Canva save the date
+
+`rsvp.html` is a standalone RSVP page: the same questions, wording and Google Sheet as the full site, styled to match the Canva design, with no password screen. Once the site is online, link the **Share your details** button in Canva to:
+
+```
+https://<your-site-address>/rsvp.html
+```
+
+(In Canva: select the button text, click the link icon, paste the address.)
+
 ## Connecting the RSVP form to Google Sheets
 
 The form posts straight into a Google Sheet through a tiny Google Apps Script web app.

@@ -1,0 +1,50 @@
+/* Standalone RSVP page (rsvp.html). Builds on styles.css. */
+
+body[data-page="rsvp"] {
+  overflow-y: auto;
+  min-height: 100%;
+}
+
+.rsvp-page {
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: max(40px, env(safe-area-inset-top)) 16px max(48px, env(safe-area-inset-bottom));
+  text-align: center;
+  animation: fade-up var(--dur-slow) var(--ease-out) both;
+}
+
+.rsvp-page__head { margin-bottom: 28px; }
+.rsvp-page__eyebrow { margin: 0; font-size: 0.85rem; }
+.rsvp-page__names {
+  margin: 0.3rem 0 0.4rem;
+  font-size: clamp(2.6rem, 12vw, 3.4rem);
+  color: var(--navy);
+}
+.rsvp-page__when { margin: 0; font-size: 0.8rem; color: var(--navy-soft); }
+
+/* Card with a double gold line, like the frame on the save the date */
+.rsvp-page__card {
+  position: relative;
+  padding: 34px 22px 30px;
+  background: var(--paper-light) url("assets/paper-texture.png");
+  border: 1px solid var(--gold);
+  outline: 1px solid var(--gold-faint);
+  outline-offset: -8px;
+  border-radius: 999px 999px 4px 4px / 150px 150px 4px 4px;
+  box-shadow: 0 24px 60px -34px var(--paper-shadow);
+  text-align: left;
+}
+.rsvp-page__card .rsvp,
+.rsvp-page__card .thanks { max-width: none; }
+.rsvp-page__card .rsvp__title { margin-top: 1.4rem; }
+.rsvp-page__card .thanks { padding: 2.4rem 0 1rem; }
+
+.rsvp-page__signoff {
+  margin: 28px 0 0;
+  font-size: 1.6rem;
+  color: var(--dusty-blue);
+}
+
+@media (min-width: 600px) {
+  .rsvp-page__card { padding: 44px 40px 36px; }
+}
