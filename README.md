@@ -57,7 +57,7 @@ Position and size them in `styles.css` under `.decor-slot--flowers` and `.decor-
 
 ## Changing colours and fonts
 
-All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the gold line work (`--gold`). The arches, countdown, monogram and buttons all pick their colours up from these. The soft paper grain is `assets/paper-texture.png`. Fonts are `--font-display` (Bodoni Moda, for names, headings and numbers) and `--font-body` (Jost, for everything else), loaded from Google Fonts in `index.html`.
+All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the gold line work (`--gold`). The garland, arches, countdown, lockets and buttons all pick their colours up from these. The soft paper grain is `assets/paper-texture.png`. Fonts are `--font-script` (Cormorant Garamond in italic, for the names and headings) and `--font-serif` (Cormorant Garamond, for everything else), loaded from Google Fonts in `index.html`.
 
 ## Countdown date
 
@@ -79,7 +79,7 @@ On the third screen an arch draws itself in gold, **6 · 7 · 8 November 2027** 
 
 ## Petals (optional)
 
-The design is deliberately minimal: hairline arches, a monogram and plain gold rules, no ornaments. Optional drifting petals are switched off; set `CONFIG.decor.petals` in `script.js` to a number (e.g. `8`) to turn some on.
+All the decoration is original SVG/CSS, no image files: the toran garland across the top of the first screen, the arch frames, the scalloped oval and the J & G heart lockets. Optional drifting petals are switched off; set `CONFIG.decor.petals` in `script.js` to a number (e.g. `8`) to turn some on.
 
 ## The guest passphrase (please read)
 
@@ -155,6 +155,6 @@ Note that on GitHub Pages a public repo makes all the files, including `script.j
 ## Small details
 
 - Screens snap as you scroll. On the first screen, tap anywhere or swipe up to move on.
-- Animations are slow and soft: the names write themselves in, the arch draws itself, the strip slides down, the venue is written in and the countdown ticks.
-- For anyone with "Reduce Motion" turned on in their phone settings, things still fade in gently, but nothing slides.
+- Animations are slow and soft: the names write themselves in, the arch draws itself, the strip slides down, the garland sways, the venue is written in and the countdown ticks.
+- For anyone with "Reduce Motion" turned on in their phone settings, things still fade in gently, but nothing slides or sways.
 - Works offline from a file for previewing, except the RSVP (needs the endpoint) and the fonts (need a connection).

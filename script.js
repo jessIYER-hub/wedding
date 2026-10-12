@@ -259,8 +259,25 @@ const CONFIG = {
     }, { passive: true });
   }
 
-  /* ---------- Save the date: decor slots ---------- */
+  /* ---------- Save the date: scalloped oval + decor ---------- */
+  function scallopedEllipsePath(cx, cy, rx, ry, count, bulge) {
+    const pt = (t, r1, r2) => [cx + r1 * Math.cos(t), cy + r2 * Math.sin(t)];
+    const step = (Math.PI * 2) / count;
+    let d = "";
+    for (let i = 0; i < count; i++) {
+      const t0 = i * step - Math.PI / 2;
+      const tm = t0 + step / 2;
+      const [x0, y0] = pt(t0, rx, ry);
+      const [x1, y1] = pt(t0 + step, rx, ry);
+      const [qx, qy] = pt(tm, rx + bulge * 2, ry + bulge * 2);
+      if (i === 0) d += `M${x0.toFixed(2)} ${y0.toFixed(2)} `;
+      d += `Q${qx.toFixed(2)} ${qy.toFixed(2)} ${x1.toFixed(2)} ${y1.toFixed(2)} `;
+    }
+    return d + "Z";
+  }
+
   function initSaveTheDate() {
+    $("#oval-scallop").setAttribute("d", scallopedEllipsePath(150, 200, 136, 184, 34, 6));
     [["flowers", "#decor-flowers"], ["ribbon", "#decor-ribbon"]].forEach(([key, sel]) => {
       const src = CONFIG.decor[key];
       if (!src) return;
@@ -288,6 +305,57 @@ const CONFIG = {
       link.textContent = v.linkLabel;
       link.hidden = false;
     }
+  }
+
+  /* ---------- Toran garland ---------- */
+  function buildToran() {
+    const host = $("#toran");
+    const w = host.clientWidth || window.innerWidth;
+    const h = host.clientHeight || 64;
+    const span = w < 600 ? 44 : 56;
+    const count = Math.max(4, Math.round(w / span));
+    const step = w / count;
+    const sag = h * 0.22;
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    svg.setAttribute("preserveAspectRatio", "none");
+    let d = `M0 2`;
+    let drops = "";
+    const leafLen = h * 0.62;
+    for (let i = 0; i < count; i++) {
+      const x0 = i * step;
+      const mid = x0 + step / 2;
+      d += ` Q${mid.toFixed(1)} ${(2 + sag * 2).toFixed(1)} ${(x0 + step).toFixed(1)} 2`;
+      const y = 2 + sag; // lowest point of the swag
+      const delay = `${(-(i * 0.7) % 5.5).toFixed(2)}s`;
+      let item;
+      if (i % 2 === 0) {
+        const L = leafLen;
+        const alt = i % 4 === 0 ? "" : " toran__leaf--alt";
+        item = `<path class="toran__leaf${alt}" d="M0 0 C${L * 0.26} ${L * 0.28} ${L * 0.24} ${L * 0.7} 0 ${L} C${-L * 0.24} ${L * 0.7} ${-L * 0.26} ${L * 0.28} 0 0 Z"/>` +
+               `<path class="toran__rib" d="M0 ${L * 0.12} V${L * 0.88}"/>`;
+      } else {
+        item = `<path class="toran__string" d="M0 0 V${h * 0.14}"/>` +
+               `<circle class="toran__bead" cx="0" cy="${h * 0.22}" r="${h * 0.075}"/>` +
+               `<circle class="toran__bead toran__bead--small" cx="0" cy="${h * 0.36}" r="${h * 0.05}"/>`;
+      }
+      drops += `<g transform="translate(${mid.toFixed(1)} ${y.toFixed(1)})"><g class="toran__drop" style="--sway-delay:${delay}">${item}</g></g>`;
+    }
+    svg.innerHTML = `<path class="toran__string" d="${d}"/>${drops}`;
+    host.replaceChildren(svg);
+  }
+
+  function initToran() {
+    buildToran();
+    let t;
+    let lastW = window.innerWidth;
+    window.addEventListener("resize", () => {
+      if (window.innerWidth === lastW) return; // ignore mobile URL-bar height changes
+      lastW = window.innerWidth;
+      clearTimeout(t);
+      t = setTimeout(buildToran, 200);
+    });
   }
 
   /* ---------- Drifting petals ---------- */
@@ -539,6 +607,7 @@ const CONFIG = {
   applyCopy();
   initSaveTheDate();
   initVenue();
+  initToran();
   initCountdown();
   initLanding();
   initRsvp();
