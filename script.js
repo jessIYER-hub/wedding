@@ -65,7 +65,7 @@ const CONFIG = {
     countdownEyebrow: "Until we see you",
     units: { days: "Days", hours: "Hours", mins: "Mins", secs: "Secs" },
     arrived: "It's today. See you there.",
-    formalLine: "Once you've told us you're coming, your proper invitation will find its way to you, along with a little website of its own for all the details. We just couldn't wait that long to tell you.",
+    formalLine: "Formal invitation to follow in the new year, but please let us know if you are going to be able to make it.",
     rsvpButton: "Share your details",
   },
 
@@ -119,7 +119,7 @@ const CONFIG = {
 
   thanks: {
     yesTitle: "We can't wait",
-    yesText: "You're on our list, and your invitation will find you soon. Full schedule and room details to follow.",
+    yesText: "You're on our list. Your formal invitation will follow in the new year, with the full schedule and room details.",
     noTitle: "We'll miss you",
     noText: "Thank you for letting us know. We'll be thinking of you, and we'll celebrate together soon.",
     update: "Plans change, and that's okay. Send this again with the same name and we'll update your answer.",
