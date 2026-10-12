@@ -18,9 +18,9 @@
   <!-- ============ GUEST GATE ============ -->
   <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
     <div class="gate__card">
-      <svg class="gate__lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
+      <svg class="gate__flower" viewBox="0 0 100 60" aria-hidden="true"><use href="#ring-flower" /></svg>
       <p class="script gate__names" data-copy="namesLine"></p>
-      <span class="rule" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
+      <span class="rule" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#ring-flower" /></svg></span>
       <h2 class="caps gate__title" id="gate-title" data-copy="gate.title"></h2>
       <p class="gate__text" data-copy="gate.text"></p>
       <form class="gate__form" id="gate-form" novalidate>
@@ -75,8 +75,8 @@
               <circle cx="5" cy="109.5" r="3.2" />
               <circle cx="155" cy="109.5" r="3.2" />
             </g>
-            <use class="arch-frame__crest" href="#lotus" x="52" y="-20" width="56" height="34" />
-            <use class="arch-frame__base" href="#lotus" x="64" y="390" width="32" height="19" />
+            <use class="arch-frame__crest" href="#ring-flower" x="52" y="-20" width="56" height="34" />
+            <use class="arch-frame__base" href="#ring-flower" x="64" y="390" width="32" height="19" />
           </svg>
           <div class="arch-frame__window">
             <!-- Photo booth strip: swap assets/strip-1..3.jpg -->
@@ -109,12 +109,12 @@
             <div class="std__text">
               <h2 class="script std__title" data-copy="saveTheDate.title"></h2>
               <p class="std__date" data-copy="saveTheDate.date"></p>
-              <span class="rule rule--short" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
+              <span class="rule rule--short" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#ring-flower" /></svg></span>
               <p class="caps std__sub" data-copy="saveTheDate.sub"></p>
             </div>
           </div>
 
-          <svg class="std__crest reveal r-crest" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
+          <svg class="std__crest reveal r-crest" viewBox="0 0 100 60" aria-hidden="true"><use href="#ring-flower" /></svg>
 
           <!--
             DECOR SLOT: flowers / ribbon artwork.
@@ -153,11 +153,11 @@
             <path class="vdraw vdraw--blue" pathLength="1" d="M12 388 V123 C12 77 67 51 118 32 C135 25 146 19 150 13 C154 19 165 25 182 32 C233 51 288 77 288 123 V388 Z" />
           </svg>
           <div class="venue-arch__inside">
-            <svg class="rv rv-1 inside__lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
+            <svg class="rv rv-1 inside__flower" viewBox="0 0 100 60" aria-hidden="true"><use href="#ring-flower" /></svg>
             <p class="rv rv-2 caps inside__eyebrow" data-copy="reveal.eyebrow"></p>
             <p class="rv rv-3 inside__days" data-copy="reveal.days"></p>
             <p class="rv rv-4 caps inside__month" data-copy="reveal.month"></p>
-            <span class="rv rv-5 rule rule--short inside__rule" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
+            <span class="rv rv-5 rule rule--short inside__rule" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#ring-flower" /></svg></span>
             <div class="inside__venue-wrap" id="venue-revealed" hidden>
               <p class="script inside__venue" id="venue-name"></p>
               <p class="rv rv-7 caps inside__city" id="venue-city" hidden></p>
@@ -198,7 +198,7 @@
       <div class="sheet__scroll" id="sheet-scroll">
 
         <form class="rsvp" id="rsvp-form" novalidate>
-          <svg class="rsvp__lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
+          <svg class="rsvp__flower" viewBox="0 0 100 60" aria-hidden="true"><use href="#ring-flower" /></svg>
           <h2 class="script rsvp__title" id="rsvp-title" data-copy="rsvp.title"></h2>
           <p class="rsvp__intro" data-copy="rsvp.intro"></p>
 
@@ -216,7 +216,6 @@
 
           <fieldset class="field">
             <legend class="field__label caps" data-copy="rsvp.attending.label"></legend>
-            <p class="field__hint" data-copy="rsvp.attending.hint"></p>
             <div class="choices">
               <label class="choice"><input type="radio" name="attending" value="Yes" required><span data-copy="rsvp.attending.yes"></span></label>
               <label class="choice"><input type="radio" name="attending" value="No"><span data-copy="rsvp.attending.no"></span></label>
@@ -266,10 +265,10 @@
         </form>
 
         <div class="thanks" id="rsvp-thanks" hidden tabindex="-1">
-          <svg class="thanks__lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
+          <svg class="thanks__flower" viewBox="0 0 100 60" aria-hidden="true"><use href="#ring-flower" /></svg>
           <p class="script thanks__title" id="thanks-title"></p>
           <p class="thanks__text" id="thanks-text"></p>
-          <span class="rule rule--short" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
+          <span class="rule rule--short" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#ring-flower" /></svg></span>
           <p class="thanks__update" data-copy="thanks.update"></p>
           <button class="link-button" id="rsvp-again" type="button" data-copy="thanks.again"></button>
         </div>
@@ -291,17 +290,23 @@
         <stop offset="1" style="stop-color: var(--navy-soft)" />
       </linearGradient>
 
-      <!-- Blue lotus -->
-      <symbol id="lotus" viewBox="0 0 100 60" overflow="visible">
-        <g style="stroke: var(--gold); stroke-width: 0.9; stroke-linejoin: round">
-          <path style="fill: var(--lotus-outer)" d="M50 53 C33 53 15 44 6 29 C23 28 40 37 50 53 Z" />
-          <path style="fill: var(--lotus-outer)" d="M50 53 C67 53 85 44 94 29 C77 28 60 37 50 53 Z" />
-          <path style="fill: var(--lotus-mid)" d="M50 52 C38 46 27 32 27 15 C39 22 48 35 50 52 Z" />
-          <path style="fill: var(--lotus-mid)" d="M50 52 C62 46 73 32 73 15 C61 22 52 35 50 52 Z" />
-          <path style="fill: var(--lotus-inner)" d="M50 4 C59 18 60 37 50 52 C40 37 41 18 50 4 Z" />
+      <!-- Ring flower: an asymmetric blossom of pear-cut diamonds (points to the
+           centre, rounded ends out, each held by a gold claw) around a gold centre,
+           drawn after Jessica's engagement ring -->
+      <symbol id="ring-flower" viewBox="0 0 100 60" overflow="visible">
+        <g style="fill: var(--flower-petal); stroke: var(--gold); stroke-width: 0.75; stroke-linejoin: round">
+          <g transform="translate(50 30) rotate(-8)"><path d="M0 -3.4 C2.36 -7.30 6.75 -11.31 6.75 -18.25 A6.75 6.75 0 0 0 -6.75 -18.25 C-6.75 -11.31 -2.36 -7.30 0 -3.4 Z" /><path d="M0 -8.21 L0 -18.25" style="fill: none; stroke: var(--flower-facet); stroke-width: 0.55; stroke-linecap: round" /><circle cx="0" cy="-24.70" r="1.05" style="fill: var(--gold); stroke: none" /></g>
+          <g transform="translate(50 30) rotate(46)"><path d="M0 -3.4 C1.80 -5.55 5.13 -8.60 5.13 -13.87 A5.13 5.13 0 0 0 -5.13 -13.87 C-5.13 -8.60 -1.80 -5.55 0 -3.4 Z" /><path d="M0 -6.24 L0 -13.87" style="fill: none; stroke: var(--flower-facet); stroke-width: 0.55; stroke-linecap: round" /><circle cx="0" cy="-18.70" r="1.05" style="fill: var(--gold); stroke: none" /></g>
+          <g transform="translate(50 30) rotate(97)"><path d="M0 -3.4 C2.17 -6.72 6.21 -10.41 6.21 -16.79 A6.21 6.21 0 0 0 -6.21 -16.79 C-6.21 -10.41 -2.17 -6.72 0 -3.4 Z" /><path d="M0 -7.56 L0 -16.79" style="fill: none; stroke: var(--flower-facet); stroke-width: 0.55; stroke-linecap: round" /><circle cx="0" cy="-22.70" r="1.05" style="fill: var(--gold); stroke: none" /></g>
+          <g transform="translate(50 30) rotate(150)"><path d="M0 -3.4 C1.56 -4.82 4.46 -7.46 4.46 -12.04 A4.46 4.46 0 0 0 -4.46 -12.04 C-4.46 -7.46 -1.56 -4.82 0 -3.4 Z" /><path d="M0 -5.42 L0 -12.04" style="fill: none; stroke: var(--flower-facet); stroke-width: 0.55; stroke-linecap: round" /><circle cx="0" cy="-16.20" r="1.05" style="fill: var(--gold); stroke: none" /></g>
+          <g transform="translate(50 30) rotate(201)"><path d="M0 -3.4 C2.51 -7.74 7.16 -11.99 7.16 -19.34 A7.16 7.16 0 0 0 -7.16 -19.34 C-7.16 -11.99 -2.51 -7.74 0 -3.4 Z" /><path d="M0 -8.70 L0 -19.34" style="fill: none; stroke: var(--flower-facet); stroke-width: 0.55; stroke-linecap: round" /><circle cx="0" cy="-26.20" r="1.05" style="fill: var(--gold); stroke: none" /></g>
+          <g transform="translate(50 30) rotate(255)"><path d="M0 -3.4 C1.75 -5.40 5.00 -8.37 5.00 -13.50 A5.00 5.00 0 0 0 -5.00 -13.50 C-5.00 -8.37 -1.75 -5.40 0 -3.4 Z" /><path d="M0 -6.08 L0 -13.50" style="fill: none; stroke: var(--flower-facet); stroke-width: 0.55; stroke-linecap: round" /><circle cx="0" cy="-18.20" r="1.05" style="fill: var(--gold); stroke: none" /></g>
+          <g transform="translate(50 30) rotate(306)"><path d="M0 -3.4 C2.03 -6.28 5.81 -9.73 5.81 -15.69 A5.81 5.81 0 0 0 -5.81 -15.69 C-5.81 -9.73 -2.03 -6.28 0 -3.4 Z" /><path d="M0 -7.06 L0 -15.69" style="fill: none; stroke: var(--flower-facet); stroke-width: 0.55; stroke-linecap: round" /><circle cx="0" cy="-21.20" r="1.05" style="fill: var(--gold); stroke: none" /></g>
         </g>
-        <path d="M24 57 Q50 62 76 57" style="fill: none; stroke: var(--gold); stroke-width: 0.9; stroke-linecap: round" />
-        <circle cx="50" cy="1" r="1.4" style="fill: var(--gold)" />
+        <circle cx="50" cy="30" r="4" style="fill: var(--gold-soft); stroke: var(--gold); stroke-width: 0.7" />
+        <circle cx="48.7" cy="29.1" r="1" style="fill: var(--paper-light)" />
+        <circle cx="51.4" cy="29.4" r="0.85" style="fill: var(--paper-light)" />
+        <circle cx="50" cy="31.6" r="0.9" style="fill: var(--paper-light)" />
       </symbol>
 
       <!-- Heart locket, blue enamel with gold edge -->

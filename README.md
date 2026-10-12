@@ -57,7 +57,7 @@ Position and size them in `styles.css` under `.decor-slot--flowers` and `.decor-
 
 ## Changing colours and fonts
 
-All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the lotus petals (`--lotus-outer`, `--lotus-mid`, `--lotus-inner`) and the gold line work (`--gold`). The lotus, garland, arches, countdown and lockets all pick their colours up from these. The soft paper grain is `assets/paper-texture.png`. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
+All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the ring-flower petals (`--flower-petal`, `--flower-facet`) and the gold line work (`--gold`). The ring flower, garland, arches, countdown and lockets all pick their colours up from these. The soft paper grain is `assets/paper-texture.png`. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
 
 ## Countdown date
 
@@ -71,15 +71,15 @@ The `+00:00` is the time zone offset. Once you know where you're getting married
 
 ## The big reveal (venue)
 
-On the third screen a lotus arch draws itself in gold, the lotus blooms, **6 · 7 · 8 November 2027** fades in, and then **Royal Retreat Resort & Spa** is written in by hand, left to right. No tapping needed.
+On the third screen an arch draws itself in gold, the ring flower blooms, **6 · 7 · 8 November 2027** fades in, and then **Royal Retreat Resort & Spa** is written in by hand, left to right. No tapping needed.
 
 - The dates are `CONFIG.reveal.days` and `CONFIG.reveal.month`.
 - The venue is `CONFIG.venue.name`. You can also add `CONFIG.venue.city` and `CONFIG.venue.url` (a website link); they only appear once they're filled in.
 - Set `const REVEAL_VENUE = false;` to hide the venue again. The arch then shows the dates and the line "Somewhere beautiful, and we can't wait to tell you." Anything in `script.js` can be read by anyone who opens the page source, so if you ever need it truly hidden, empty the venue fields too.
 
-## Lotus, garland and petals
+## Ring flower, garland and petals
 
-All the decoration is original SVG/CSS, no image files: the blue lotus (used as the crest on the frame, the dividers and the reveal), the toran garland across the top of the first screen, and the arch frames. There are also optional drifting petals, switched off by default; set `CONFIG.decor.petals` in `script.js` to a number (e.g. `8`) to bring them back.
+All the decoration is original SVG/CSS, no image files: an asymmetric blossom of pear-cut diamonds drawn after Jessica's engagement ring (used as the crest on the frame, in the dividers, on the reveal and in the RSVP), the toran garland across the top of the first screen, and the arch frames. There are also optional drifting petals, switched off by default; set `CONFIG.decor.petals` in `script.js` to a number (e.g. `8`) to bring them back.
 
 ## Music (optional)
 

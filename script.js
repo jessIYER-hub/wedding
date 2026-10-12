@@ -79,9 +79,8 @@ const CONFIG = {
     },
     attending: {
       label: "Will you be there?",
-      hint: "We're celebrating across all three days, so it's all three or none. No pressure either way.",
-      yes: "Yes, all three days",
-      no: "Sadly, we can't make it",
+      yes: "Yes, all 3 days",
+      no: "Sadly, can't make it",
       required: "Just let us know either way.",
     },
     party: {

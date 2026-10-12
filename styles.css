@@ -23,10 +23,10 @@
   --dusty-blue-soft: #b4c4dc;
   --blue-mist: #e5ebf3;
 
-  /* Lotus */
-  --lotus-outer: #d3deef;
-  --lotus-mid: #9cb2d8;
-  --lotus-inner: #4a659f;
+  /* Ring flower (from Jessica's engagement ring): icy diamond petals */
+  --flower-petal: #eef3fa;
+  --flower-facet: #a9bcda;
+  --flower-deep: #4a659f;
 
   /* Warm accents */
   --gold: #b48f55;
@@ -106,7 +106,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .eyebrow { margin: 0; }
 
-/* Divider: gold line · lotus · gold line */
+/* Divider: gold line · ring flower · gold line */
 .rule {
   display: flex;
   align-items: center;
@@ -209,7 +209,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   box-shadow: 0 24px 60px -32px var(--paper-shadow);
   animation: fade-up var(--dur-slow) var(--ease-out) both;
 }
-.gate__lotus {
+.gate__flower {
   position: absolute;
   top: -26px;
   left: 50%;
@@ -241,7 +241,7 @@ body.is-locked .petals { visibility: hidden; }
   width: var(--s);
   height: calc(var(--s) * 1.5);
   border-radius: 0 100% 0 100%;
-  background: linear-gradient(135deg, var(--lotus-outer), var(--lotus-mid));
+  background: linear-gradient(135deg, var(--flower-petal), var(--flower-facet));
   opacity: 0;
   animation: petal-fall var(--d) linear var(--delay) infinite;
 }
@@ -675,7 +675,7 @@ body.is-locked .petals { visibility: hidden; }
 .screen.is-in .rv-6 { transition-delay: 2.8s; }
 .screen.is-in .rv-7 { transition-delay: 4.6s; }
 
-.inside__lotus { width: 17cqw; height: 10cqw; overflow: visible; margin-bottom: 1cqw; }
+.inside__flower { width: 17cqw; height: 10cqw; overflow: visible; margin-bottom: 1cqw; }
 .rv-1 { transform: translateY(2cqw) scale(0.4); transform-origin: 50% 100%; }
 .inside__eyebrow { margin: 0; font-size: 3.2cqw; }
 .inside__days {
@@ -837,7 +837,7 @@ body.is-locked .petals { visibility: hidden; }
 }
 
 .rsvp, .thanks { max-width: 440px; margin: 0 auto; }
-.rsvp__lotus, .thanks__lotus { display: block; width: 70px; height: 42px; margin: 6px auto 0; overflow: visible; }
+.rsvp__flower, .thanks__flower { display: block; width: 70px; height: 42px; margin: 6px auto 0; overflow: visible; }
 .rsvp__title { margin: 0.2rem 0 0.4rem; text-align: center; font-size: 2.6rem; color: var(--navy); }
 .rsvp__intro {
   margin: 0 0 1.6rem;
