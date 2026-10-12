@@ -32,7 +32,7 @@ The strips use square crops of our engagement photos:
 | `strip-5.jpg` | the ring | save-the-date screen, tilted strip |
 | `strip-6.jpg` | by the lake, wider | save-the-date screen, tilted strip |
 
-To use a different photo, save a **square** crop (about 600×600px, under ~150 KB) over one of these files. They're shown in black and white automatically, like a real photo booth, so colour originals are fine. To show them in colour instead, delete the `filter: grayscale(...)` line under `.strip img` in `styles.css`.
+To use a different photo, save a **square** crop (about 600×600px, under ~150 KB) over one of these files. Photos are shown exactly as they are, in full colour.
 
 ## Adding the flowers / ribbon
 
