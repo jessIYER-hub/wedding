@@ -197,13 +197,13 @@ const CONFIG = {
     svg.appendChild(use);
     return svg;
   }
-  const lotus = (extra = "") => svgUse("lotus", `lotus ${extra}`.trim(), "0 0 120 48");
+  const motif = (extra = "") => svgUse("ring-divider", `motif ${extra}`.trim(), "0 0 120 40");
 
   function sectionHeading(id, text, eyebrow) {
     return h("header", { class: "section__head reveal" },
       eyebrow ? h("p", { class: "caps eyebrow", text: eyebrow }) : null,
       h("h2", { class: "script section__title", id, text }),
-      lotus("lotus--divider"));
+      motif("motif--divider"));
   }
 
   function scrollToId(id, smooth = true) {

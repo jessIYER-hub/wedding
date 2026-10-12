@@ -52,8 +52,8 @@ Around 1200px on the long side is plenty. Keep each under ~300 KB so the site lo
 
 The style comes from our engagement photos: navy from the dress and shirt, linen and park-stone neutrals, leafy sage greens, and golden-hour light. You'll see it as a warm sun glow in the top corner, a fine film grain, and photos with a soft, warm film finish. The motifs are all original line drawings:
 - a band of linked rings, after the Bow Bridge railings
-- a six-petal flower, after the engagement ring
-- a lotus and leafy sprigs
+- the flower from the engagement ring (six pointed petals around a round stone), used as the divider under every heading, sitting on a fine gold line like the ring's band
+- leafy sprigs with the same little flowers
 
 ## Colours and fonts
 
