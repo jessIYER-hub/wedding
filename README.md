@@ -57,35 +57,29 @@ Position and size them in `styles.css` under `.decor-slot--flowers` and `.decor-
 
 ## Changing colours and fonts
 
-All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the ring-flower petals (`--flower-petal`, `--flower-facet`) and the gold line work (`--gold`). The ring flower, garland, arches, countdown and lockets all pick their colours up from these. The soft paper grain is `assets/paper-texture.png`. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
+All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the gold line work (`--gold`). The arches, countdown, monogram and buttons all pick their colours up from these. The soft paper grain is `assets/paper-texture.png`. Fonts are `--font-display` (Bodoni Moda, for names, headings and numbers) and `--font-body` (Jost, for everything else), loaded from Google Fonts in `index.html`.
 
 ## Countdown date
 
 At the top of `script.js`:
 
 ```js
-const WEDDING_START = "2027-11-06T12:00:00+00:00";
+const WEDDING_START = "2027-11-06T17:00:00+05:30";
 ```
 
-The `+00:00` is the time zone offset. Once you know where you're getting married, change it to the venue's offset (for example `+05:30` or `+01:00`) and adjust the time if you like.
+That's 5pm on 6 November, Udaipur time (`+05:30` is India's offset). Every guest counts down to the same moment, wherever they are.
 
 ## The big reveal (venue)
 
-On the third screen an arch draws itself in gold, the ring flower blooms, **6 · 7 · 8 November 2027** fades in, and then **Royal Retreat Resort & Spa** is written in by hand, left to right. No tapping needed.
+On the third screen an arch draws itself in gold, **6 · 7 · 8 November 2027** fades in, and then **Royal Retreat Resort & Spa** is written in, left to right, with Udaipur underneath. No tapping needed.
 
 - The dates are `CONFIG.reveal.days` and `CONFIG.reveal.month`.
-- The venue is `CONFIG.venue.name`. You can also add `CONFIG.venue.city` and `CONFIG.venue.url` (a website link); they only appear once they're filled in.
+- The venue is `CONFIG.venue.name`. `CONFIG.venue.city` (Udaipur) appears underneath. You can also add `CONFIG.venue.url` for a link to the resort's website.
 - Set `const REVEAL_VENUE = false;` to hide the venue again. The arch then shows the dates and the line "Somewhere beautiful, and we can't wait to tell you." Anything in `script.js` can be read by anyone who opens the page source, so if you ever need it truly hidden, empty the venue fields too.
 
-## Ring flower, garland and petals
+## Petals (optional)
 
-All the decoration is original SVG/CSS, no image files: an asymmetric blossom of pear-cut diamonds drawn after Jessica's engagement ring (used as the crest on the frame, in the dividers, on the reveal and in the RSVP), the toran garland across the top of the first screen, and the arch frames. There are also optional drifting petals, switched off by default; set `CONFIG.decor.petals` in `script.js` to a number (e.g. `8`) to bring them back.
-
-## Music (optional)
-
-Put an mp3 in `assets/` and set `music.src` in `script.js` (e.g. `"assets/our-song.mp3"`). A small button appears in the top corner. It's off by default; music only plays when a guest taps it.
-
----
+The design is deliberately minimal: hairline arches, a monogram and plain gold rules, no ornaments. Optional drifting petals are switched off; set `CONFIG.decor.petals` in `script.js` to a number (e.g. `8`) to turn some on.
 
 ## The guest passphrase (please read)
 
@@ -161,6 +155,6 @@ Note that on GitHub Pages a public repo makes all the files, including `script.j
 ## Small details
 
 - Screens snap as you scroll. On the first screen, tap anywhere or swipe up to move on.
-- Animations are slow and soft: the names write themselves in, the arch draws itself, the strip slides down, the garland sways, the venue is written in and the countdown ticks.
-- For anyone with "Reduce Motion" turned on in their phone settings, things still fade in gently, but nothing slides or sways.
+- Animations are slow and soft: the names write themselves in, the arch draws itself, the strip slides down, the venue is written in and the countdown ticks.
+- For anyone with "Reduce Motion" turned on in their phone settings, things still fade in gently, but nothing slides.
 - Works offline from a file for previewing, except the RSVP (needs the endpoint) and the fonts (need a connection).

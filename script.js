@@ -8,9 +8,8 @@
 // false: it shows the dates and a teaser line instead.
 const REVEAL_VENUE = true;
 
-// The countdown counts down to this moment: the first day of the wedding.
-// Change the "+00:00" to the venue's UTC offset once you're ready (e.g. "+05:30", "+01:00").
-const WEDDING_START = "2027-11-06T12:00:00+00:00";
+// The countdown counts down to this moment: 5pm on the first day, Udaipur time (+05:30).
+const WEDDING_START = "2027-11-06T17:00:00+05:30";
 
 // Paste your Google Apps Script web app URL here (ends in /exec). See README.
 const RSVP_ENDPOINT = "";
@@ -29,21 +28,21 @@ const CONFIG = {
 
   venue: {
     name: "Royal Retreat Resort & Spa",
-    city: "", // optional, e.g. the town or region
+    city: "Udaipur",
     url: "",  // optional link to the resort's website
     linkLabel: "Take a look",
   },
 
   gate: {
     title: "Hello, you",
-    text: "We made this little page for our favourite people. Pop in the word we sent you and come on in.",
+    text: "We made this page for the people we love most. Enter the word we sent you to come in.",
     placeholder: "The word we sent you",
     button: "Come in",
-    error: "Not quite. Have another look at our message, it's in there.",
+    error: "That is not quite it. Have another look at our message.",
   },
 
   landing: {
-    eyebrow: "We're getting married",
+    eyebrow: "We are getting married",
     prompt: "Open invitation",
   },
 
@@ -51,20 +50,20 @@ const CONFIG = {
     title: "Save the Date",
     date: "06 - 08 . 11 . 27",
     sub: "November 2027",
-    line: "Three days with the people we love most. It wouldn't feel right without you, so please keep them free for us.",
+    line: "Three days with the people we love most. It would not feel right without you, so please keep the dates free.",
   },
 
   reveal: {
     eyebrow: "Join us",
     days: "6 · 7 · 8",
     month: "November 2027",
-    teaser: "Somewhere beautiful, and we can't wait to tell you.", // shown when REVEAL_VENUE is false
+    teaser: "Somewhere beautiful, and we cannot wait to tell you.", // shown when REVEAL_VENUE is false
   },
 
   details: {
     countdownEyebrow: "Until we see you",
     units: { days: "Days", hours: "Hours", mins: "Mins", secs: "Secs" },
-    arrived: "It's today. See you there.",
+    arrived: "It is today. See you there.",
     formalLine: "Formal invitation to follow in the new year, but please let us know if you are going to be able to make it.",
     rsvpButton: "Share your details",
   },
@@ -72,16 +71,16 @@ const CONFIG = {
   rsvp: {
     title: "Share your details",
     close: "Close",
-    intro: "It's early, we know. A rough idea now helps us plan something lovely for you.",
+    intro: "It is early, we know. A rough idea now helps us plan.",
     name: {
       label: "Your full name",
-      required: "We'll need your name so we know who's coming.",
+      required: "We need your name so we know who is coming.",
     },
     attending: {
       label: "Will you be there?",
       yes: "Yes, all 3 days",
       no: "Sadly, can't make it",
-      required: "Just let us know either way.",
+      required: "Please let us know either way.",
     },
     party: {
       label: "How many of you, including you?",
@@ -90,17 +89,17 @@ const CONFIG = {
       many: (n) => `${n} of us`,
     },
     others: {
-      label: "Who's coming with you?",
-      hint: "Everyone's full names in one go, please.",
-      required: "Tell us who's coming with you so we can save them a seat.",
+      label: "Who is coming with you?",
+      hint: "Full names of everyone in your party, please.",
+      required: "Please tell us who is coming with you.",
     },
     dietary: {
       label: "Dietary needs or allergies",
-      hint: "The whole wedding is vegetarian. Let us know about anything else, for everyone in your party.",
+      hint: "The whole wedding is vegetarian. Tell us about any other dietary needs or allergies for everyone in your party.",
     },
     solo: {
       label: "Coming on your own?",
-      hint: "Room details to follow. For now, just tell us what you'd like.",
+      hint: "Room details to follow. For now, tell us what you would prefer.",
       options: [
         "I'd like my own room",
         "I already have someone to share with",
@@ -110,29 +109,24 @@ const CONFIG = {
     },
     message: {
       label: "A little note for us",
-      hint: "Optional. A memory, a song you want to dance to, or just hello.",
+      hint: "Optional. A memory, a song request, or just hello.",
     },
     submit: "Send to Jessica & Gaurav",
     sending: "Sending…",
-    error: "Something went wrong sending that. Please try again in a moment, and if it still won't go, give one of us a shout.",
-    notConfigured: "Our RSVP isn't quite ready yet. Please try again soon.",
+    error: "Something went wrong sending that. Please try again in a moment, and if it still does not go through, let one of us know.",
+    notConfigured: "Our RSVP is not quite ready yet. Please try again soon.",
   },
 
   thanks: {
-    yesTitle: "We can't wait",
-    yesText: "You're on our list. Your formal invitation will follow in the new year, with the full schedule and room details.",
-    noTitle: "We'll miss you",
-    noText: "Thank you for letting us know. We'll be thinking of you, and we'll celebrate together soon.",
-    update: "Plans change, and that's okay. Send this again with the same name and we'll update your answer.",
+    yesTitle: "We cannot wait",
+    yesText: "You are on our list. Your formal invitation will follow in the new year, with the full schedule, themes and event details.",
+    noTitle: "We will miss you",
+    noText: "Thank you for letting us know. We will be thinking of you, and we will celebrate together soon.",
+    update: "Plans change. Send this again with the same name and we will update your answer.",
     again: "Update my answer",
   },
 
   signoff: "With love, Jessica & Gaurav",
-
-  music: {
-    src: "", // e.g. "assets/our-song.mp3". The toggle only appears once this is set.
-    label: "Play or pause music",
-  },
 
   decor: {
     // Transparent PNGs for the save-the-date screen. Leave empty to show nothing.
@@ -265,25 +259,8 @@ const CONFIG = {
     }, { passive: true });
   }
 
-  /* ---------- Save the date: scalloped oval + decor ---------- */
-  function scallopedEllipsePath(cx, cy, rx, ry, count, bulge) {
-    const pt = (t, r1, r2) => [cx + r1 * Math.cos(t), cy + r2 * Math.sin(t)];
-    const step = (Math.PI * 2) / count;
-    let d = "";
-    for (let i = 0; i < count; i++) {
-      const t0 = i * step - Math.PI / 2;
-      const tm = t0 + step / 2;
-      const [x0, y0] = pt(t0, rx, ry);
-      const [x1, y1] = pt(t0 + step, rx, ry);
-      const [qx, qy] = pt(tm, rx + bulge * 2, ry + bulge * 2);
-      if (i === 0) d += `M${x0.toFixed(2)} ${y0.toFixed(2)} `;
-      d += `Q${qx.toFixed(2)} ${qy.toFixed(2)} ${x1.toFixed(2)} ${y1.toFixed(2)} `;
-    }
-    return d + "Z";
-  }
-
+  /* ---------- Save the date: decor slots ---------- */
   function initSaveTheDate() {
-    $("#oval-scallop").setAttribute("d", scallopedEllipsePath(150, 200, 136, 184, 34, 6));
     [["flowers", "#decor-flowers"], ["ribbon", "#decor-ribbon"]].forEach(([key, sel]) => {
       const src = CONFIG.decor[key];
       if (!src) return;
@@ -311,57 +288,6 @@ const CONFIG = {
       link.textContent = v.linkLabel;
       link.hidden = false;
     }
-  }
-
-  /* ---------- Toran garland ---------- */
-  function buildToran() {
-    const host = $("#toran");
-    const w = host.clientWidth || window.innerWidth;
-    const h = host.clientHeight || 64;
-    const span = w < 600 ? 44 : 56;
-    const count = Math.max(4, Math.round(w / span));
-    const step = w / count;
-    const sag = h * 0.22;
-    const ns = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-    svg.setAttribute("preserveAspectRatio", "none");
-    let d = `M0 2`;
-    let drops = "";
-    const leafLen = h * 0.62;
-    for (let i = 0; i < count; i++) {
-      const x0 = i * step;
-      const mid = x0 + step / 2;
-      d += ` Q${mid.toFixed(1)} ${(2 + sag * 2).toFixed(1)} ${(x0 + step).toFixed(1)} 2`;
-      const y = 2 + sag; // lowest point of the swag
-      const delay = `${(-(i * 0.7) % 5.5).toFixed(2)}s`;
-      let item;
-      if (i % 2 === 0) {
-        const L = leafLen;
-        const alt = i % 4 === 0 ? "" : " toran__leaf--alt";
-        item = `<path class="toran__leaf${alt}" d="M0 0 C${L * 0.26} ${L * 0.28} ${L * 0.24} ${L * 0.7} 0 ${L} C${-L * 0.24} ${L * 0.7} ${-L * 0.26} ${L * 0.28} 0 0 Z"/>` +
-               `<path class="toran__rib" d="M0 ${L * 0.12} V${L * 0.88}"/>`;
-      } else {
-        item = `<path class="toran__string" d="M0 0 V${h * 0.14}"/>` +
-               `<circle class="toran__bead" cx="0" cy="${h * 0.22}" r="${h * 0.075}"/>` +
-               `<circle class="toran__bead toran__bead--small" cx="0" cy="${h * 0.36}" r="${h * 0.05}"/>`;
-      }
-      drops += `<g transform="translate(${mid.toFixed(1)} ${y.toFixed(1)})"><g class="toran__drop" style="--sway-delay:${delay}">${item}</g></g>`;
-    }
-    svg.innerHTML = `<path class="toran__string" d="${d}"/>${drops}`;
-    host.replaceChildren(svg);
-  }
-
-  function initToran() {
-    buildToran();
-    let t;
-    let lastW = window.innerWidth;
-    window.addEventListener("resize", () => {
-      if (window.innerWidth === lastW) return; // ignore mobile URL-bar height changes
-      lastW = window.innerWidth;
-      clearTimeout(t);
-      t = setTimeout(buildToran, 200);
-    });
   }
 
   /* ---------- Drifting petals ---------- */
@@ -609,35 +535,12 @@ const CONFIG = {
     }
   }
 
-  /* ---------- Music ---------- */
-  function initMusic() {
-    if (!CONFIG.music.src) return;
-    const btn = $("#music-toggle");
-    const audio = $("#bg-music");
-    audio.src = CONFIG.music.src;
-    audio.volume = 0.5;
-    btn.hidden = false;
-    btn.addEventListener("click", async () => {
-      if (audio.paused) {
-        try {
-          await audio.play();
-          btn.setAttribute("aria-pressed", "true");
-        } catch (e) { /* playback blocked or file missing */ }
-      } else {
-        audio.pause();
-        btn.setAttribute("aria-pressed", "false");
-      }
-    });
-  }
-
   /* ---------- Go ---------- */
   applyCopy();
   initSaveTheDate();
   initVenue();
-  initToran();
   initCountdown();
   initLanding();
   initRsvp();
-  initMusic();
   initGate();
 })();
