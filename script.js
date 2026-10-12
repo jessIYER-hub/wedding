@@ -4,8 +4,8 @@
    EVERYTHING YOU'LL WANT TO EDIT IS IN THIS TOP SECTION.
    ========================================================================== */
 
-// true: the doors open onto the venue in CONFIG.venue.
-// false: the doors open onto the dates and a teaser line instead.
+// true: the reveal writes in the venue from CONFIG.venue under the dates.
+// false: it shows the dates and a teaser line instead.
 const REVEAL_VENUE = true;
 
 // The countdown counts down to this moment: the first day of the wedding.
@@ -15,9 +15,10 @@ const WEDDING_START = "2027-11-06T12:00:00+00:00";
 // Paste your Google Apps Script web app URL here (ends in /exec). See README.
 const RSVP_ENDPOINT = "";
 
-// Shared guest passphrase. Not case sensitive, spaces at either end are ignored.
+// Shared guest passphrase. Capitals, spaces and punctuation are ignored,
+// so "Dark Sugars", "dark sugars" and "darksugars" all work.
 // Must match PASSPHRASE in apps-script/Code.gs.
-const GUEST_PASSPHRASE = "forever";
+const GUEST_PASSPHRASE = "dark sugars";
 
 const CONFIG = {
   names: {
@@ -54,7 +55,6 @@ const CONFIG = {
   },
 
   reveal: {
-    button: "Open the doors",
     eyebrow: "Join us",
     days: "6 · 7 · 8",
     month: "November 2027",
@@ -70,6 +70,8 @@ const CONFIG = {
   },
 
   rsvp: {
+    title: "Share your details",
+    close: "Close",
     intro: "It's early, we know. A rough idea now helps us plan something lovely for you.",
     name: {
       label: "Your full name",
@@ -137,7 +139,7 @@ const CONFIG = {
     // Transparent PNGs for the save-the-date screen. Leave empty to show nothing.
     flowers: "", // e.g. "assets/flowers.png"
     ribbon: "",  // e.g. "assets/ribbon.png"
-    petals: 12,  // drifting petals; 0 turns them off
+    petals: 0,   // drifting petals; e.g. 8 turns a few on
   },
 };
 
@@ -153,7 +155,7 @@ const CONFIG = {
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  const normalisePass = (s) => String(s || "").trim().toLowerCase();
+  const normalisePass = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
 
   /* ---------- Copy ---------- */
   function lookup(path) {
@@ -312,27 +314,6 @@ const CONFIG = {
     }
   }
 
-  /* ---------- The big reveal: palace doors ---------- */
-  function initRevealDoors() {
-    const wrap = $("#reveal-doors");
-    const btn = $("#reveal-btn");
-    let autoTimer;
-    const open = () => {
-      clearTimeout(autoTimer);
-      if (wrap.classList.contains("is-open")) return;
-      wrap.classList.add("is-open");
-      btn.setAttribute("aria-expanded", "true");
-      btn.tabIndex = -1;
-    };
-    btn.setAttribute("aria-expanded", "false");
-    btn.addEventListener("click", open);
-    $(".reveal-doors__arch", wrap).addEventListener("click", open);
-    // If nobody taps, the doors open by themselves after a moment.
-    $("#details").addEventListener("screen:in", () => {
-      autoTimer = setTimeout(open, 4500);
-    });
-  }
-
   /* ---------- Toran garland ---------- */
   function buildToran() {
     const host = $("#toran");
@@ -364,7 +345,7 @@ const CONFIG = {
       } else {
         item = `<path class="toran__string" d="M0 0 V${h * 0.14}"/>` +
                `<circle class="toran__bead" cx="0" cy="${h * 0.22}" r="${h * 0.075}"/>` +
-               `<circle class="toran__bead toran__bead--blue" cx="0" cy="${h * 0.36}" r="${h * 0.05}"/>`;
+               `<circle class="toran__bead toran__bead--small" cx="0" cy="${h * 0.36}" r="${h * 0.05}"/>`;
       }
       drops += `<g transform="translate(${mid.toFixed(1)} ${y.toFixed(1)})"><g class="toran__drop" style="--sway-delay:${delay}">${item}</g></g>`;
     }
@@ -437,9 +418,9 @@ const CONFIG = {
 
   /* ---------- RSVP ---------- */
   function initRsvp() {
-    const toggle = $("#rsvp-toggle");
-    const panel = $("#rsvp-panel");
-    const screens = $("#screens");
+    const opener = $("#rsvp-open");
+    const sheet = $("#rsvp-sheet");
+    const scroller = $("#sheet-scroll");
     const form = $("#rsvp-form");
     const ifAttending = $("#if-attending");
     const party = $("#rsvp-party");
@@ -472,19 +453,29 @@ const CONFIG = {
       soloWrap.appendChild(label);
     });
 
-    function setOpen(open) {
-      panel.classList.toggle("is-open", open);
-      toggle.setAttribute("aria-expanded", String(open));
-      screens.classList.toggle("is-free", open);
-      if (open) {
-        setTimeout(() => {
-          panel.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-          if (!thanks.hidden) return;
-          $("#rsvp-name").focus({ preventScroll: true });
-        }, reduceMotion ? 0 : 450);
-      }
+    let closeTimer;
+    function openSheet() {
+      clearTimeout(closeTimer);
+      sheet.hidden = false;
+      void sheet.offsetWidth; // let the closed position paint before sliding up
+      sheet.classList.add("is-open");
+      document.addEventListener("keydown", onKey);
+      setTimeout(() => {
+        if (thanks.hidden) $("#rsvp-name").focus({ preventScroll: true });
+        else thanks.focus({ preventScroll: true });
+      }, reduceMotion ? 0 : 700);
     }
-    toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+    function closeSheet() {
+      sheet.classList.remove("is-open");
+      document.removeEventListener("keydown", onKey);
+      closeTimer = setTimeout(() => { sheet.hidden = true; }, reduceMotion ? 0 : 1100);
+      opener.focus({ preventScroll: true });
+    }
+    function onKey(e) {
+      if (e.key === "Escape") closeSheet();
+    }
+    opener.addEventListener("click", openSheet);
+    $$("[data-close]", sheet).forEach((el) => el.addEventListener("click", closeSheet));
 
     function attendingValue() {
       const checked = form.querySelector('input[name="attending"]:checked');
@@ -581,14 +572,15 @@ const CONFIG = {
       $("#thanks-text").textContent = yes ? CONFIG.thanks.yesText : CONFIG.thanks.noText;
       form.hidden = true;
       thanks.hidden = false;
+      scroller.scrollTop = 0;
       thanks.focus({ preventScroll: true });
-      thanks.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
     }
 
     // Keep their previous answers in the form so updating is easy.
     $("#rsvp-again").addEventListener("click", () => {
       thanks.hidden = true;
       form.hidden = false;
+      scroller.scrollTop = 0;
       $("#rsvp-name").focus();
     });
   }
@@ -643,7 +635,6 @@ const CONFIG = {
   applyCopy();
   initSaveTheDate();
   initVenue();
-  initRevealDoors();
   initToran();
   initCountdown();
   initLanding();

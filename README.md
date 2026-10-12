@@ -6,12 +6,18 @@ A small, static save-the-date site: plain HTML, CSS and vanilla JS. No framework
 index.html          the three screens + RSVP form
 styles.css          all styling; colours and fonts are CSS variables in :root
 script.js           all copy and settings in one block at the top
-assets/             photo strip crops (strip-1.jpg … strip-6.jpg)
+assets/             photo strip crops (strip-1.jpg … strip-6.jpg) and the paper texture
 assets/engagement/  the full engagement photos, web-sized
 apps-script/Code.gs Google Apps Script that writes RSVPs into a Google Sheet
 ```
 
-The default guest passphrase is **`forever`**. Change it before you share the link (see below).
+The guest passphrase is **dark sugars** (our first-date hot chocolate place). Capitals, spaces and punctuation don't matter, so "Dark Sugars" and "darksugars" both work.
+
+## How it's laid out
+
+Each of the three screens is a **9:16 card**, the shape of a phone screen. Everything inside a card is sized as a share of the card's width, so the whole design scales together and nothing is ever cut off, whatever the phone. On taller phones there's a little extra paper above and below; on tablets and laptops the card sits in the middle like a printed invitation on linen.
+
+The RSVP form opens as a sheet that slides up over the card, with its own scrolling, so it never pushes anything off screen.
 
 ---
 
@@ -25,14 +31,16 @@ The strips use square crops of our engagement photos:
 
 | File | Photo | Where it shows |
 | --- | --- | --- |
-| `strip-1.jpg` | by the lake | first screen, inside the arch |
+| `strip-1.jpg` | holding each other on the bridge | first screen, inside the arch |
 | `strip-2.jpg` | laughing on the bench | first screen, inside the arch |
-| `strip-3.jpg` | under the trees by the lamppost | first screen, inside the arch |
-| `strip-4.jpg` | walking up the steps | save-the-date screen, tilted strip |
-| `strip-5.jpg` | the ring | save-the-date screen, tilted strip |
-| `strip-6.jpg` | by the lake, wider | save-the-date screen, tilted strip |
+| `strip-3.jpg` | forehead kiss by the lake | first screen, inside the arch |
+| `strip-4.jpg` | walking up the steps hand in hand | save-the-date screen, tilted strip |
+| `strip-5.jpg` | smiling at each other by the lamppost | save-the-date screen, tilted strip |
+| `strip-6.jpg` | the ring | save-the-date screen, tilted strip |
 
-To use a different photo, save a **square** crop (about 600×600px, under ~150 KB) over one of these files. Photos are shown exactly as they are, in full colour.
+The first strip is the two of us close up; the second tells the story from walking together to the ring. Each photo is used once.
+
+To use a different photo, save a crop at **10:9** (600×540px is ideal, under ~150 KB) over one of these files. Photos are shown exactly as they are, in full colour.
 
 ## Adding the flowers / ribbon
 
@@ -49,7 +57,7 @@ Position and size them in `styles.css` under `.decor-slot--flowers` and `.decor-
 
 ## Changing colours and fonts
 
-All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the lotus petals (`--lotus-outer`, `--lotus-mid`, `--lotus-inner`) and the gold line work (`--gold`). The lotus, garland, arch, doors and lockets all pick their colours up from these. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
+All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the lotus petals (`--lotus-outer`, `--lotus-mid`, `--lotus-inner`) and the gold line work (`--gold`). The lotus, garland, arches, countdown and lockets all pick their colours up from these. The soft paper grain is `assets/paper-texture.png`. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
 
 ## Countdown date
 
@@ -63,15 +71,15 @@ The `+00:00` is the time zone offset. Once you know where you're getting married
 
 ## The big reveal (venue)
 
-On the third screen a pair of navy palace doors sits under a lotus arch. Guests tap "Open the doors" (or the doors themselves), and if they don't, the doors open on their own after a few seconds. Behind them: **6 · 7 · 8 November 2027** and **Royal Retreat Resort & Spa**.
+On the third screen a lotus arch draws itself in gold, the lotus blooms, **6 · 7 · 8 November 2027** fades in, and then **Royal Retreat Resort & Spa** is written in by hand, left to right. No tapping needed.
 
 - The dates are `CONFIG.reveal.days` and `CONFIG.reveal.month`.
 - The venue is `CONFIG.venue.name`. You can also add `CONFIG.venue.city` and `CONFIG.venue.url` (a website link); they only appear once they're filled in.
-- Set `const REVEAL_VENUE = false;` to hide the venue again. The doors then open onto the dates and the line "Somewhere beautiful, and we can't wait to tell you." Anything in `script.js` can be read by anyone who opens the page source, so if you ever need it truly hidden, empty the venue fields too.
+- Set `const REVEAL_VENUE = false;` to hide the venue again. The arch then shows the dates and the line "Somewhere beautiful, and we can't wait to tell you." Anything in `script.js` can be read by anyone who opens the page source, so if you ever need it truly hidden, empty the venue fields too.
 
 ## Lotus, garland and petals
 
-All the decoration is original SVG/CSS, no image files: the blue lotus (used as the crest on the frame, the dividers and the reveal), the toran garland across the top of the first screen, the arch frame and the drifting petals. To have fewer petals, or none, change `CONFIG.decor.petals` in `script.js` (`0` turns them off).
+All the decoration is original SVG/CSS, no image files: the blue lotus (used as the crest on the frame, the dividers and the reveal), the toran garland across the top of the first screen, and the arch frames. There are also optional drifting petals, switched off by default; set `CONFIG.decor.petals` in `script.js` to a number (e.g. `8`) to bring them back.
 
 ## Music (optional)
 
@@ -153,6 +161,6 @@ Note that on GitHub Pages a public repo makes all the files, including `script.j
 ## Small details
 
 - Screens snap as you scroll. On the first screen, tap anywhere or swipe up to move on.
-- Animations are slow and soft: the names write themselves in, the arch draws itself, the strip slides down, the garland sways, petals drift, the doors open and the countdown ticks.
-- For anyone with "Reduce Motion" turned on in their phone settings, things still fade in gently, but nothing slides, sways or drifts and the doors fade rather than swing.
+- Animations are slow and soft: the names write themselves in, the arch draws itself, the strip slides down, the garland sways, the venue is written in and the countdown ticks.
+- For anyone with "Reduce Motion" turned on in their phone settings, things still fade in gently, but nothing slides or sways.
 - Works offline from a file for previewing, except the RSVP (needs the endpoint) and the fonts (need a connection).

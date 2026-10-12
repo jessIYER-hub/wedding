@@ -9,8 +9,8 @@
  * rather than a new row being added. The Timestamp shows their latest answer.
  */
 
-// Must match GUEST_PASSPHRASE in script.js (not case sensitive).
-const PASSPHRASE = 'forever';
+// Must match GUEST_PASSPHRASE in script.js. Capitals, spaces and punctuation are ignored.
+const PASSPHRASE = 'dark sugars';
 
 const SHEET_NAME = 'RSVPs';
 
@@ -35,7 +35,7 @@ function doPost(e) {
     return json_({ ok: false, error: 'Invalid request' });
   }
 
-  if (normalise_(data.passphrase) !== normalise_(PASSPHRASE)) {
+  if (passKey_(data.passphrase) !== passKey_(PASSPHRASE)) {
     return json_({ ok: false, error: 'Not invited' });
   }
 
@@ -113,6 +113,10 @@ function findRowByName_(sheet, name) {
     if (normalise_(names[i][0]) === target) return i + 2;
   }
   return 0;
+}
+
+function passKey_(value) {
+  return String(value == null ? '' : value).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 function normalise_(value) {
