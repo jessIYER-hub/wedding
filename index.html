@@ -1,87 +1,165 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#fbf7ef">
+  <meta name="theme-color" content="#f5eee3">
   <title>Jessica &amp; Gaurav</title>
-  <meta name="description" content="For our family and friends.">
+  <meta name="description" content="6 to 8 November 2027, Udaipur.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="preload" as="image" href="photos/hero.webp" type="image/webp">
 </head>
 <body class="is-locked">
-  <!--
-    This file holds no wedding details. Everything guests see once they're in
-    (home, story, schedule, travel, Q&A) comes from the Apps Script only after
-    their name and phone/email match a "Yes" RSVP. See README.md.
-  -->
 
-  <a class="skip-link" href="#main" data-copy="nav.skip"></a>
-
-  <!-- ============ GATE (the only thing visitors see) ============ -->
+  <!-- ============ INVITE CODE ============ -->
   <div class="gate" id="gate">
-    <div class="gate__card">
-      <h1 class="display gate__names" data-copy="couple.names"></h1>
-      <span class="rule" aria-hidden="true"></span>
-      <p class="gate__line" data-copy="gate.line"></p>
-
-      <p class="gate__loading caps" id="gate-loading" data-copy="gate.loading" hidden></p>
+    <div class="gate__inner">
+      <svg class="loop loop--gate" viewBox="0 0 120 40" aria-hidden="true"><use href="#loop" /></svg>
+      <p class="mark" aria-label="Jessica and Gaurav"><span>Jessica</span> <i>&amp;</i> <span>Gaurav</span></p>
+      <p class="gate__when">6 to 8 November 2027 · Udaipur</p>
 
       <form class="gate__form" id="gate-form" novalidate>
-        <p class="caps gate__prompt" id="gate-prompt" data-copy="gate.prompt"></p>
-        <div class="field">
-          <label class="field__label caps" for="gate-name" data-copy="gate.nameLabel"></label>
-          <input class="field__input" id="gate-name" name="name" type="text" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label class="field__label caps" for="gate-contact" data-copy="gate.contactLabel"></label>
-          <input class="field__input" id="gate-contact" name="contact" type="text" autocomplete="email" inputmode="email"
-                 autocapitalize="none" spellcheck="false" required aria-describedby="gate-hint">
-          <p class="field__hint" id="gate-hint" data-copy="gate.hint"></p>
-        </div>
-        <p class="gate__error" id="gate-error" role="alert" aria-live="polite"></p>
-        <button class="pill pill--solid" id="gate-submit" type="submit">
-          <span class="pill__label" data-copy="gate.button"></span>
-          <span class="pill__sending" data-copy="gate.checking"></span>
+        <label class="label" for="gate-code">Invite code</label>
+        <p class="hint" id="gate-hint">It's in the message that came with our save-the-date.</p>
+        <input class="input" id="gate-code" name="code" type="text" autocomplete="off" autocapitalize="none"
+               spellcheck="false" aria-describedby="gate-hint gate-error" required>
+        <p class="error" id="gate-error" role="alert"></p>
+        <button class="button" id="gate-submit" type="submit">
+          <span class="button__label">Come in</span>
+          <span class="button__busy">Checking…</span>
         </button>
-        <p class="gate__help" data-copy="gate.help"></p>
       </form>
     </div>
   </div>
 
-  <!-- ============ NAV (shown once a guest is in) ============ -->
-  <header class="nav" id="nav" hidden>
-    <div class="nav__bar">
-      <a class="nav__brand display" href="#home" data-copy="couple.initials"></a>
-      <button class="nav__toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
-        <span class="nav__toggle-lines" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span class="visually-hidden" data-copy="nav.menu"></span>
-      </button>
-      <nav class="nav__menu" id="nav-menu" aria-label="Main">
-        <ul class="nav__list" id="nav-list"></ul>
-        <a class="nav__rsvp" href="#rsvp" data-nav="rsvp" data-copy="nav.rsvp"></a>
+  <!-- ============ SITE ============ -->
+  <header class="bar" id="bar" hidden>
+    <div class="bar__inner">
+      <a class="bar__mark" href="#top" aria-label="Back to the top">J <i>&amp;</i> G</a>
+      <nav aria-label="Sections">
+        <a href="#story">Our story</a>
+        <a href="#schedule" id="nav-schedule" hidden>Schedule</a>
+        <a href="#rsvp" class="bar__rsvp">RSVP</a>
       </nav>
     </div>
   </header>
 
-  <!-- ============ SITE (filled in from the Apps Script reply) ============ -->
-  <main class="site" id="main" hidden>
-    <section class="section section--home" id="home" aria-labelledby="home-title"></section>
-    <section class="section section--story" id="story" aria-labelledby="story-title"></section>
-    <section class="section section--schedule" id="schedule" aria-labelledby="schedule-title"></section>
-    <section class="section section--travel" id="travel" aria-labelledby="travel-title"></section>
-    <section class="section section--faqs" id="faqs" aria-labelledby="faqs-title"></section>
-    <section class="section section--rsvp" id="rsvp" aria-labelledby="rsvp-title"></section>
+  <main id="site" hidden>
+
+    <!-- Hero -->
+    <section class="hero" id="top" aria-labelledby="names">
+      <picture class="hero__photo">
+        <source srcset="photos/hero.webp" type="image/webp">
+        <img src="photos/hero.jpg" width="1100" height="1650" alt="Jessica and Gaurav on a bridge in Central Park" fetchpriority="high">
+      </picture>
+      <div class="hero__text">
+        <h1 class="names" id="names"><span>Jessica</span> <i>&amp;</i> <span>Gaurav</span></h1>
+        <p class="hero__date">6 to 8 November 2027</p>
+        <p class="hero__line"><a href="https://www.royalretreatudaipur.in" target="_blank" rel="noopener">Celebrate with us in the city of lakes at a royal venue</a></p>
+        <p class="hero__venue">The Royal Retreat Resort &amp; Spa, Udaipur</p>
+        <a class="button button--wide" href="#rsvp">RSVP by 15 January 2027</a>
+      </div>
+    </section>
+
+    <!-- Countdown -->
+    <section class="countdown" aria-labelledby="countdown-title">
+      <h2 class="label" id="countdown-title">Until 6 November 2027</h2>
+      <div class="countdown__row" role="timer" aria-live="off">
+        <div><span class="countdown__num" data-unit="days">000</span><span class="countdown__unit">Days</span></div>
+        <div><span class="countdown__num" data-unit="hours">00</span><span class="countdown__unit">Hours</span></div>
+        <div><span class="countdown__num" data-unit="mins">00</span><span class="countdown__unit">Minutes</span></div>
+        <div><span class="countdown__num" data-unit="secs">00</span><span class="countdown__unit">Seconds</span></div>
+      </div>
+    </section>
+
+    <!-- Our story -->
+    <section class="story" id="story" aria-labelledby="story-title">
+      <h2 class="heading" id="story-title">Our story</h2>
+
+      <div class="story__block">
+        <p class="story__text">We met at university in 2018 and got on straight away. Our first date was over hot chocolate.</p>
+        <figure class="story__photo story__photo--tall">
+          <picture><source srcset="photos/story-1.webp" type="image/webp"><img src="photos/story-1.jpg" width="720" height="1080" loading="lazy" alt="Laughing together on a wooden bench in Central Park"></picture>
+        </figure>
+      </div>
+
+      <div class="story__block story__block--pair">
+        <div class="story__words">
+          <p class="story__text">Then life took us in different directions.</p>
+          <svg class="loop loop--story" viewBox="0 0 120 40" aria-hidden="true"><use href="#loop" /></svg>
+          <p class="story__text">In 2021, a message about that hot chocolate turned into a second first date. That's when we found out we lived round the corner from each other in London. It's been home ever since.</p>
+        </div>
+        <div class="story__pair">
+          <figure class="story__photo">
+            <picture><source srcset="photos/story-2.webp" type="image/webp"><img src="photos/story-2.jpg" width="640" height="960" loading="lazy" alt="Walking up stone steps hand in hand"></picture>
+          </figure>
+          <figure class="story__photo">
+            <picture><source srcset="photos/story-3.webp" type="image/webp"><img src="photos/story-3.jpg" width="640" height="960" loading="lazy" alt="Under the trees by an old lamppost"></picture>
+          </figure>
+        </div>
+      </div>
+
+      <div class="story__block story__block--flip">
+        <p class="story__text">Five years on, Gaurav proposed in Central Park on a work trip to New York. Every photo on this page is from that same day.</p>
+        <figure class="story__photo story__photo--tall">
+          <picture><source srcset="photos/story-4.webp" type="image/webp"><img src="photos/story-4.jpg" width="720" height="1080" loading="lazy" alt="By the lake in Central Park"></picture>
+        </figure>
+      </div>
+
+      <div class="reveal-note">
+        <p class="label">About that invite code</p>
+        <p class="reveal-note__text">The second first date was at <i>Dark Sugars</i>, the chocolate shop round the corner.</p>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section class="rsvp" id="rsvp" aria-labelledby="rsvp-title">
+      <h2 class="heading" id="rsvp-title">RSVP</h2>
+      <p class="lead">Please RSVP by 15 January 2027. It takes about two minutes.</p>
+      <p><button class="link" id="edit-open" type="button" aria-expanded="false" aria-controls="lookup">Already replied? Update your RSVP</button></p>
+
+      <form class="lookup" id="lookup" novalidate hidden>
+        <label class="label" for="lookup-email">The email you used</label>
+        <input class="input" id="lookup-email" type="email" autocomplete="email" inputmode="email">
+        <p class="error" id="lookup-error" role="alert"></p>
+        <button class="button button--quiet" id="lookup-submit" type="submit">
+          <span class="button__label">Find my RSVP</span>
+          <span class="button__busy">Looking…</span>
+        </button>
+      </form>
+
+      <p class="notice" id="form-notice" role="status" hidden></p>
+
+      <!-- Built by script.js; each step is shown one at a time -->
+      <form class="form" id="rsvp-form" novalidate></form>
+
+      <div class="done" id="done" hidden tabindex="-1"></div>
+    </section>
+
+    <!-- Schedule: filled in only after a "yes" RSVP -->
+    <section class="schedule" id="schedule" aria-labelledby="schedule-title" hidden></section>
 
     <footer class="footer">
-      <p class="display footer__signoff" data-copy="footer.signoff"></p>
-      <button class="link-button caps" id="sign-out" type="button" data-copy="footer.signOut"></button>
+      <p class="bar__mark">J <i>&amp;</i> G</p>
+      <p>Udaipur · November 2027</p>
     </footer>
   </main>
+
+  <!-- The loop: one line around two dots that always comes back to where it started -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="loop" viewBox="0 0 120 40">
+      <path d="M60 20 C 78 2, 108 2, 108 20 C 108 38, 78 38, 60 20 C 42 2, 12 2, 12 20 C 12 38, 42 38, 60 20 Z"
+            fill="none" stroke="#1b2433" stroke-width="1.1" />
+      <circle cx="35" cy="20" r="2.6" fill="#6a4636" />
+      <circle cx="85" cy="20" r="2.6" fill="#6a4636" />
+    </symbol>
+  </svg>
 
   <script src="script.js"></script>
 </body>

@@ -1,130 +1,120 @@
 /* ==========================================================================
-   Jessica & Gaurav · Wedding website
-
-   EVERYTHING YOU'LL WANT TO EDIT HERE IS IN THIS TOP SECTION.
-
-   This file is public: anyone can read it. So it only holds the words for the
-   sign-in screen, the menu and the RSVP form. The private page content (home,
-   story, schedule, travel, Q&A) lives in CONTENT at the top of
-   apps-script/Code.gs, and only reaches guests who sign in. See README.md.
+   Jessica & Gaurav · wedding site
+   Settings and every line the form says are in this top section.
    ========================================================================== */
 
 // Paste your Google Apps Script web app URL here (ends in /exec). See README.
 const APPS_SCRIPT_URL = "";
 
-const CONFIG = {
-  couple: {
-    names: "Jessica & Gaurav",
-    initials: "J & G",
-  },
+// The countdown counts down to this moment (+05:30 is India time).
+const COUNTDOWN_TO = "2027-11-06T00:00:00+05:30";
 
+const COPY = {
   gate: {
-    line: "We made this for the people we love most, and we're so glad you're here.",
-    prompt: "Enter your details to continue",
-    nameLabel: "Your full name",
-    contactLabel: "Phone (WhatsApp) or email",
-    hint: "The same ones you used when you replied to us. If someone replied for your whole group, use their details.",
-    button: "Come in",
-    checking: "Just a moment…",
-    loading: "Just a moment…",
-    help: "Having trouble getting in? Message either of us and we'll sort it out.",
-    errors: {
-      missing: "Please fill in both, so we can find you.",
-      noMatch: "We couldn't match those details. Please check they're the ones you used when you replied, and try again.",
-      slowDown: "Let's take a little break. Please try again in a few minutes.",
-      network: "We couldn't reach the site just now. Please check your connection and try again.",
-      notConfigured: "The site isn't quite ready yet. Please try again soon.",
-      signedOut: "Please enter your details again to come back in.",
-    },
+    wrong: "That's not quite it. The code is in the message that came with our save-the-date.",
+    empty: "Please type the invite code.",
+    slow: "Too many tries. Please wait a few minutes and try again.",
+    offline: "We couldn't check the code just now. Please check your connection and try again.",
+    notReady: "The site isn't connected yet. Please try again soon.",
   },
-
-  nav: {
-    skip: "Skip to content",
-    menu: "Menu",
-    items: [
-      { id: "home", label: "Home" },
-      { id: "story", label: "Our Story" },
-      { id: "schedule", label: "Schedule" },
-      { id: "travel", label: "Travel" },
-      { id: "faqs", label: "Q&A" },
-    ],
-    rsvp: "Update your RSVP",
-  },
-
-  rsvp: {
-    heading: "Your RSVP",
-    intro: "Here's what you told us. If any of your details have changed, update them below and send it again.",
-    name: {
-      label: "Your full name",
-      required: "We'll need your name so we know who's coming.",
-    },
-    contact: {
-      label: "Phone (WhatsApp) or email",
-      hint: "So we can reach you. You'll use this, with your name, to sign in here.",
-      required: "Please add a phone number or email we can reach you on.",
-    },
-    attending: {
-      label: "Will you be there?",
-      hint: "We're celebrating across all three days, so it's all three or none.",
-      yes: "Yes, all three days",
-      no: "Sadly, we can't make it",
-      required: "Just let us know either way.",
-    },
-    party: {
-      label: "How many of you, including you?",
-      max: 6,
-      one: "Just me",
-      many: (n) => `${n} of us`,
-    },
-    others: {
-      label: "Who's coming with you?",
-      hint: "Everyone's full names in one go, please.",
-      required: "Tell us who's coming with you so we can save them a seat.",
-    },
-    dietary: {
-      label: "Dietary needs or allergies",
-      hint: "The whole wedding is vegetarian. Let us know about any allergies or anything else, for everyone in your party.",
-    },
-    solo: {
-      label: "Coming on your own?",
-      hint: "Room details to follow. For now, just tell us what you'd like.",
-      // Keep these three exactly in step with SOLO_OWN / SOLO_SHARE / SOLO_PAIR in Code.gs.
-      options: [
-        "My own room",
-        "I already have someone to share with",
-        "Pair me with another solo guest",
-      ],
-      required: "Pick whichever suits you best.",
-      roommateLabel: "Who are you sharing with?",
-      roommateRequired: "Tell us who you're sharing with.",
-      genderLabel: "Your gender",
-      genderHint: "So we can pair you with someone you'll be comfortable with.",
-      genderChoose: "Choose one",
-      genderOptions: ["Woman", "Man", "I'd rather tell you myself"],
-      genderRequired: "Please choose one.",
-    },
-    message: {
-      label: "A note for us",
-      hint: "Optional. A memory, a song you want to dance to, or just hello.",
-    },
-    submit: "Send to Jessica & Gaurav",
+  steps: {
+    count: (n, total) => `Step ${n} of ${total}`,
+    next: "Next",
+    back: "Back",
+    send: "Send RSVP",
     sending: "Sending…",
-    error: "Something went wrong sending that. Please try again in a moment, and if it still won't go, message one of us.",
+    retry: "Try again",
   },
-
-  thanks: {
-    yesTitle: "Thank you",
-    yesText: "That's all updated. We can't wait to see you.",
-    noTitle: "We'll miss you",
-    noText: "Thank you for letting us know. We'll be thinking of you, and if anything changes, just get in touch.",
-    again: "Make another change",
+  you: {
+    title: "About you",
+    name: "Your name",
+    nameHint: "Full name, please. If you're replying for a group, that's you.",
+    email: "Email",
+    phone: "Phone or WhatsApp",
+    phoneHint: "We'll use these to send you room details later.",
+    countryLabel: "Country code",
+    numberLabel: "Number",
+    errName: "Please add your name.",
+    errEmail: "Please check your email address.",
+    errPhone: "Please add your phone number, including the area code.",
   },
-
-  footer: {
-    signoff: "With love, Jessica & Gaurav",
-    signOut: "Not you? Sign out",
+  attend: {
+    title: "Can you make it?",
+    hint: "It's all three days, 6 to 8 November, or not at all.",
+    yes: "Joyfully attending",
+    no: "Sadly can't make it",
+    err: "Please choose one.",
+  },
+  party: {
+    title: "Your party",
+    size: "How many in your party, including you?",
+    errSize: "Please choose a number.",
+    others: "Names of everyone else in your party",
+    othersHint: "Full names, separated by commas.",
+    errOthers: "Please add their names.",
+    stay: "Coming on your own? How would you like to stay?",
+    stayOptions: {
+      own: "My own room",
+      roommate: "I already have a roommate in mind",
+      pair: "Pair me with another solo guest",
+    },
+    errStay: "Please choose one.",
+    roommate: "Your roommate's name",
+    errRoommate: "Please add their name.",
+    pairing: "So we can pair you well, you'd prefer to share with:",
+    pairingOptions: { woman: "A woman", man: "A man" },
+    errPairing: "Please choose one.",
+  },
+  needs: {
+    title: "Food and getting around",
+    dietary: "Dietary needs or allergies for anyone in your party",
+    dietaryHint: "All the food is vegetarian. Tell us about allergies, if you'd like it non-spicy, or anything you can't eat.",
+    help: "Travelling with a baby or with someone who needs extra help getting around?",
+    helpHint: "Optional. Tick anything that helps.",
+    helpOptions: { cot: "Cot", highchair: "High chair", mobility: "Mobility help" },
+    notes: "Anything else we should know?",
+  },
+  message: {
+    title: "One last thing",
+    label: "Message for the couple",
+    hint: "Optional.",
+  },
+  sendError: "We couldn't send your RSVP. Please check your connection and press Try again. Your answers are still here.",
+  notReady: "RSVPs aren't open yet. Your answers are saved on this phone, so please try again soon.",
+  lookup: {
+    err: "Please type the email you used.",
+    notFound: "We couldn't find an RSVP with that email. You can fill in the form below.",
+    found: "We've loaded your answers. Change anything you like and send it again.",
+    offline: "We couldn't look that up just now. Please check your connection and try again.",
+  },
+  done: {
+    yesTitle: (name) => `Thank you, ${name}.`,
+    yesText: "You're on the list. We can't wait to see you in Udaipur.",
+    noTitle: (name) => `Thank you, ${name}.`,
+    noText: "We'll miss you, and we'll celebrate together another time.",
+    summary: "What you told us",
+    edit: "Need to change something? Come back any time, press \"Update your RSVP\" and use the same email.",
+    again: "Change my answers",
+  },
+  summary: {
+    name: "Name", email: "Email", phone: "Phone", attending: "Coming",
+    yes: "Yes", no: "No", party: "Party size", others: "Also in your party",
+    stay: "Room", roommate: "Roommate", pairing: "Prefer to share with",
+    dietary: "Dietary needs", help: "Extra help", notes: "Notes", message: "Message for the couple",
   },
 };
+
+// Country codes shown in the phone field. Most of our guests are in these.
+const COUNTRY_CODES = [
+  ["+91", "India"], ["+971", "UAE"], ["+44", "UK"], ["+46", "Sweden"],
+  ["+1", "USA / Canada"], ["+34", "Spain"], ["+33", "France"], ["+49", "Germany"],
+  ["+31", "Netherlands"], ["+41", "Switzerland"], ["+353", "Ireland"], ["+39", "Italy"],
+  ["+45", "Denmark"], ["+47", "Norway"], ["+358", "Finland"], ["+32", "Belgium"],
+  ["+43", "Austria"], ["+974", "Qatar"], ["+966", "Saudi Arabia"], ["+968", "Oman"],
+  ["+973", "Bahrain"], ["+965", "Kuwait"], ["+65", "Singapore"], ["+852", "Hong Kong"],
+  ["+61", "Australia"], ["+64", "New Zealand"], ["+27", "South Africa"], ["+254", "Kenya"],
+  ["other", "Other (type the code)"],
+];
 
 /* ==========================================================================
    You shouldn't need to edit below this line.
@@ -133,38 +123,27 @@ const CONFIG = {
 (function () {
   "use strict";
 
-  const SESSION_KEY = "jg-session"; // { token, exp }
-  const CACHE_KEY = "jg-content";   // { content, guest } from the last sign-in
+  const KEYS = { code: "jg-code", draft: "jg-draft", schedule: "jg-schedule" };
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  const state = { entered: false, content: null, guest: null, countdown: null, revealer: null, spy: null };
-
   /* ---------- Storage (fails quietly in private browsing) ---------- */
-  function load(key) {
-    try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
-  }
-  function save(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* fine */ }
-  }
-  function drop(key) {
-    try { localStorage.removeItem(key); } catch (e) { /* fine */ }
-  }
+  const store = {
+    get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* fine */ } },
+    drop(k) { try { localStorage.removeItem(k); } catch (e) { /* fine */ } },
+  };
 
-  /* ---------- Small helpers ---------- */
+  /* ---------- Element helper (text is always set as text, never HTML) ---------- */
   function h(tag, props, ...kids) {
     const el = document.createElement(tag);
-    if (props) {
-      Object.keys(props).forEach((k) => {
-        const v = props[k];
-        if (v == null || v === false) return;
-        if (k === "class") el.className = v;
-        else if (k === "text") el.textContent = v;
-        else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
-        else el.setAttribute(k, v === true ? "" : v);
-      });
-    }
+    Object.entries(props || {}).forEach(([k, v]) => {
+      if (v == null || v === false) return;
+      if (k === "class") el.className = v;
+      else if (k === "text") el.textContent = v;
+      else el.setAttribute(k, v === true ? "" : v);
+    });
     kids.flat(Infinity).forEach((kid) => {
       if (kid == null || kid === false || kid === "") return;
       el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
@@ -172,54 +151,15 @@ const CONFIG = {
     return el;
   }
 
-  const has = (v) => (Array.isArray(v) ? v.length > 0 : v != null && String(v).trim() !== "");
+  /* ---------- Talking to the Google Apps Script ---------- */
+  class ApiError extends Error { constructor(code) { super(code); this.code = code; } }
 
-  // Only allow ordinary links and local image paths from the content.
-  function safeHref(url) {
-    const s = String(url || "").trim();
-    return /^(https?:|mailto:|tel:)/i.test(s) ? s : "";
-  }
-  function safeSrc(url) {
-    const s = String(url || "").trim();
-    if (/^https?:/i.test(s)) return s;
-    return /^[a-z][a-z0-9+.-]*:/i.test(s) ? "" : s;
-  }
-
-  function sectionHeading(id, text, eyebrow) {
-    return h("header", { class: "section__head reveal" },
-      eyebrow ? h("p", { class: "caps eyebrow", text: eyebrow }) : null,
-      h("h2", { class: "display section__title", id, text }));
-  }
-
-  function scrollToId(id, smooth = true) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: smooth && !reduceMotion ? "smooth" : "auto", block: "start" });
-  }
-
-  /* ---------- Public copy ---------- */
-  function lookup(path) {
-    return path.split(".").reduce((obj, key) => (obj == null ? undefined : obj[key]), CONFIG);
-  }
-  function applyCopy() {
-    $$("[data-copy]").forEach((el) => {
-      const value = lookup(el.dataset.copy);
-      if (typeof value === "string") el.textContent = value;
-    });
-    document.title = CONFIG.couple.names;
-  }
-
-  /* ---------- Talking to the Apps Script ---------- */
-  class ApiError extends Error {
-    constructor(code) { super(code); this.code = code; }
-  }
-
-  // Sent as text/plain so the browser makes a "simple" request (no preflight,
-  // which Apps Script can't answer). Google's redirect allows reading the reply.
+  // Sent as text/plain so the browser makes a "simple" request, which Apps
+  // Script accepts. Google's reply comes back through a redirect we can read.
   async function api(payload) {
-    if (!APPS_SCRIPT_URL) {
-      console.warn("APPS_SCRIPT_URL is empty. Add your Apps Script web app URL at the top of script.js.");
-      throw new ApiError("not_configured");
-    }
+    if (!APPS_SCRIPT_URL) throw new ApiError("not_configured");
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 25000);
     let res;
     try {
       res = await fetch(APPS_SCRIPT_URL, {
@@ -227,9 +167,12 @@ const CONFIG = {
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload),
         redirect: "follow",
+        signal: ctrl.signal,
       });
     } catch (e) {
       throw new ApiError("network");
+    } finally {
+      clearTimeout(timer);
     }
     let data;
     try { data = await res.json(); } catch (e) { throw new ApiError("network"); }
@@ -237,669 +180,495 @@ const CONFIG = {
     return data;
   }
 
-  function storeSession(data) {
-    save(SESSION_KEY, { token: data.token, exp: data.expires });
-  }
-
-  /* ---------- Gate ---------- */
-  function showGate(message) {
-    const gate = $("#gate");
-    gate.hidden = false;
-    gate.classList.remove("is-leaving");
-    $("#gate-loading").hidden = true;
-    $("#gate-form").hidden = false;
-    $("#gate-error").textContent = message || "";
-    document.body.classList.add("is-locked");
-  }
-
-  function showGateLoading() {
-    $("#gate-loading").hidden = false;
-    $("#gate-form").hidden = true;
-  }
-
-  function gateMessageFor(code) {
-    const e = CONFIG.gate.errors;
-    return { no_match: e.noMatch, slow_down: e.slowDown, not_configured: e.notConfigured, signed_out: e.signedOut }[code] || e.network;
-  }
-
-  function initGate() {
-    const form = $("#gate-form");
-    const error = $("#gate-error");
-    const submit = $("#gate-submit");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const name = $("#gate-name").value.trim().replace(/\s+/g, " ");
-      const contact = $("#gate-contact").value.trim();
-      if (!name || !contact) {
-        error.textContent = CONFIG.gate.errors.missing;
-        return;
-      }
-      error.textContent = "";
-      submit.disabled = true;
-      submit.classList.add("is-sending");
-      try {
-        const data = await api({ action: "login", name, contact });
-        storeSession(data);
-        save(CACHE_KEY, { content: data.content, guest: data.guest });
-        enter(data.content, data.guest, true);
-      } catch (err) {
-        error.textContent = gateMessageFor(err.code === "signed_out" ? "no_match" : err.code);
-      } finally {
-        submit.disabled = false;
-        submit.classList.remove("is-sending");
-      }
-    });
-  }
-
-  function signOut(message) {
-    drop(SESSION_KEY);
-    drop(CACHE_KEY);
-    state.entered = false;
-    state.content = null;
-    state.guest = null;
-    clearInterval(state.countdown);
-    if (state.revealer) state.revealer.disconnect();
-    if (state.spy) state.spy.disconnect();
-    // Take the private content out of the page, not just out of sight.
-    ["home", "story", "schedule", "travel", "faqs", "rsvp"].forEach((id) => { $("#" + id).replaceChildren(); });
-    $("#main").hidden = true;
-    $("#nav").hidden = true;
-    closeMenu();
-    showGate(message);
-    window.scrollTo(0, 0);
-  }
-
-  /* ---------- Entering the site ---------- */
-  function enter(content, guest, animate) {
-    state.entered = true;
-    state.content = content;
-    state.guest = guest || null;
-
-    renderAll(content);
-    buildRsvp(state.guest);
-
-    const gate = $("#gate");
+  /* ---------- Invite code ---------- */
+  function unlock(animate) {
     document.body.classList.remove("is-locked");
-    $("#nav").hidden = false;
-    $("#main").hidden = false;
+    $("#bar").hidden = false;
+    $("#site").hidden = false;
+    const gate = $("#gate");
     if (animate && !reduceMotion) {
       gate.classList.add("is-leaving");
-      setTimeout(() => { gate.hidden = true; }, 1200);
+      setTimeout(() => { gate.hidden = true; }, 1000);
     } else {
       gate.hidden = true;
     }
-
-    startReveals();
-    startScrollSpy();
-    const hash = decodeURIComponent(location.hash.slice(1));
-    if (hash && document.getElementById(hash)) requestAnimationFrame(() => scrollToId(hash, false));
-    else if (animate) window.scrollTo(0, 0);
+    startFades();
   }
 
-  async function refresh(session, quiet) {
-    try {
-      const data = await api({ action: "session", token: session.token });
-      storeSession(data);
-      save(CACHE_KEY, { content: data.content, guest: data.guest });
-      if (!state.entered) {
-        enter(data.content, data.guest, true);
-        return;
+  function initGate() {
+    if (store.get(KEYS.code)) { unlock(false); return; }
+    const form = $("#gate-form");
+    const input = $("#gate-code");
+    const error = $("#gate-error");
+    const button = $("#gate-submit");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const code = input.value.trim();
+      if (!code) { error.textContent = COPY.gate.empty; input.focus(); return; }
+      error.textContent = "";
+      button.disabled = true;
+      button.classList.add("is-busy");
+      try {
+        await api({ action: "check", code });
+        store.set(KEYS.code, code);
+        unlock(true);
+      } catch (err) {
+        error.textContent = {
+          bad_code: COPY.gate.wrong, slow_down: COPY.gate.slow, not_configured: COPY.gate.notReady,
+        }[err.code] || COPY.gate.offline;
+        input.select();
+      } finally {
+        button.disabled = false;
+        button.classList.remove("is-busy");
       }
-      if (JSON.stringify(data.content) !== JSON.stringify(state.content)) {
-        state.content = data.content;
-        renderAll(data.content);
-        startReveals();
-        startScrollSpy();
-      }
-      state.guest = data.guest || state.guest;
-      prefillRsvp(state.guest, false);
-    } catch (err) {
-      if (err.code === "signed_out") signOut(CONFIG.gate.errors.signedOut);
-      else if (!quiet) showGate(gateMessageFor(err.code));
-      // Otherwise (offline, say) keep showing what we already have.
-    }
+    });
   }
 
-  function renderAll(c) {
-    renderHome(c.home || {});
-    renderStory(c.story || {});
-    renderSchedule(c.schedule || {});
-    renderTravel(c.travel || {});
-    renderFaqs(c.faqs || {});
-  }
-
-  /* ---------- Home ---------- */
-  function renderHome(c) {
-    const names = String(c.names || CONFIG.couple.names).split("&").map((s) => s.trim());
-    const title = h("h1", { class: "hero__names display reveal r-rise", id: "home-title" },
-      names.length === 2
-        ? [h("span", { text: names[0] }), h("span", { class: "hero__amp", text: "&" }), h("span", { text: names[1] })]
-        : names.join(" & "));
-
-    const units = c.countdownUnits || { days: "Days", hours: "Hours", mins: "Mins", secs: "Secs" };
-    const countdown = has(c.countdownTarget)
-      ? h("div", { class: "countdown-wrap reveal r-rise", style: "--delay:0.6s" },
-          has(c.countdownLabel) ? h("p", { class: "caps eyebrow", text: c.countdownLabel }) : null,
-          h("div", { class: "countdown", id: "countdown", role: "timer", "aria-live": "off" },
-            ["days", "hours", "mins", "secs"].map((u) =>
-              h("div", { class: "countdown__unit" },
-                h("span", { class: "countdown__num", "data-unit": u, text: "00" }),
-                h("span", { class: "caps countdown__label", text: units[u] })))),
-          h("p", { class: "countdown__done", id: "countdown-done", hidden: true, text: c.countdownDone || "" }))
-      : null;
-
-    const photo = has(c.heroImage)
-      ? h("figure", { class: "hero__photo reveal r-fade", style: "--delay:0.3s" },
-          h("div", { class: "hero__frame" }, h("img", { src: safeSrc(c.heroImage), alt: c.heroAlt || "", loading: "eager", style: focus({ focus: c.heroFocus }) })))
-      : null;
-
-    $("#home").replaceChildren(
-      h("div", { class: "hero" },
-        h("div", { class: "hero__text" },
-          has(c.eyebrow) ? h("p", { class: "caps eyebrow reveal r-rise", text: c.eyebrow }) : null,
-          title,
-          h("span", { class: "rule reveal r-fade", "aria-hidden": "true" }),
-          has(c.dates) ? h("p", { class: "hero__dates reveal r-rise", style: "--delay:0.2s", text: c.dates }) : null,
-          has(c.venue) ? h("p", { class: "caps hero__venue reveal r-rise", style: "--delay:0.3s", text: c.venue }) : null,
-          countdown,
-          has(c.welcome) ? h("p", { class: "hero__welcome reveal r-rise", style: "--delay:0.8s", text: c.welcome }) : null),
-        photo));
-
-    startCountdown(c.countdownTarget);
-  }
-
-  function startCountdown(target) {
-    clearInterval(state.countdown);
-    const when = new Date(target).getTime();
-    if (!target || Number.isNaN(when)) return;
+  /* ---------- Countdown ---------- */
+  function initCountdown() {
+    const target = new Date(COUNTDOWN_TO).getTime();
     const els = {};
-    $$("[data-unit]", $("#home")).forEach((el) => { els[el.dataset.unit] = el; });
-    const pad = (n, len = 2) => String(n).padStart(len, "0");
+    $$("[data-unit]").forEach((el) => { els[el.dataset.unit] = el; });
+    const pad = (n) => String(n).padStart(2, "0");
+    let timer;
     function tick() {
-      const diff = Math.max(0, when - Date.now());
-      const s = Math.floor(diff / 1000);
-      els.days.textContent = pad(Math.floor(s / 86400), 3);
+      const s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      els.days.textContent = String(Math.floor(s / 86400));
       els.hours.textContent = pad(Math.floor((s % 86400) / 3600));
       els.mins.textContent = pad(Math.floor((s % 3600) / 60));
       els.secs.textContent = pad(s % 60);
-      if (diff === 0) {
-        clearInterval(state.countdown);
-        const done = $("#countdown-done");
-        if (done && done.textContent) done.hidden = false;
-      }
+      if (s === 0) clearInterval(timer);
     }
     tick();
-    state.countdown = setInterval(tick, 1000);
+    timer = setInterval(tick, 1000);
   }
 
-  /* ---------- Our Story ---------- */
-  function renderStory(c) {
-    const blocks = (c.blocks || []).filter((b) => has(b.text) || has(b.photos));
-    $("#story").replaceChildren(
-      sectionHeading("story-title", c.heading || ""),
-      h("div", { class: "story" },
-        blocks.map((b, i) =>
-          h("div", { class: `story-block ${i % 2 ? "story-block--flip" : ""}` },
-            has(b.photos) ? h("div", { class: "story-block__media reveal r-rise" }, storyFrame(b, i)) : null,
-            has(b.text) ? h("p", { class: "story-block__text reveal r-rise", style: "--delay:0.25s", text: b.text }) : null))));
-  }
+  /* ---------- RSVP form ---------- */
+  const form = $("#rsvp-form");
+  let current = "you";
 
-  // Optional focus point for cropping, e.g. focus: "50% 30%".
-  function focus(p) {
-    return /^[\d.]+% [\d.]+%$/.test(String(p.focus || "")) ? `object-position:${p.focus}` : null;
-  }
-
-  function storyFrame(block, i) {
-    const photos = block.photos.filter((p) => has(p.src));
-    if (block.frame === "strip") {
-      return h("div", { class: "booth-strip" },
-        photos.map((p) => h("img", { src: safeSrc(p.src), alt: p.alt || "", loading: "lazy", style: focus(p) })),
-        h("span", { class: "booth-strip__caption caps", text: CONFIG.couple.initials }));
-    }
-    return h("div", { class: "polaroids" },
-      photos.map((p, j) =>
-        h("figure", { class: `polaroid ${(i + j) % 2 ? "polaroid--right" : "polaroid--left"}` },
-          h("img", { src: safeSrc(p.src), alt: p.alt || "", loading: "lazy", style: focus(p) }),
-          has(p.caption) ? h("figcaption", { class: "display", text: p.caption }) : h("span", { class: "polaroid__blank", "aria-hidden": "true" }))));
-  }
-
-  /* ---------- Schedule ---------- */
-  function renderSchedule(c) {
-    $("#schedule").replaceChildren(
-      sectionHeading("schedule-title", c.heading || ""),
-      has(c.intro) ? h("p", { class: "section__intro reveal r-rise", text: c.intro }) : null,
-      h("div", { class: "days" },
-        (c.days || []).map((day, i) =>
-          h("article", { class: "day-card reveal r-rise", style: `--delay:${(i * 0.15).toFixed(2)}s` },
-            h("header", { class: "day-card__head" },
-              has(day.weekday) ? h("p", { class: "caps day-card__weekday", text: day.weekday }) : null,
-              h("h3", { class: "display day-card__date", text: day.date || "" }),
-              has(day.dressCode)
-                ? h("p", { class: "day-card__dress" }, h("span", { class: "caps", text: (c.dressCodeLabel || "Dress code") + " " }), day.dressCode)
-                : null),
-            h("ol", { class: "events" },
-              (day.events || []).map((ev) =>
-                h("li", { class: "event" },
-                  h("h4", { class: "event__name", text: ev.name || "" }),
-                  has(ev.when) ? h("p", { class: "caps event__when", text: ev.when }) : null,
-                  has(ev.note) ? h("p", { class: "event__note", text: ev.note }) : null,
-                  ev.toFollow ? h("p", { class: "tbc", text: c.toFollowLabel || "Details to follow" }) : null)))))),
-      has(c.note) ? h("p", { class: "note reveal r-rise", text: c.note }) : null);
-  }
-
-  /* ---------- Travel & Stay ---------- */
-  function card(title, ...body) {
-    return h("article", { class: "card reveal r-rise" },
-      has(title) ? h("h3", { class: "caps card__title", text: title }) : null,
-      body);
-  }
-  const para = (text, cls = "") => (has(text) ? h("p", { class: cls || null, text }) : null);
-
-  function renderTravel(c) {
-    const v = c.venue || {};
-    const g = c.gettingThere || {};
-    const s = c.stay || {};
-    const n = c.nearby || {};
-    const hol = c.holiday || {};
-    const ins = c.inspiration || {};
-    const link = (url, label) => (safeHref(url) && has(label)
-      ? h("a", { class: "text-link caps", href: safeHref(url), target: "_blank", rel: "noopener", text: label })
-      : null);
-
-    const venueCard = h("article", { class: "card card--venue reveal r-rise" },
-      has(v.label) ? h("p", { class: "caps eyebrow", text: v.label }) : null,
-      h("h3", { class: "display card__venue-name", text: v.name || "" }),
-      has(v.place) ? h("p", { class: "caps card__place", text: v.place }) : null,
-      h("p", { class: "card__links" }, link(v.website, v.websiteLabel), link(v.mapUrl, v.mapLabel)));
-
-    const taxis = (g.taxis || []).filter((t) => has(t.name) || has(t.phone));
-    const nearby = (n.items || []).filter((i) => has(i.name));
-
-    $("#travel").replaceChildren(
-      sectionHeading("travel-title", c.heading || ""),
-      has(c.intro) ? h("p", { class: "section__intro reveal r-rise", text: c.intro }) : null,
-      venueCard,
-      h("div", { class: "cards" },
-        card(g.title, para(g.text),
-          has(taxis) ? h("div", { class: "subcard" },
-            h("h4", { class: "caps subcard__title", text: g.taxisTitle || "" }),
-            h("ul", { class: "plain-list" }, taxis.map((t) =>
-              h("li", null,
-                h("span", { class: "plain-list__name", text: t.name || "" }),
-                has(t.phone) ? h("a", { href: "tel:" + String(t.phone).replace(/[^\d+]/g, ""), text: t.phone }) : null,
-                has(t.note) ? h("span", { class: "plain-list__note", text: t.note }) : null)))) : null),
-        card(s.title, para(s.text), has(s.rooms) ? h("p", { class: "tbc", text: s.rooms }) : null),
-        has(nearby) ? card(n.title,
-          h("ul", { class: "plain-list" }, nearby.map((i) =>
-            h("li", null,
-              safeHref(i.url)
-                ? h("a", { class: "plain-list__name", href: safeHref(i.url), target: "_blank", rel: "noopener", text: i.name })
-                : h("span", { class: "plain-list__name", text: i.name }),
-              has(i.note) ? h("span", { class: "plain-list__note", text: i.note }) : null)))) : null,
-        has(hol.text) ? card(hol.title, para(hol.text)) : null),
-      (ins.groups || []).length
-        ? h("div", { class: "inspiration reveal r-rise" },
-            h("h3", { class: "display inspiration__title", text: ins.title || "" }),
-            para(ins.intro, "section__intro"),
-            h("div", { class: "inspiration__groups" },
-              ins.groups.filter((gr) => has(gr.items)).map((gr) =>
-                h("div", { class: "inspiration__group" },
-                  h("h4", { class: "caps", text: gr.title || "" }),
-                  h("ul", { class: "plain-list" }, gr.items.map((i) =>
-                    h("li", null,
-                      h("span", { class: "plain-list__name", text: i.name || "" }),
-                      has(i.note) ? h("span", { class: "plain-list__note", text: i.note }) : null)))))),
-            has(ins.tip) ? h("p", { class: "tip", text: ins.tip }) : null)
-        : null);
-  }
-
-  /* ---------- Q&A ---------- */
-  function renderFaqs(c) {
-    const contacts = (c.contacts || []).filter((p) => has(p.name) && (has(p.phone) || has(p.email)));
-    $("#faqs").replaceChildren(
-      sectionHeading("faqs-title", c.heading || ""),
-      has(c.intro) ? h("p", { class: "section__intro reveal r-rise", text: c.intro }) : null,
-      h("div", { class: "faqs" },
-        (c.items || []).map((item) =>
-          h("details", { class: "faq reveal r-rise" },
-            h("summary", { class: "faq__q" }, h("span", { text: item.q || "" }), h("span", { class: "faq__icon", "aria-hidden": "true" })),
-            h("div", { class: "faq__a" },
-              para(item.a),
-              item.showContacts && has(contacts)
-                ? h("ul", { class: "plain-list contacts" }, contacts.map((p) =>
-                    h("li", null,
-                      h("span", { class: "plain-list__name", text: p.name }),
-                      has(p.phone) ? h("a", { href: "tel:" + String(p.phone).replace(/[^\d+]/g, ""), text: p.phone }) : null,
-                      has(p.email) ? h("a", { href: "mailto:" + String(p.email).trim(), text: p.email }) : null)))
-                : null)))));
-  }
-
-  /* ---------- RSVP ---------- */
-  let rsvpDirty = false;
-
-  function field(id, labelText, control, opts = {}) {
-    return h("div", { class: "field", id: opts.wrapId || null, hidden: opts.hidden || null },
-      h("label", { class: "field__label caps", for: id, text: labelText }),
-      has(opts.hint) ? h("p", { class: "field__hint", id: id + "-hint", text: opts.hint }) : null,
+  function field(id, label, control, hint, extraClass) {
+    return h("div", { class: `field ${extraClass || ""}`.trim(), id: `f-${id}` },
+      h("label", { class: "label", for: id, text: label }),
+      hint ? h("p", { class: "hint", id: `${id}-hint`, text: hint }) : null,
       control,
-      h("p", { class: "field__error", "data-error-for": opts.errorFor || control.name }));
+      h("p", { class: "error", id: `${id}-error`, role: "alert" }));
+  }
+  function group(id, legend, hint, choices, hideLegend) {
+    return h("fieldset", { class: "field", id: `f-${id}` },
+      h("legend", { class: hideLegend ? "sr" : "label", text: legend }),
+      hint ? h("p", { class: "hint", text: hint }) : null,
+      choices,
+      h("p", { class: "error", id: `${id}-error`, role: "alert" }));
+  }
+  const input = (id, attrs) => h("input", Object.assign({ class: "input", id, name: id }, attrs));
+  const area = (id, attrs) => h("textarea", Object.assign({ class: "input", id, name: id, rows: "3" }, attrs));
+  const choice = (type, name, value, label) =>
+    h("label", { class: "choice" }, h("input", { type, name, value }), h("span", { text: label }));
+
+  function buildForm() {
+    const C = COPY;
+    const country = h("select", { class: "input", id: "phoneCode", name: "phoneCode", "aria-label": C.you.countryLabel },
+      COUNTRY_CODES.map(([code, label]) => h("option", { value: code, text: code === "other" ? label : `${label} ${code}` })));
+
+    const steps = {
+      you: h("fieldset", { class: "step", "data-step": "you" },
+        h("p", { class: "step__count" }),
+        h("legend", { class: "step__title", text: C.you.title }),
+        field("name", C.you.name, input("name", { type: "text", autocomplete: "name", "aria-describedby": "name-hint name-error" }), C.you.nameHint),
+        field("email", C.you.email, input("email", { type: "email", autocomplete: "email", inputmode: "email", autocapitalize: "none", spellcheck: "false" })),
+        h("div", { class: "field", id: "f-phone" },
+          h("label", { class: "label", for: "phoneNumber", text: C.you.phone }),
+          h("p", { class: "hint", id: "phone-hint", text: C.you.phoneHint }),
+          h("div", { class: "phone" }, country,
+            input("phoneNumber", { type: "tel", autocomplete: "tel-national", inputmode: "tel", "aria-describedby": "phone-hint phone-error" })),
+          h("p", { class: "error", id: "phone-error", role: "alert" }))),
+
+      attend: h("fieldset", { class: "step", "data-step": "attend" },
+        h("p", { class: "step__count" }),
+        h("legend", { class: "step__title", text: C.attend.title }),
+        group("attending", C.attend.title, C.attend.hint,
+          h("div", { class: "choices" }, choice("radio", "attending", "Yes", C.attend.yes), choice("radio", "attending", "No", C.attend.no)), true)),
+
+      party: h("fieldset", { class: "step", "data-step": "party" },
+        h("p", { class: "step__count" }),
+        h("legend", { class: "step__title", text: C.party.title }),
+        group("partySize", C.party.size, null,
+          h("div", { class: "chips" }, [1, 2, 3, 4, 5, 6, 7, 8].map((n) =>
+            h("label", { class: "chip" }, h("input", { type: "radio", name: "partySize", value: String(n), "aria-label": String(n) }), h("span", { text: String(n) }))))),
+        field("others", C.party.others, area("others", { "aria-describedby": "others-hint others-error" }), C.party.othersHint),
+        group("stay", C.party.stay, null,
+          h("div", { class: "choices" }, Object.entries(C.party.stayOptions).map(([v, l]) => choice("radio", "stay", v, l)))),
+        field("roommate", C.party.roommate, input("roommate", { type: "text", autocomplete: "off" })),
+        group("pairing", C.party.pairing, null,
+          h("div", { class: "choices" }, Object.entries(C.party.pairingOptions).map(([v, l]) => choice("radio", "pairing", v, l))))),
+
+      needs: h("fieldset", { class: "step", "data-step": "needs" },
+        h("p", { class: "step__count" }),
+        h("legend", { class: "step__title", text: C.needs.title }),
+        field("dietary", C.needs.dietary, area("dietary", { "aria-describedby": "dietary-hint" }), C.needs.dietaryHint),
+        group("help", C.needs.help, C.needs.helpHint,
+          h("div", { class: "choices" }, Object.entries(C.needs.helpOptions).map(([v, l]) => choice("checkbox", "help", v, l)))),
+        field("accessNotes", C.needs.notes, area("accessNotes", {}))),
+
+      message: h("fieldset", { class: "step", "data-step": "message" },
+        h("p", { class: "step__count" }),
+        h("legend", { class: "step__title", text: C.message.title }),
+        field("message", C.message.label, area("message", { rows: "4", "aria-describedby": "message-hint" }), C.message.hint)),
+    };
+
+    form.append(
+      h("div", { class: "hp", "aria-hidden": "true" }, h("label", { for: "website", text: "Website" }), input("website", { type: "text", tabindex: "-1", autocomplete: "off" })),
+      ...Object.values(steps),
+      h("p", { class: "form__error", id: "form-error", role: "alert", hidden: true }),
+      h("div", { class: "step__nav" },
+        h("button", { class: "button button--quiet", id: "step-back", type: "button", text: COPY.steps.back }),
+        h("button", { class: "button", id: "step-next", type: "submit" },
+          h("span", { class: "button__label", id: "step-next-label", text: COPY.steps.next }),
+          h("span", { class: "button__busy", text: COPY.steps.sending }))));
+
+    form.addEventListener("change", () => { syncFields(); saveDraft(); });
+    form.addEventListener("input", saveDraft);
+    form.addEventListener("submit", onNext);
+    $("#step-back").addEventListener("click", onBack);
   }
 
-  function buildRsvp(guest) {
-    const R = CONFIG.rsvp;
-    rsvpDirty = false;
-
-    const input = (id, name, type = "text", extra = {}) =>
-      h("input", Object.assign({ class: "field__input", id, name, type }, extra));
-    const area = (id, name, rows, extra = {}) =>
-      h("textarea", Object.assign({ class: "field__input", id, name, rows: String(rows) }, extra));
-    const radio = (name, value, label) =>
-      h("label", { class: "choice" }, h("input", { type: "radio", name, value }), h("span", { text: label }));
-
-    const party = h("select", { class: "field__input field__select", id: "rsvp-party", name: "partySize" });
-    for (let n = 1; n <= R.party.max; n++) {
-      party.append(h("option", { value: String(n), text: n === 1 ? R.party.one : R.party.many(n) }));
+  /* Reading and writing the form */
+  function val(name) {
+    const els = form.elements[name];
+    if (!els) return "";
+    if (els instanceof RadioNodeList || (els.length && els[0] && els[0].type)) {
+      const list = Array.from(els);
+      if (list[0].type === "checkbox") return list.filter((e) => e.checked).map((e) => e.value);
+      const on = list.find((e) => e.checked);
+      return on ? on.value : "";
     }
-    const gender = h("select", { class: "field__input field__select", id: "rsvp-gender", name: "pairingGender" },
-      h("option", { value: "", text: R.solo.genderChoose }),
-      R.solo.genderOptions.map((g) => h("option", { value: g, text: g })));
-
-    const form = h("form", { class: "rsvp", id: "rsvp-form", novalidate: true },
-      h("p", { class: "rsvp__intro", text: R.intro }),
-      h("div", { class: "hp", "aria-hidden": "true" },
-        h("label", { for: "rsvp-website", text: "Website" }),
-        input("rsvp-website", "website", "text", { tabindex: "-1", autocomplete: "off" })),
-      field("rsvp-name", R.name.label, input("rsvp-name", "name", "text", { autocomplete: "name", required: true })),
-      field("rsvp-contact", R.contact.label,
-        input("rsvp-contact", "contact", "text", { autocomplete: "email", inputmode: "email", autocapitalize: "none", spellcheck: "false", required: true, "aria-describedby": "rsvp-contact-hint" }),
-        { hint: R.contact.hint }),
-      h("fieldset", { class: "field" },
-        h("legend", { class: "field__label caps", text: R.attending.label }),
-        h("p", { class: "field__hint", text: R.attending.hint }),
-        h("div", { class: "choices" }, radio("attending", "Yes", R.attending.yes), radio("attending", "No", R.attending.no)),
-        h("p", { class: "field__error", "data-error-for": "attending" })),
-      h("div", { class: "if-attending", id: "if-attending", hidden: true },
-        field("rsvp-party", R.party.label, party),
-        field("rsvp-others", R.others.label, area("rsvp-others", "otherGuests", 2, { "aria-describedby": "rsvp-others-hint" }),
-          { hint: R.others.hint, wrapId: "field-others", hidden: true }),
-        field("rsvp-dietary", R.dietary.label, area("rsvp-dietary", "dietary", 2, { "aria-describedby": "rsvp-dietary-hint" }),
-          { hint: R.dietary.hint }),
-        h("fieldset", { class: "field", id: "field-solo", hidden: true },
-          h("legend", { class: "field__label caps", text: R.solo.label }),
-          h("p", { class: "field__hint", text: R.solo.hint }),
-          h("div", { class: "choices choices--stacked" }, R.solo.options.map((o) => radio("soloPreference", o, o))),
-          h("p", { class: "field__error", "data-error-for": "soloPreference" }),
-          field("rsvp-roommate", R.solo.roommateLabel, input("rsvp-roommate", "roommateName", "text", { autocomplete: "off" }),
-            { wrapId: "field-roommate", hidden: true }),
-          field("rsvp-gender", R.solo.genderLabel, gender,
-            { hint: R.solo.genderHint, wrapId: "field-gender", hidden: true }))),
-      field("rsvp-message", R.message.label, area("rsvp-message", "message", 3, { "aria-describedby": "rsvp-message-hint" }),
-        { hint: R.message.hint }),
-      h("p", { class: "rsvp__error", id: "rsvp-error", role: "alert", hidden: true }),
-      h("button", { class: "pill pill--solid", id: "rsvp-submit", type: "submit" },
-        h("span", { class: "pill__label", text: R.submit }),
-        h("span", { class: "pill__sending", text: R.sending })));
-
-    const thanks = h("div", { class: "thanks", id: "rsvp-thanks", hidden: true, tabindex: "-1" },
-      h("p", { class: "display thanks__title", id: "thanks-title" }),
-      h("p", { class: "thanks__text", id: "thanks-text" }),
-      h("span", { class: "rule rule--short", "aria-hidden": "true" }),
-      h("button", { class: "link-button caps", id: "rsvp-again", type: "button", text: CONFIG.thanks.again }));
-
-    $("#rsvp").replaceChildren(
-      sectionHeading("rsvp-title", R.heading),
-      h("div", { class: "rsvp-wrap reveal r-rise" }, form, thanks));
-
-    form.addEventListener("input", () => { rsvpDirty = true; });
-    form.addEventListener("change", () => { rsvpDirty = true; syncRsvp(); });
-    form.addEventListener("submit", onRsvpSubmit);
-    $("#rsvp-again").addEventListener("click", () => {
-      thanks.hidden = true;
-      form.hidden = false;
-      $("#rsvp-name").focus();
-    });
-
-    prefillRsvp(guest, true);
+    if (els.type === "checkbox") return els.checked ? [els.value] : [];
+    if (els.type === "radio") return els.checked ? els.value : "";
+    return String(els.value || "").trim();
   }
 
-  function prefillRsvp(guest, force) {
-    const form = $("#rsvp-form");
-    if (!form || !guest || (rsvpDirty && !force)) return;
-    const set = (name, value) => { if (form.elements[name] && value != null) form.elements[name].value = String(value); };
-    set("name", guest.name);
-    set("contact", guest.contact);
-    $$('input[name="attending"]', form).forEach((r) => { r.checked = r.value === guest.attending; });
-    const size = parseInt(guest.partySize, 10);
-    if (size >= 1 && size <= CONFIG.rsvp.party.max) set("partySize", size);
-    set("otherGuests", guest.otherGuests);
-    set("dietary", guest.dietary);
-    $$('input[name="soloPreference"]', form).forEach((r) => { r.checked = r.value === guest.soloPreference; });
-    set("roommateName", guest.roommateName);
-    if (CONFIG.rsvp.solo.genderOptions.includes(guest.pairingGender)) set("pairingGender", guest.pairingGender);
-    set("message", guest.message);
-    syncRsvp();
-  }
-
-  function rsvpValue(name) {
-    const form = $("#rsvp-form");
-    const el = form.querySelector(`[name="${name}"]:checked`) || form.elements[name];
-    return el && (el.type !== "radio" || el.checked) ? String(el.value || "").trim() : "";
-  }
-
-  function syncRsvp() {
-    const yes = rsvpValue("attending") === "Yes";
-    const size = parseInt(rsvpValue("partySize"), 10) || 1;
-    const solo = rsvpValue("soloPreference");
-    const [, share, pair] = CONFIG.rsvp.solo.options;
-    $("#if-attending").hidden = !yes;
-    $("#field-others").hidden = !(yes && size > 1);
-    $("#field-solo").hidden = !(yes && size === 1);
-    $("#field-roommate").hidden = !(yes && size === 1 && solo === share);
-    $("#field-gender").hidden = !(yes && size === 1 && solo === pair);
-  }
-
-  function looksLikeContact(s) {
-    return s.includes("@") ? /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.replace(/\s+/g, "")) : s.replace(/\D/g, "").length >= 7;
-  }
-
-  function collectRsvp() {
-    const yes = rsvpValue("attending") === "Yes";
-    const partySize = yes ? parseInt(rsvpValue("partySize"), 10) || 1 : 0;
-    const solo = yes && partySize === 1 ? rsvpValue("soloPreference") : "";
-    const [, share, pair] = CONFIG.rsvp.solo.options;
+  function collect() {
+    const yes = val("attending") === "Yes";
+    const size = yes ? parseInt(val("partySize"), 10) || 0 : 0;
+    const stay = yes && size === 1 ? val("stay") : "";
+    const code = val("phoneCode");
+    const number = val("phoneNumber");
     return {
-      website: rsvpValue("website"),
-      name: rsvpValue("name").replace(/\s+/g, " "),
-      contact: rsvpValue("contact"),
-      attending: rsvpValue("attending"),
-      partySize,
-      otherGuests: yes && partySize > 1 ? rsvpValue("otherGuests") : "",
-      dietary: yes ? rsvpValue("dietary") : "",
-      soloPreference: solo,
-      roommateName: solo === share ? rsvpValue("roommateName") : "",
-      pairingGender: solo === pair ? rsvpValue("pairingGender") : "",
-      message: rsvpValue("message"),
+      website: val("website"),
+      name: val("name").replace(/\s+/g, " "),
+      email: val("email").toLowerCase(),
+      phone: code === "other" ? number : `${code} ${number.replace(/^0+/, "")}`.trim(),
+      phoneCode: code,
+      phoneNumber: number,
+      attending: val("attending"),
+      partySize: size,
+      others: yes && size > 1 ? val("others") : "",
+      stay,
+      roommate: stay === "roommate" ? val("roommate") : "",
+      pairing: stay === "pair" ? val("pairing") : "",
+      dietary: yes ? val("dietary") : "",
+      help: yes ? val("help") : [],
+      accessNotes: yes ? val("accessNotes") : "",
+      message: val("message"),
     };
   }
 
-  function validateRsvp(d) {
-    const R = CONFIG.rsvp;
-    const form = $("#rsvp-form");
-    const [, share, pair] = R.solo.options;
-    let firstBad = null;
-    $$("[data-error-for]", form).forEach((el) => {
-      el.textContent = "";
-      el.closest(".field").classList.remove("has-error");
-    });
-    const fail = (name, msg, focusSel) => {
-      const el = form.querySelector(`[data-error-for="${name}"]`);
-      el.textContent = msg;
-      el.closest(".field").classList.add("has-error");
-      if (!firstBad) firstBad = form.querySelector(focusSel);
+  function fill(d) {
+    if (!d) return;
+    const set = (name, v) => { if (form.elements[name] && v != null) form.elements[name].value = v; };
+    const check = (name, values) => {
+      const list = [].concat(values || []);
+      $$(`input[name="${name}"]`, form).forEach((e) => { e.checked = list.includes(e.value); });
     };
-    if (!d.name) fail("name", R.name.required, "#rsvp-name");
-    if (!looksLikeContact(d.contact)) fail("contact", R.contact.required, "#rsvp-contact");
-    if (!d.attending) fail("attending", R.attending.required, 'input[name="attending"]');
-    if (d.attending === "Yes") {
-      if (d.partySize > 1 && !d.otherGuests) fail("otherGuests", R.others.required, "#rsvp-others");
+    set("name", d.name);
+    set("email", d.email);
+    if (d.phoneCode && COUNTRY_CODES.some(([c]) => c === d.phoneCode)) {
+      set("phoneCode", d.phoneCode);
+      set("phoneNumber", d.phoneNumber);
+    } else if (d.phone) {
+      const hit = COUNTRY_CODES.filter(([c]) => c !== "other").sort((a, b) => b[0].length - a[0].length)
+        .find(([c]) => d.phone.replace(/\s/g, "").startsWith(c));
+      set("phoneCode", hit ? hit[0] : "other");
+      set("phoneNumber", hit ? d.phone.replace(/\s/g, "").slice(hit[0].length) : d.phone);
+    }
+    check("attending", d.attending);
+    check("partySize", d.partySize ? String(d.partySize) : "");
+    set("others", d.others);
+    check("stay", d.stay);
+    set("roommate", d.roommate);
+    check("pairing", d.pairing);
+    set("dietary", d.dietary);
+    check("help", d.help);
+    set("accessNotes", d.accessNotes);
+    set("message", d.message);
+    syncFields();
+  }
+
+  function saveDraft() { store.set(KEYS.draft, collect()); }
+
+  /* Which steps apply, and which follow-up questions show */
+  function stepOrder() {
+    return val("attending") === "No" ? ["you", "attend", "message"] : ["you", "attend", "party", "needs", "message"];
+  }
+
+  function syncFields() {
+    const size = parseInt(val("partySize"), 10) || 0;
+    const stay = val("stay");
+    $("#f-others").hidden = !(size > 1);
+    $("#f-stay").hidden = size !== 1;
+    $("#f-roommate").hidden = !(size === 1 && stay === "roommate");
+    $("#f-pairing").hidden = !(size === 1 && stay === "pair");
+  }
+
+  function showStep(name, focus) {
+    current = name;
+    const order = stepOrder();
+    const i = order.indexOf(name);
+    $$(".step", form).forEach((s) => { s.hidden = s.dataset.step !== name; });
+    $(`[data-step="${name}"] .step__count`, form).textContent = COPY.steps.count(i + 1, order.length);
+    $("#step-back").hidden = i === 0;
+    const last = i === order.length - 1;
+    $("#step-next-label").textContent = last ? COPY.steps.send : COPY.steps.next;
+    $("#form-error").hidden = true;
+    if (focus) {
+      const step = $(`[data-step="${name}"]`, form);
+      step.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      const first = $("input:not([type=hidden]), textarea, select", step);
+      if (first && first.type !== "radio" && first.type !== "checkbox") setTimeout(() => first.focus({ preventScroll: true }), 300);
+    }
+  }
+
+  function setError(id, msg) {
+    const el = $(`#${id}-error`);
+    if (el) el.textContent = msg || "";
+    const wrap = $(`#f-${id}`);
+    if (wrap) wrap.classList.toggle("has-error", Boolean(msg));
+  }
+
+  function validStep(name) {
+    const d = collect();
+    const C = COPY;
+    const errs = [];
+    const need = (ok, id, msg) => { setError(id, ok ? "" : msg); if (!ok) errs.push(id); };
+    if (name === "you") {
+      need(d.name.length > 1, "name", C.you.errName);
+      need(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email), "email", C.you.errEmail);
+      const digits = d.phoneNumber.replace(/\D/g, "");
+      need(d.phoneCode === "other" ? /^\+?\d[\d\s()-]{6,}$/.test(d.phoneNumber) && digits.length >= 8 : digits.length >= 6 && digits.length <= 14, "phone", C.you.errPhone);
+    }
+    if (name === "attend") need(Boolean(d.attending), "attending", C.attend.err);
+    if (name === "party") {
+      need(d.partySize > 0, "partySize", C.party.errSize);
+      if (d.partySize > 1) need(Boolean(d.others), "others", C.party.errOthers);
       if (d.partySize === 1) {
-        if (!d.soloPreference) fail("soloPreference", R.solo.required, 'input[name="soloPreference"]');
-        if (d.soloPreference === share && !d.roommateName) fail("roommateName", R.solo.roommateRequired, "#rsvp-roommate");
-        if (d.soloPreference === pair && !d.pairingGender) fail("pairingGender", R.solo.genderRequired, "#rsvp-gender");
+        need(Boolean(d.stay), "stay", C.party.errStay);
+        if (d.stay === "roommate") need(Boolean(d.roommate), "roommate", C.party.errRoommate);
+        if (d.stay === "pair") need(Boolean(d.pairing), "pairing", C.party.errPairing);
       }
     }
-    if (firstBad) firstBad.focus();
-    return !firstBad;
+    if (errs.length) {
+      const first = $(`#f-${errs[0]} input, #f-${errs[0]} textarea, #f-${errs[0]} select`);
+      if (first) first.focus();
+    }
+    return errs.length === 0;
   }
 
-  async function onRsvpSubmit(e) {
+  function onBack() {
+    const order = stepOrder();
+    const i = order.indexOf(current);
+    if (i > 0) showStep(order[i - 1], true);
+  }
+
+  async function onNext(e) {
     e.preventDefault();
-    const errorBox = $("#rsvp-error");
-    const submit = $("#rsvp-submit");
-    errorBox.hidden = true;
-    const data = collectRsvp();
-    if (!validateRsvp(data)) return;
+    if (!validStep(current)) return;
+    const order = stepOrder();
+    const i = order.indexOf(current);
+    if (i < order.length - 1) { showStep(order[i + 1], true); return; }
+    await submit();
+  }
 
-    const session = load(SESSION_KEY);
-    if (!session || !session.token) {
-      signOut(CONFIG.gate.errors.signedOut);
-      return;
-    }
-
-    submit.disabled = true;
-    submit.classList.add("is-sending");
+  async function submit() {
+    const btn = $("#step-next");
+    const box = $("#form-error");
+    const data = collect();
+    box.hidden = true;
+    btn.disabled = true;
+    btn.classList.add("is-busy");
     try {
-      const res = await api(Object.assign({ action: "rsvp", token: session.token }, data));
-      if (res.token) {
-        storeSession(res);
-        state.guest = res.guest || state.guest;
-        save(CACHE_KEY, { content: state.content, guest: state.guest });
-      } else {
-        // They've said no, so this device won't be let back in next time.
-        drop(SESSION_KEY);
-        drop(CACHE_KEY);
-      }
-      rsvpDirty = false;
-      showThanks(data.attending === "Yes");
+      const res = await api(Object.assign({ action: "rsvp", code: store.get(KEYS.code) || "", source: "site" }, data));
+      store.drop(KEYS.draft);
+      if (res.schedule) store.set(KEYS.schedule, res.schedule);
+      else store.drop(KEYS.schedule);
+      showDone(data, res.schedule);
     } catch (err) {
-      if (err.code === "signed_out") {
-        signOut(CONFIG.gate.errors.signedOut);
+      if (err.code === "bad_code") {
+        // The saved code no longer works: ask for it again, keeping their answers.
+        store.drop(KEYS.code);
+        location.reload();
         return;
       }
-      errorBox.textContent = CONFIG.rsvp.error;
-      errorBox.hidden = false;
-      errorBox.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+      box.textContent = err.code === "not_configured" ? COPY.notReady : COPY.sendError;
+      box.hidden = false;
+      $("#step-next-label").textContent = COPY.steps.retry;
+      box.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
     } finally {
-      submit.disabled = false;
-      submit.classList.remove("is-sending");
+      btn.disabled = false;
+      btn.classList.remove("is-busy");
     }
   }
 
-  function showThanks(yes) {
-    const thanks = $("#rsvp-thanks");
-    $("#thanks-title").textContent = yes ? CONFIG.thanks.yesTitle : CONFIG.thanks.noTitle;
-    $("#thanks-text").textContent = yes ? CONFIG.thanks.yesText : CONFIG.thanks.noText;
-    $("#rsvp-again").hidden = !yes;
-    $("#rsvp-form").hidden = true;
-    thanks.hidden = false;
-    thanks.focus({ preventScroll: true });
-    thanks.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+  /* ---------- Confirmation ---------- */
+  function summaryRows(d) {
+    const S = COPY.summary;
+    const P = COPY.party;
+    const yes = d.attending === "Yes";
+    const rows = [
+      [S.name, d.name], [S.email, d.email], [S.phone, d.phone],
+      [S.attending, yes ? S.yes : S.no],
+    ];
+    if (yes) {
+      rows.push([S.party, String(d.partySize)]);
+      if (d.others) rows.push([S.others, d.others]);
+      if (d.stay) rows.push([S.stay, P.stayOptions[d.stay]]);
+      if (d.roommate) rows.push([S.roommate, d.roommate]);
+      if (d.pairing) rows.push([S.pairing, P.pairingOptions[d.pairing]]);
+      if (d.dietary) rows.push([S.dietary, d.dietary]);
+      if (d.help.length) rows.push([S.help, d.help.map((k) => COPY.needs.helpOptions[k]).join(", ")]);
+      if (d.accessNotes) rows.push([S.notes, d.accessNotes]);
+    }
+    if (d.message) rows.push([S.message, d.message]);
+    return rows;
   }
 
-  /* ---------- Nav ---------- */
-  function buildNav() {
-    $("#nav-list").replaceChildren(...CONFIG.nav.items.map((item) =>
-      h("li", null, h("a", { class: "nav__link", href: "#" + item.id, "data-nav": item.id, text: item.label }))));
-  }
-
-  function closeMenu() {
-    document.body.classList.remove("menu-open");
-    $("#nav-toggle").setAttribute("aria-expanded", "false");
-  }
-
-  function initNav() {
-    const toggle = $("#nav-toggle");
-    toggle.addEventListener("click", () => {
-      const open = toggle.getAttribute("aria-expanded") !== "true";
-      toggle.setAttribute("aria-expanded", String(open));
-      document.body.classList.toggle("menu-open", open);
+  function showDone(d, schedule) {
+    const yes = d.attending === "Yes";
+    const first = d.name.split(" ")[0];
+    const done = $("#done");
+    done.replaceChildren(
+      h("h3", { class: "done__title", text: (yes ? COPY.done.yesTitle : COPY.done.noTitle)(first) }),
+      h("p", { class: "lead", text: yes ? COPY.done.yesText : COPY.done.noText }),
+      h("p", { class: "label", text: COPY.done.summary }),
+      h("dl", { class: "summary" }, summaryRows(d).map(([k, v]) => h("div", null, h("dt", { text: k }), h("dd", { text: v })))),
+      h("p", { class: "hint", text: COPY.done.edit }),
+      h("p", null, h("button", { class: "link", type: "button", id: "done-edit", text: COPY.done.again })));
+    form.hidden = true;
+    $("#form-notice").hidden = true;
+    done.hidden = false;
+    $("#done-edit").addEventListener("click", () => {
+      done.hidden = true;
+      form.hidden = false;
+      fill(d);
+      showStep("you", true);
     });
-    $("#nav").addEventListener("click", (e) => {
-      const a = e.target.closest("a[href^='#']");
-      if (!a) return;
-      e.preventDefault();
-      const id = a.getAttribute("href").slice(1);
-      closeMenu();
-      scrollToId(id);
-      history.replaceState(null, "", "#" + id);
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && document.body.classList.contains("menu-open")) {
-        closeMenu();
-        toggle.focus();
-      }
-    });
-    window.matchMedia("(min-width: 900px)").addEventListener("change", (mq) => { if (mq.matches) closeMenu(); });
+    renderSchedule(yes ? schedule : null);
+    done.focus({ preventScroll: true });
+    done.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
   }
 
-  function startScrollSpy() {
-    if (state.spy) state.spy.disconnect();
-    if (!("IntersectionObserver" in window)) return;
-    const links = $$("[data-nav]");
-    state.spy = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        links.forEach((l) => {
-          const on = l.dataset.nav === entry.target.id;
-          l.classList.toggle("is-current", on);
-          if (on) l.setAttribute("aria-current", "true");
-          else l.removeAttribute("aria-current");
-        });
-      });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    $$("#main > section").forEach((s) => state.spy.observe(s));
-  }
+  /* ---------- Schedule (only ever comes from the server, after a yes) ---------- */
+  function safeUrl(u) { return /^https:\/\//i.test(String(u || "")) ? u : ""; }
 
-  /* ---------- Reveal on scroll ---------- */
-  function startReveals() {
-    if (state.revealer) state.revealer.disconnect();
-    const items = $$("#main .reveal:not(.is-in)");
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      items.forEach((el) => el.classList.add("is-in"));
+  function renderSchedule(s) {
+    const sec = $("#schedule");
+    if (!s || !Array.isArray(s.days)) {
+      sec.hidden = true;
+      $("#nav-schedule").hidden = true;
       return;
     }
-    state.revealer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-in");
-          state.revealer.unobserve(entry.target);
+    const guide = safeUrl(s.guideUrl);
+    sec.replaceChildren(
+      h("h2", { class: "heading", id: "schedule-title", text: s.title || "Schedule" }),
+      s.intro ? h("p", { class: "lead", text: s.intro }) : null,
+      h("div", { class: "days" }, s.days.map((day) =>
+        h("div", { class: "day" },
+          h("h3", { text: day.day }),
+          h("ul", null, (day.items || []).map((item) => h("li", { text: item })))))),
+      s.note ? h("p", { text: s.note }) : null,
+      s.lodging ? h("p", { class: "lead", text: s.lodging }) : null,
+      guide ? h("p", null, h("a", { class: "button button--quiet", href: guide, target: "_blank", rel: "noopener", text: s.guideLabel || "Our guest guide" })) : null);
+    sec.hidden = false;
+    $("#nav-schedule").hidden = false;
+  }
+
+  /* ---------- Updating an earlier RSVP ---------- */
+  function initLookup() {
+    const toggle = $("#edit-open");
+    const box = $("#lookup");
+    const err = $("#lookup-error");
+    const btn = $("#lookup-submit");
+    toggle.addEventListener("click", () => {
+      const open = box.hidden;
+      box.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      if (open) $("#lookup-email").focus();
+    });
+    box.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = $("#lookup-email").value.trim().toLowerCase();
+      if (!email) { err.textContent = COPY.lookup.err; return; }
+      err.textContent = "";
+      btn.disabled = true;
+      btn.classList.add("is-busy");
+      try {
+        const res = await api({ action: "lookup", code: store.get(KEYS.code) || "", email });
+        $("#done").hidden = true;
+        form.hidden = false;
+        fill(res.rsvp);
+        if (res.schedule) { store.set(KEYS.schedule, res.schedule); renderSchedule(res.schedule); }
+        box.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+        notice(COPY.lookup.found);
+        showStep("you", true);
+      } catch (e2) {
+        if (e2.code === "not_found") {
+          box.hidden = true;
+          toggle.setAttribute("aria-expanded", "false");
+          set("email", email);
+          notice(COPY.lookup.notFound);
+          showStep("you", true);
+        } else if (e2.code === "bad_code") {
+          store.drop(KEYS.code);
+          location.reload();
+        } else {
+          err.textContent = e2.code === "not_configured" ? COPY.notReady : COPY.lookup.offline;
         }
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove("is-busy");
+      }
+    });
+    function set(name, v) { if (form.elements[name]) form.elements[name].value = v; }
+  }
+
+  function notice(text) {
+    const n = $("#form-notice");
+    n.textContent = text;
+    n.hidden = false;
+  }
+
+  /* ---------- Gentle entrance for the story ---------- */
+  function startFades() {
+    if (reduceMotion || !("IntersectionObserver" in window)) return;
+    const items = $$(".story__block, .reveal-note");
+    document.documentElement.classList.add("js-motion");
+    items.forEach((el) => el.classList.add("fade"));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
-    items.forEach((el) => state.revealer.observe(el));
+    }, { threshold: 0.12 });
+    items.forEach((el) => io.observe(el));
   }
 
   /* ---------- Go ---------- */
-  applyCopy();
-  buildNav();
-  initNav();
+  buildForm();
+  fill(store.get(KEYS.draft));
+  syncFields();
+  showStep("you", false);
+  renderSchedule(store.get(KEYS.schedule));
+  initLookup();
+  initCountdown();
   initGate();
-  $("#sign-out").addEventListener("click", () => signOut(""));
-
-  const session = load(SESSION_KEY);
-  if (session && session.token && session.exp > Date.now()) {
-    const cached = load(CACHE_KEY);
-    if (cached && cached.content) {
-      enter(cached.content, cached.guest, false);
-      refresh(session, true);
-    } else {
-      showGateLoading();
-      refresh(session, false);
-    }
-  } else {
-    drop(SESSION_KEY);
-    drop(CACHE_KEY);
-    showGate();
-  }
 })();

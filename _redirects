@@ -1,2 +1,5 @@
-# Never serve the Apps Script source: it holds the private page content.
+# Keep these off the public site: the Google script and the Claude dashboard.
 /apps-script/*  /404  404!
+/dashboard/*  /404  404!
+/IDENTITY.md  /404  404!
+/README.md  /404  404!

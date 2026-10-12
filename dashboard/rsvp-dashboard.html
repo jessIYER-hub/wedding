@@ -1,0 +1,343 @@
+<title>J&amp;G RSVPs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Same identity as the wedding site (tokens.css), committed to its one light, paper look.
+     Layout: summary first (numbers that answer "how are we doing?"), then what needs
+     planning (rooms, food, help), then everyone in one searchable list. */
+  :root {
+    color-scheme: light;
+    --navy: #1b2433; --cream: #f5eee3; --cocoa: #6a4636; --stone: #d9cfc1;
+    --navy-soft: #4a5263; --paper: #fbf8f2; --good: #3d5a45; --warn: #8a5a1c; --bad: #8a2f24;
+    --display: "Fraunces", Georgia, serif;
+    --body: "Source Sans 3", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--cream); color: var(--navy); font: 16px/1.5 var(--body); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; display: grid; gap: 32px; }
+  .wrap > * { min-width: 0; }
+  h1, h2, h3, p { margin: 0; }
+  h1 { font: 300 clamp(2rem, 6vw, 2.8rem)/1.05 var(--display); font-variation-settings: "opsz" 144; letter-spacing: -0.015em; }
+  h1 i { color: var(--cocoa); }
+  h2 { font: 400 1.35rem/1.2 var(--display); font-variation-settings: "opsz" 48; margin-bottom: 12px; text-wrap: balance; }
+  .muted { color: var(--navy-soft); }
+  .small { font-size: 0.875rem; }
+  header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+  .status { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+  a { color: var(--navy); text-underline-offset: 0.2em; }
+  button { font: inherit; color: inherit; }
+  .btn { min-height: 40px; padding: 6px 14px; border: 1px solid var(--navy); border-radius: 4px; background: transparent; cursor: pointer; }
+  .btn:hover { background: var(--navy); color: var(--cream); }
+  :focus-visible { outline: 2px solid var(--cocoa); outline-offset: 2px; }
+
+  .banner { padding: 14px 16px; border-left: 3px solid var(--cocoa); background: var(--paper); display: grid; gap: 8px; }
+  .banner.bad { border-left-color: var(--bad); }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--stone); border: 1px solid var(--stone); }
+  .tile { background: var(--paper); padding: 16px; display: grid; gap: 2px; min-width: 0; }
+  .tile b { font: 300 2.2rem/1.1 var(--display); font-variation-settings: "opsz" 144; font-variant-numeric: lining-nums tabular-nums; }
+  .tile span { font-size: 0.875rem; color: var(--navy-soft); }
+
+  .cols { display: grid; gap: 24px; }
+  @media (min-width: 860px) { .cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .panel { background: var(--paper); border: 1px solid var(--stone); border-radius: 4px; padding: 18px; min-width: 0; }
+  .kv { display: grid; gap: 6px; }
+  .kv div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--stone); padding-bottom: 6px; }
+  .kv b { font-variant-numeric: tabular-nums; }
+  .notes { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; max-height: 260px; overflow: auto; }
+  .notes li { font-size: 0.95rem; }
+  .notes li strong { display: block; font-size: 0.85rem; color: var(--navy-soft); font-weight: 600; }
+
+  .tools { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 12px; }
+  .search { flex: 1 1 220px; min-height: 40px; padding: 6px 12px; border: 1px solid var(--stone); border-radius: 4px; background: var(--paper); font: inherit; }
+  .seg { display: flex; flex-wrap: wrap; gap: 6px; }
+  .seg button { min-height: 36px; padding: 4px 12px; border: 1px solid var(--stone); border-radius: 4px; background: var(--paper); cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--cream); }
+  label.check { display: inline-flex; gap: 6px; align-items: center; font-size: 0.9rem; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--stone); border-radius: 4px; background: var(--paper); }
+  table { border-collapse: collapse; width: 100%; min-width: 900px; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--stone); vertical-align: top; }
+  th { font-weight: 600; font-size: 0.8rem; color: var(--navy-soft); background: var(--cream); position: sticky; top: 0; }
+  td.num { font-variant-numeric: tabular-nums; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; border: 1px solid currentColor; white-space: nowrap; }
+  .pill.yes { color: var(--good); } .pill.no { color: var(--bad); } .pill.test { color: var(--warn); } .pill.upd { color: var(--cocoa); }
+  .empty { padding: 28px 16px; text-align: center; color: var(--navy-soft); }
+  .messages { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .message { background: var(--paper); border: 1px solid var(--stone); border-radius: 4px; padding: 14px; display: grid; gap: 6px; }
+  .message p { font: 300 1.05rem/1.45 var(--display); font-variation-settings: "opsz" 24; }
+  .message span { font-size: 0.85rem; color: var(--navy-soft); }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="muted small">Jessica <i>&amp;</i> Gaurav · Udaipur, 6 to 8 November 2027</p>
+      <h1>RSVPs</h1>
+    </div>
+    <div class="status">
+      <span class="muted small" id="updated">Connecting to Google Drive…</span>
+      <button class="btn" id="refresh" type="button">Refresh</button>
+      <a class="small" href="https://docs.google.com/spreadsheets/d/131QWjZ80biRlVXMk1KLsxmyT1qVcjVH0v7g7zv5WlSA/edit" target="_blank" rel="noopener">Open the sheet</a>
+    </div>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <section aria-label="Summary">
+    <div class="tiles" id="tiles">
+      <div class="tile"><b>–</b><span>Replies</span></div>
+      <div class="tile"><b>–</b><span>Guests coming</span></div>
+      <div class="tile"><b>–</b><span>Parties coming</span></div>
+      <div class="tile"><b>–</b><span>Can't make it</span></div>
+      <div class="tile"><b>–</b><span>Days to RSVP deadline</span></div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <section class="panel" aria-labelledby="t-rooms">
+      <h2 id="t-rooms">Solo guests and rooms</h2>
+      <div class="kv" id="rooms"><p class="muted">Room preferences from solo guests will show here.</p></div>
+    </section>
+    <section class="panel" aria-labelledby="t-food">
+      <h2 id="t-food">Food</h2>
+      <p class="muted small" id="food-count">Dietary needs and allergies will show here.</p>
+      <ul class="notes" id="food"></ul>
+    </section>
+    <section class="panel" aria-labelledby="t-help">
+      <h2 id="t-help">Babies and getting around</h2>
+      <div class="kv" id="help"><p class="muted">Cots, high chairs and mobility help will show here.</p></div>
+      <ul class="notes" id="access"></ul>
+    </section>
+  </div>
+
+  <section aria-labelledby="t-guests">
+    <h2 id="t-guests">Everyone who's replied</h2>
+    <div class="tools">
+      <input class="search" id="q" type="search" placeholder="Search names, emails, notes" aria-label="Search">
+      <div class="seg" role="group" aria-label="Show">
+        <button type="button" data-f="all" aria-pressed="true">All</button>
+        <button type="button" data-f="yes" aria-pressed="false">Coming</button>
+        <button type="button" data-f="no" aria-pressed="false">Can't make it</button>
+        <button type="button" data-f="unpaid" aria-pressed="false">Coming, no payment status</button>
+      </div>
+      <label class="check"><input type="checkbox" id="show-test"> Show test rows</label>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Lead guest</th><th>Reply</th><th>Party</th><th>Also coming</th><th>Room</th>
+          <th>Dietary</th><th>Help</th><th>Contact</th><th>Payment</th><th>Last reply</th>
+        </tr></thead>
+        <tbody id="rows"><tr><td colspan="10" class="empty">Replies will appear here as they come in.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-msgs">
+    <h2 id="t-msgs">Messages for the couple</h2>
+    <div class="messages" id="messages"><p class="muted">Messages will show here.</p></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var SERVER = "Google Drive";
+  var TOOL = "download_file_content";
+  var INPUT = { fileId: "131QWjZ80biRlVXMk1KLsxmyT1qVcjVH0v7g7zv5WlSA", exportMimeType: "text/csv" };
+  var DEADLINE = new Date("2027-01-15T23:59:59+00:00");
+
+  var state = { rows: [], filter: "all", q: "", showTest: false };
+  var $ = function (s) { return document.querySelector(s); };
+
+  function el(tag, attrs, kids) {
+    var e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) { if (k === "text") e.textContent = attrs[k]; else if (k === "class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); });
+    (kids || []).forEach(function (c) { if (c != null) e.append(c instanceof Node ? c : document.createTextNode(String(c))); });
+    return e;
+  }
+
+  /* CSV -> rows of strings (handles quotes, commas and line breaks in cells) */
+  function parseCSV(text) {
+    var out = [], row = [], cell = "", q = false;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (q) {
+        if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; }
+        else cell += ch;
+      } else if (ch === '"') q = true;
+      else if (ch === ",") { row.push(cell); cell = ""; }
+      else if (ch === "\n" || ch === "\r") { if (ch === "\r" && text[i + 1] === "\n") i++; row.push(cell); out.push(row); row = []; cell = ""; }
+      else cell += ch;
+    }
+    if (cell !== "" || row.length) { row.push(cell); out.push(row); }
+    return out;
+  }
+  function decode(b64) {
+    var bin = atob(b64), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+
+  function toRecords(grid) {
+    var head = (grid[0] || []).map(function (h) { return h.trim().toLowerCase(); });
+    if (head.indexOf("lead guest") < 0) return null;
+    return grid.slice(1).filter(function (r) { return r.some(function (c) { return c.trim(); }); }).map(function (r) {
+      var o = {}; head.forEach(function (h, i) { o[h] = (r[i] || "").trim(); }); return o;
+    });
+  }
+
+  /* ---------- Rendering ---------- */
+  function visible() {
+    return state.rows.filter(function (r) { return state.showTest || r["source (site / manual)"] !== "test"; });
+  }
+
+  function render() {
+    var all = visible();
+    var yes = all.filter(function (r) { return r.attending === "Yes"; });
+    var no = all.filter(function (r) { return r.attending === "No"; });
+    var guests = yes.reduce(function (n, r) { return n + (parseInt(r["party size"], 10) || 1); }, 0);
+    var days = Math.max(0, Math.ceil((DEADLINE - Date.now()) / 86400000));
+    var tiles = [[all.length, "Replies"], [guests, "Guests coming"], [yes.length, "Parties coming"], [no.length, "Can't make it"], [days, "Days to RSVP deadline"]];
+    $("#tiles").replaceChildren.apply($("#tiles"), tiles.map(function (t) { return el("div", { class: "tile" }, [el("b", { text: String(t[0]) }), el("span", { text: t[1] })]); }));
+
+    // Rooms
+    var room = function (v) { return yes.filter(function (r) { return r["room preference (solo only)"] === v; }); };
+    var pair = room("Pair with a solo guest");
+    var roomRows = [["Own room", room("Own room").length], ["Roommate in mind", room("Roommate in mind").length],
+      ["Pair me: prefers a woman", pair.filter(function (r) { return r["pairing preference"] === "A woman"; }).length],
+      ["Pair me: prefers a man", pair.filter(function (r) { return r["pairing preference"] === "A man"; }).length]];
+    $("#rooms").replaceChildren.apply($("#rooms"), roomRows.map(function (r) { return el("div", null, [el("span", { text: r[0] }), el("b", { text: String(r[1]) })]); }));
+
+    // Food
+    var food = yes.filter(function (r) { return r["dietary/allergies"]; });
+    $("#food-count").textContent = food.length ? food.length + (food.length === 1 ? " party has" : " parties have") + " told us something." : "No dietary notes yet.";
+    $("#food").replaceChildren.apply($("#food"), food.map(function (r) { return el("li", null, [el("strong", { text: r["lead guest"] }), r["dietary/allergies"]]); }));
+
+    // Help
+    var count = function (w) { return yes.filter(function (r) { return (r["cot / high chair / mobility"] || "").indexOf(w) >= 0; }).length; };
+    $("#help").replaceChildren.apply($("#help"), [["Cot", count("Cot")], ["High chair", count("High chair")], ["Mobility help", count("Mobility help")]].map(function (r) {
+      return el("div", null, [el("span", { text: r[0] }), el("b", { text: String(r[1]) })]); }));
+    var access = yes.filter(function (r) { return r["access notes"]; });
+    $("#access").replaceChildren.apply($("#access"), access.map(function (r) { return el("li", null, [el("strong", { text: r["lead guest"] }), r["access notes"]]); }));
+
+    renderTable(all);
+
+    // Messages
+    var msgs = all.filter(function (r) { return r["message for the couple"]; });
+    $("#messages").replaceChildren.apply($("#messages"), msgs.length ? msgs.map(function (r) {
+      return el("div", { class: "message" }, [el("p", { text: r["message for the couple"] }), el("span", { text: r["lead guest"] })]);
+    }) : [el("p", { class: "muted", text: "No messages yet." })]);
+  }
+
+  function renderTable(all) {
+    var q = state.q.toLowerCase();
+    var rows = all.filter(function (r) {
+      if (state.filter === "yes" && r.attending !== "Yes") return false;
+      if (state.filter === "no" && r.attending !== "No") return false;
+      if (state.filter === "unpaid" && (r.attending !== "Yes" || r["room payment status"])) return false;
+      return !q || Object.keys(r).some(function (k) { return r[k].toLowerCase().indexOf(q) >= 0; });
+    }).sort(function (a, b) { return a["lead guest"].localeCompare(b["lead guest"]); });
+    var body = $("#rows");
+    if (!rows.length) { body.replaceChildren(el("tr", null, [el("td", { colspan: "10", class: "empty", text: state.rows.length ? "Nobody matches that." : "Replies will appear here as they come in." })])); return; }
+    body.replaceChildren.apply(body, rows.map(function (r) {
+      var roomText = r["room preference (solo only)"] + (r["roommate name"] ? ": " + r["roommate name"] : "") + (r["pairing preference"] ? " (" + r["pairing preference"].toLowerCase() + ")" : "");
+      var reply = el("td", null, [el("span", { class: "pill " + (r.attending === "Yes" ? "yes" : "no"), text: r.attending === "Yes" ? "Coming" : "Can't make it" }),
+        r["updated (yes/no)"] === "yes" ? el("span", { class: "pill upd", text: "Updated", style: "margin-left:6px" }) : null,
+        r["source (site / manual)"] === "test" ? el("span", { class: "pill test", text: "Test", style: "margin-left:6px" }) : null]);
+      return el("tr", null, [
+        el("td", null, [el("strong", { text: r["lead guest"] })]), reply,
+        el("td", { class: "num", text: r["party size"] || "" }),
+        el("td", { text: r["other guest names"] || "" }),
+        el("td", { text: roomText }),
+        el("td", { text: r["dietary/allergies"] || "" }),
+        el("td", { text: [r["cot / high chair / mobility"], r["access notes"]].filter(Boolean).join(". ") }),
+        el("td", null, [r.email, el("br"), r.phone]),
+        el("td", { text: r["room payment status"] || "" }),
+        el("td", { class: "small muted", text: r.timestamp || "" }),
+      ]);
+    }));
+  }
+
+  function banner(text, bad, action) {
+    var b = $("#banner");
+    b.className = "banner" + (bad ? " bad" : "");
+    b.replaceChildren(el("p", { text: text }));
+    if (action) b.append(el("p", null, [action]));
+    b.hidden = false;
+  }
+  function clearBanner() { $("#banner").hidden = true; }
+
+  /* ---------- Data ---------- */
+  function onResult(result) {
+    var p = result && result.payload;
+    if (typeof p === "string") { try { p = JSON.parse(p); } catch (e) { /* leave */ } }
+    if (!p || !p.content) { banner("Google Drive answered, but without the sheet's contents. Try Refresh.", true); return; }
+    var records = toRecords(parseCSV(decode(p.content)));
+    if (!records) {
+      state.rows = [];
+      render();
+      banner("The RSVPs tab isn't set up yet. It's created the first time you run setup in the Apps Script, or with the first RSVP. Until then there's nothing to show.");
+    } else {
+      state.rows = records;
+      clearBanner();
+      render();
+    }
+    var when = result.cache && result.cache.storedAt ? new Date(result.cache.storedAt) : new Date();
+    $("#updated").textContent = "Updated " + when.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function onError(err, mcp) {
+    var code = err && err.code;
+    if (code === "server_not_connected" || code === "server_not_found") {
+      state.rows = []; render();
+      banner("Add Google Drive in claude.ai Settings → Connectors, then reload this page.", true);
+    } else if (code === "needs_reauth") {
+      state.rows = []; render();
+      banner("Reconnect Google Drive in claude.ai Settings → Connectors, then reload this page.", true);
+    } else if (code === "not_in_manifest" || code === "consent_required") {
+      state.rows = []; render();
+      banner("Google Drive is switched off for this page, so it can't read your sheet. Turn it on from this page's Permissions menu.", true);
+    } else if (code === "approval_required") {
+      var btn = el("button", { class: "btn", type: "button", text: "Allow and load RSVPs" });
+      btn.addEventListener("click", function () { mcp.callTool(SERVER, TOOL, INPUT).then(onResult, function (e) { onError(e, mcp); }); });
+      banner("This page needs your OK to read the RSVP sheet from Google Drive.", false, btn);
+    } else if (code === "selection_required") {
+      banner("You have more than one Google Drive connected. Choose one when Claude asks, then reload.", true);
+    } else if (code === "tool_error") {
+      banner("Google Drive couldn't open the sheet: " + (err.message || "unknown reason") + ". Check you still have access to it.", true);
+    } else if (code === "not_granted" || code === "capability_disabled" || code === "capability_removed") {
+      banner("This view can't use your connectors. Open the dashboard in claude.ai while signed in.", true);
+    } else {
+      banner("Couldn't reach Google Drive just now" + (state.rows.length ? ". Showing the last numbers we had." : ".") + " Try Refresh in a minute.", true);
+    }
+  }
+
+  // Controls
+  $("#q").addEventListener("input", function (e) { state.q = e.target.value.trim(); renderTable(visible()); });
+  $("#show-test").addEventListener("change", function (e) { state.showTest = e.target.checked; render(); });
+  document.querySelectorAll(".seg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      state.filter = b.dataset.f;
+      document.querySelectorAll(".seg button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      renderTable(visible());
+    });
+  });
+
+  // Connect
+  if (!window.claude || !window.claude.use) { banner("Open this dashboard in claude.ai to load your RSVPs.", true); return; }
+  window.claude.use("mcp").then(function (mcp) {
+    if (!mcp) { banner("This view can't use your connectors. Open the dashboard in claude.ai while signed in.", true); $("#updated").textContent = "Not connected"; return; }
+    mcp.watchTool(SERVER, TOOL, INPUT, function (ev) {
+      if (ev.type === "data") onResult(ev.result); else onError(ev.error, mcp);
+    }, { refetchInterval: 60000 });
+    $("#refresh").addEventListener("click", function () {
+      $("#updated").textContent = "Refreshing…";
+      mcp.callTool(SERVER, TOOL, INPUT, { cache: { refresh: true } }).then(onResult, function (e) { onError(e, mcp); });
+    });
+  });
+})();
+</script>

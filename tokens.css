@@ -1,0 +1,63 @@
+/* ==========================================================================
+   Jessica & Gaurav · design tokens
+   Direction A, "Back to each other".
+
+   Everything on the site reads from this file. Each value has a reason;
+   if you can't say why something is here, it shouldn't be.
+   ========================================================================== */
+
+:root {
+  /* ---- Colour: three colours and one neutral ------------------------------ */
+  --navy:  #1b2433;  /* Ink. The navy of our engagement photos. Text, buttons. */
+  --cream: #f5eee3;  /* Paper. Warm, like the photos' linen. Page background. */
+  --cocoa: #6a4636;  /* Accent. The hot chocolate. Only for the "&", the one
+                        italic reveal, and focus/selection. Never for big areas. */
+  --stone: #d9cfc1;  /* Neutral. Lines, borders, quiet fills. */
+
+  /* Tints of the above (not new colours) */
+  --navy-soft: #4a5263;   /* secondary text: navy at reading contrast on cream */
+  --paper: #fbf8f2;       /* inputs and the RSVP card: a lighter cream */
+  --error: #8a2f24;       /* errors only: a darker cocoa so it stays in family */
+
+  /* ---- Type --------------------------------------------------------------- */
+  /* One display face, one accent (its italic), one body face. */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+                  /* high contrast at large sizes, soft and a bit playful */
+  --font-body: "Source Sans 3", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                  /* humanist, calm, very readable for older guests */
+
+  /* Scale (ratio ~1.33). Body never below 18px: some guests are in their 80s. */
+  --step--1: 1rem;                               /* labels, small print (16px) */
+  --step-0:  1.125rem;                           /* body (18px) */
+  --step-1:  1.375rem;                           /* lead text */
+  --step-2:  clamp(1.75rem, 5vw, 2.25rem);       /* section headings */
+  --step-3:  clamp(2.25rem, 7vw, 3.25rem);       /* big numbers, sub-heads */
+  --step-4:  clamp(3rem, 13vw, 6rem);            /* our names */
+  --leading: 1.6;
+  --label-tracking: 0.12em;                      /* uppercase labels only */
+
+  /* ---- Space (8px base) -------------------------------------------------- */
+  --s1: 8px;  --s2: 16px;  --s3: 24px;  --s4: 32px;
+  --s5: 48px; --s6: 72px;  --s7: 112px;
+  --gutter: 20px;          /* side margin on phones; wider on desktop */
+  --measure: 34rem;        /* reading width, about 65 characters */
+  --page: 1120px;          /* widest the layout gets */
+
+  /* ---- Touch -------------------------------------------------------------- */
+  --tap: 52px;             /* minimum height for anything you tap */
+  --radius: 4px;           /* barely rounded: crisp, not bubbly */
+  --line: 1px solid var(--stone);
+
+  /* ---- Motion ------------------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);     /* slow ease-out, never bouncy */
+  --dur: 0.9s;
+
+  /* ---- Motif: the loop ----------------------------------------------------
+     One continuous line around two dots: it always comes back to where it
+     started. Rules: navy line, cocoa dots, never filled, never animated,
+     at most twice per page (sign-in mark, and once in our story). */
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 40px; }
+}
