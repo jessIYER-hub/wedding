@@ -6,7 +6,8 @@ A small, static save-the-date site: plain HTML, CSS and vanilla JS. No framework
 index.html          the three screens + RSVP form
 styles.css          all styling; colours and fonts are CSS variables in :root
 script.js           all copy and settings in one block at the top
-assets/             placeholder photos (strip-1.jpg … strip-6.jpg)
+assets/             photo strip crops (strip-1.jpg … strip-6.jpg)
+assets/engagement/  the full engagement photos, web-sized
 apps-script/Code.gs Google Apps Script that writes RSVPs into a Google Sheet
 ```
 
@@ -20,14 +21,18 @@ Every line of copy is in the `CONFIG` object at the top of `script.js`: names, t
 
 ## Swapping the photos
 
-Replace the files in `assets/` with your own, keeping the same names:
+The strips use square crops of our engagement photos:
 
-| File | Where it shows |
-| --- | --- |
-| `strip-1.jpg`, `strip-2.jpg`, `strip-3.jpg` | photo strip inside the frame on the first screen |
-| `strip-4.jpg`, `strip-5.jpg`, `strip-6.jpg` | tilted strip on the save-the-date screen |
+| File | Photo | Where it shows |
+| --- | --- | --- |
+| `strip-1.jpg` | by the lake | first screen, inside the arch |
+| `strip-2.jpg` | laughing on the bench | first screen, inside the arch |
+| `strip-3.jpg` | under the trees by the lamppost | first screen, inside the arch |
+| `strip-4.jpg` | walking up the steps | save-the-date screen, tilted strip |
+| `strip-5.jpg` | the ring | save-the-date screen, tilted strip |
+| `strip-6.jpg` | by the lake, wider | save-the-date screen, tilted strip |
 
-Landscape photos (about 4:3) fit best. They're shown in black and white automatically, so colour originals are fine. Around 800px wide is plenty; keep them under ~300 KB each so the site loads quickly on phones.
+To use a different photo, save a **square** crop (about 600×600px, under ~150 KB) over one of these files. They're shown in black and white automatically, like a real photo booth, so colour originals are fine. To show them in colour instead, delete the `filter: grayscale(...)` line under `.strip img` in `styles.css`.
 
 ## Adding the flowers / ribbon
 
@@ -44,7 +49,7 @@ Position and size them in `styles.css` under `.decor-slot--flowers` and `.decor-
 
 ## Changing colours and fonts
 
-All colours are CSS variables at the top of `styles.css` (`--ivory`, `--navy`, `--dusty-blue`, `--gold` and friends). Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
+All colours are CSS variables at the top of `styles.css`: the ivory paper, the blues (`--navy`, `--royal`, `--dusty-blue` and friends, taken from our engagement outfits), the lotus petals (`--lotus-outer`, `--lotus-mid`, `--lotus-inner`) and the gold line work (`--gold`). The lotus, garland, arch, doors and lockets all pick their colours up from these. Fonts are `--font-script` (Pinyon Script) and `--font-serif` (Cormorant Garamond). To use Great Vibes instead, swap `Pinyon+Script` for `Great+Vibes` in the Google Fonts link in `index.html` and put `"Great Vibes"` first in `--font-script`.
 
 ## Countdown date
 
@@ -58,13 +63,15 @@ The `+00:00` is the time zone offset. Once you know where you're getting married
 
 ## The big reveal (venue)
 
-While `REVEAL_VENUE = false` the details screen shows "Somewhere beautiful, and we can't wait to tell you." When you're ready:
+On the third screen a pair of navy palace doors sits under a lotus arch. Guests tap "Open the doors" (or the doors themselves), and if they don't, the doors open on their own after a few seconds. Behind them: **6 · 7 · 8 November 2027** and **Royal Retreat Resort & Spa**.
 
-1. Fill in `CONFIG.venue.name`, `CONFIG.venue.city` and `CONFIG.venue.url` in `script.js`.
-2. Set `const REVEAL_VENUE = true;`
-3. Re-upload the site.
+- The dates are `CONFIG.reveal.days` and `CONFIG.reveal.month`.
+- The venue is `CONFIG.venue.name`. You can also add `CONFIG.venue.city` and `CONFIG.venue.url` (a website link); they only appear once they're filled in.
+- Set `const REVEAL_VENUE = false;` to hide the venue again. The doors then open onto the dates and the line "Somewhere beautiful, and we can't wait to tell you." Anything in `script.js` can be read by anyone who opens the page source, so if you ever need it truly hidden, empty the venue fields too.
 
-Keep the venue fields empty until then: anything in `script.js` can be read by anyone who opens the page source.
+## Lotus, garland and petals
+
+All the decoration is original SVG/CSS, no image files: the blue lotus (used as the crest on the frame, the dividers and the reveal), the toran garland across the top of the first screen, the arch frame and the drifting petals. To have fewer petals, or none, change `CONFIG.decor.petals` in `script.js` (`0` turns them off).
 
 ## Music (optional)
 
@@ -146,5 +153,6 @@ Note that on GitHub Pages a public repo makes all the files, including `script.j
 ## Small details
 
 - Screens snap as you scroll. On the first screen, tap anywhere or swipe up to move on.
-- Animations are slow and soft, and are switched off completely for anyone with "reduce motion" turned on in their device settings.
+- Animations are slow and soft: the names write themselves in, the arch draws itself, the strip slides down, the garland sways, petals drift, the doors open and the countdown ticks.
+- For anyone with "Reduce Motion" turned on in their phone settings, things still fade in gently, but nothing slides, sways or drifts and the doors fade rather than swing.
 - Works offline from a file for previewing, except the RSVP (needs the endpoint) and the fonts (need a connection).

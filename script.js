@@ -4,8 +4,9 @@
    EVERYTHING YOU'LL WANT TO EDIT IS IN THIS TOP SECTION.
    ========================================================================== */
 
-// Flip to true when you're ready to announce the venue (and fill in CONFIG.venue).
-const REVEAL_VENUE = false;
+// true: the doors open onto the venue in CONFIG.venue.
+// false: the doors open onto the dates and a teaser line instead.
+const REVEAL_VENUE = true;
 
 // The countdown counts down to this moment: the first day of the wedding.
 // Change the "+00:00" to the venue's UTC offset once you're ready (e.g. "+05:30", "+01:00").
@@ -26,10 +27,9 @@ const CONFIG = {
   },
 
   venue: {
-    // Leave empty until the big reveal.
-    name: "",
-    city: "",
-    url: "",
+    name: "Royal Retreat Resort & Spa",
+    city: "", // optional, e.g. the town or region
+    url: "",  // optional link to the resort's website
     linkLabel: "Take a look",
   },
 
@@ -53,13 +53,19 @@ const CONFIG = {
     line: "Three days with the people we love most. It wouldn't feel right without you, so please keep them free for us.",
   },
 
+  reveal: {
+    button: "Open the doors",
+    eyebrow: "Join us",
+    days: "6 · 7 · 8",
+    month: "November 2027",
+    teaser: "Somewhere beautiful, and we can't wait to tell you.", // shown when REVEAL_VENUE is false
+  },
+
   details: {
-    whereEyebrow: "Where",
-    teaser: "Somewhere beautiful, and we can't wait to tell you.",
     countdownEyebrow: "Until we see you",
     units: { days: "Days", hours: "Hours", mins: "Mins", secs: "Secs" },
     arrived: "It's today. See you there.",
-    formalLine: "A proper invitation will follow with all the details. We just wanted you to hear it from us first.",
+    formalLine: "Once you've told us you're coming, your proper invitation will find its way to you, along with a little website of its own for all the details. We just couldn't wait that long to tell you.",
     rsvpButton: "Share your details",
   },
 
@@ -113,7 +119,7 @@ const CONFIG = {
 
   thanks: {
     yesTitle: "We can't wait",
-    yesText: "You're on our list. Full schedule and room details to follow.",
+    yesText: "You're on our list, and your invitation will find you soon. Full schedule and room details to follow.",
     noTitle: "We'll miss you",
     noText: "Thank you for letting us know. We'll be thinking of you, and we'll celebrate together soon.",
     update: "Plans change, and that's okay. Send this again with the same name and we'll update your answer.",
@@ -131,6 +137,7 @@ const CONFIG = {
     // Transparent PNGs for the save-the-date screen. Leave empty to show nothing.
     flowers: "", // e.g. "assets/flowers.png"
     ribbon: "",  // e.g. "assets/ribbon.png"
+    petals: 12,  // drifting petals; 0 turns them off
   },
 };
 
@@ -182,6 +189,7 @@ const CONFIG = {
       gate.hidden = true;
     }
     startObservers();
+    startPetals();
   }
 
   function initGate() {
@@ -211,14 +219,18 @@ const CONFIG = {
   /* ---------- Screens & entry animations ---------- */
   function startObservers() {
     const screens = $$(".screen");
-    if (!("IntersectionObserver" in window) || reduceMotion) {
-      screens.forEach((s) => s.classList.add("is-in"));
+    const enter = (s) => {
+      s.classList.add("is-in");
+      s.dispatchEvent(new CustomEvent("screen:in"));
+    };
+    if (!("IntersectionObserver" in window)) {
+      screens.forEach(enter);
       return;
     }
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("is-in");
+          enter(entry.target);
           io.unobserve(entry.target);
         }
       });
@@ -288,13 +300,106 @@ const CONFIG = {
     $("#venue-teaser").hidden = true;
     $("#venue-revealed").hidden = false;
     $("#venue-name").textContent = v.name;
-    $("#venue-city").textContent = v.city;
-    const link = $("#venue-link");
+    if (v.city) {
+      $("#venue-city").textContent = v.city;
+      $("#venue-city").hidden = false;
+    }
     if (v.url) {
+      const link = $("#venue-link");
       link.href = v.url;
       link.textContent = v.linkLabel;
-    } else {
-      link.hidden = true;
+      link.hidden = false;
+    }
+  }
+
+  /* ---------- The big reveal: palace doors ---------- */
+  function initRevealDoors() {
+    const wrap = $("#reveal-doors");
+    const btn = $("#reveal-btn");
+    let autoTimer;
+    const open = () => {
+      clearTimeout(autoTimer);
+      if (wrap.classList.contains("is-open")) return;
+      wrap.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+      btn.tabIndex = -1;
+    };
+    btn.setAttribute("aria-expanded", "false");
+    btn.addEventListener("click", open);
+    $(".reveal-doors__arch", wrap).addEventListener("click", open);
+    // If nobody taps, the doors open by themselves after a moment.
+    $("#details").addEventListener("screen:in", () => {
+      autoTimer = setTimeout(open, 4500);
+    });
+  }
+
+  /* ---------- Toran garland ---------- */
+  function buildToran() {
+    const host = $("#toran");
+    const w = host.clientWidth || window.innerWidth;
+    const h = host.clientHeight || 64;
+    const span = w < 600 ? 44 : 56;
+    const count = Math.max(4, Math.round(w / span));
+    const step = w / count;
+    const sag = h * 0.22;
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    svg.setAttribute("preserveAspectRatio", "none");
+    let d = `M0 2`;
+    let drops = "";
+    const leafLen = h * 0.62;
+    for (let i = 0; i < count; i++) {
+      const x0 = i * step;
+      const mid = x0 + step / 2;
+      d += ` Q${mid.toFixed(1)} ${(2 + sag * 2).toFixed(1)} ${(x0 + step).toFixed(1)} 2`;
+      const y = 2 + sag; // lowest point of the swag
+      const delay = `${(-(i * 0.7) % 5.5).toFixed(2)}s`;
+      let item;
+      if (i % 2 === 0) {
+        const L = leafLen;
+        const alt = i % 4 === 0 ? "" : " toran__leaf--alt";
+        item = `<path class="toran__leaf${alt}" d="M0 0 C${L * 0.26} ${L * 0.28} ${L * 0.24} ${L * 0.7} 0 ${L} C${-L * 0.24} ${L * 0.7} ${-L * 0.26} ${L * 0.28} 0 0 Z"/>` +
+               `<path class="toran__rib" d="M0 ${L * 0.12} V${L * 0.88}"/>`;
+      } else {
+        item = `<path class="toran__string" d="M0 0 V${h * 0.14}"/>` +
+               `<circle class="toran__bead" cx="0" cy="${h * 0.22}" r="${h * 0.075}"/>` +
+               `<circle class="toran__bead toran__bead--blue" cx="0" cy="${h * 0.36}" r="${h * 0.05}"/>`;
+      }
+      drops += `<g transform="translate(${mid.toFixed(1)} ${y.toFixed(1)})"><g class="toran__drop" style="--sway-delay:${delay}">${item}</g></g>`;
+    }
+    svg.innerHTML = `<path class="toran__string" d="${d}"/>${drops}`;
+    host.replaceChildren(svg);
+  }
+
+  function initToran() {
+    buildToran();
+    let t;
+    let lastW = window.innerWidth;
+    window.addEventListener("resize", () => {
+      if (window.innerWidth === lastW) return; // ignore mobile URL-bar height changes
+      lastW = window.innerWidth;
+      clearTimeout(t);
+      t = setTimeout(buildToran, 200);
+    });
+  }
+
+  /* ---------- Drifting petals ---------- */
+  function startPetals() {
+    const host = $("#petals");
+    if (reduceMotion || !CONFIG.decor.petals || host.childElementCount) return;
+    const kinds = ["", "", "petal--blush", "petal--gold"];
+    for (let i = 0; i < CONFIG.decor.petals; i++) {
+      const p = document.createElement("span");
+      p.className = `petal ${kinds[i % kinds.length]}`;
+      const rand = (a, b) => a + Math.random() * (b - a);
+      p.style.setProperty("--x", `${rand(2, 96).toFixed(1)}vw`);
+      p.style.setProperty("--s", `${rand(8, 15).toFixed(1)}px`);
+      p.style.setProperty("--d", `${rand(16, 28).toFixed(1)}s`);
+      p.style.setProperty("--delay", `${(-rand(0, 26)).toFixed(1)}s`);
+      p.style.setProperty("--drift", `${rand(-60, 60).toFixed(0)}px`);
+      p.style.setProperty("--r", `${rand(-260, 260).toFixed(0)}deg`);
+      host.appendChild(p);
     }
   }
 
@@ -305,14 +410,22 @@ const CONFIG = {
     $$("[data-unit]").forEach((el) => { els[el.dataset.unit] = el; });
     const pad = (n, len = 2) => String(n).padStart(len, "0");
     let timer;
+    const set = (unit, value) => {
+      const el = els[unit];
+      if (el.textContent === value) return;
+      el.textContent = value;
+      el.classList.remove("tick");
+      void el.offsetWidth; // restart the animation
+      el.classList.add("tick");
+    };
 
     function tick() {
       const diff = Math.max(0, target - Date.now());
       const s = Math.floor(diff / 1000);
-      els.days.textContent = pad(Math.floor(s / 86400), 3);
-      els.hours.textContent = pad(Math.floor((s % 86400) / 3600));
-      els.mins.textContent = pad(Math.floor((s % 3600) / 60));
-      els.secs.textContent = pad(s % 60);
+      set("days", pad(Math.floor(s / 86400), 3));
+      set("hours", pad(Math.floor((s % 86400) / 3600)));
+      set("mins", pad(Math.floor((s % 3600) / 60)));
+      set("secs", pad(s % 60));
       if (diff === 0) {
         clearInterval(timer);
         $("#countdown").setAttribute("aria-label", CONFIG.details.arrived);
@@ -530,6 +643,8 @@ const CONFIG = {
   applyCopy();
   initSaveTheDate();
   initVenue();
+  initRevealDoors();
+  initToran();
   initCountdown();
   initLanding();
   initRsvp();

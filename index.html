@@ -18,19 +18,23 @@
   <!-- ============ GUEST GATE ============ -->
   <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
     <div class="gate__card">
+      <svg class="gate__lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
       <p class="script gate__names" data-copy="namesLine"></p>
-      <span class="rule" aria-hidden="true"></span>
+      <span class="rule" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
       <h2 class="caps gate__title" id="gate-title" data-copy="gate.title"></h2>
       <p class="gate__text" data-copy="gate.text"></p>
       <form class="gate__form" id="gate-form" novalidate>
         <label class="visually-hidden" for="gate-input" data-copy="gate.placeholder"></label>
         <input class="field__input gate__input" id="gate-input" name="passphrase" type="text"
                autocomplete="off" autocapitalize="none" spellcheck="false" required>
-        <button class="pill" type="submit" data-copy="gate.button"></button>
+        <button class="pill pill--solid" type="submit" data-copy="gate.button"></button>
         <p class="gate__error" id="gate-error" role="alert" aria-live="polite"></p>
       </form>
     </div>
   </div>
+
+  <!-- Drifting petals (filled in by script.js) -->
+  <div class="petals" id="petals" aria-hidden="true"></div>
 
   <!-- ============ MUSIC (hidden until CONFIG.music.src is set) ============ -->
   <button class="music-toggle" id="music-toggle" type="button" aria-pressed="false" hidden>
@@ -43,47 +47,48 @@
 
     <!-- ============ SCREEN 1 · LANDING ============ -->
     <section class="screen screen--landing" id="landing" aria-label="We're getting married">
-      <p class="caps eyebrow reveal r-names" data-copy="landing.eyebrow"></p>
-      <h1 class="names reveal r-names">
-        <span class="script" data-copy="names.first"></span>
-        <span class="script names__amp">&amp;</span>
-        <span class="script" data-copy="names.second"></span>
-      </h1>
+      <!-- Toran garland (built by script.js) -->
+      <div class="toran" id="toran" aria-hidden="true"></div>
 
-      <div class="frame-wrap reveal r-frame">
-        <!-- Bow: original SVG -->
-        <svg class="bow" viewBox="0 0 160 90" aria-hidden="true">
-          <path class="bow__tail" d="M76 44 C 70 60, 58 74, 46 86" />
-          <path class="bow__tail" d="M84 44 C 90 60, 102 74, 114 86" />
-          <path class="bow__loop" d="M78 40 C 60 10, 18 8, 14 30 C 10 52, 52 54, 78 42 Z" />
-          <path class="bow__loop" d="M82 40 C 100 10, 142 8, 146 30 C 150 52, 108 54, 82 42 Z" />
-          <path class="bow__fold" d="M70 38 C 52 26, 34 24, 26 32" />
-          <path class="bow__fold" d="M90 38 C 108 26, 126 24, 134 32" />
-          <ellipse class="bow__knot" cx="80" cy="41" rx="8" ry="9" />
+      <div class="landing__top">
+        <p class="caps eyebrow reveal r-eyebrow" data-copy="landing.eyebrow"></p>
+        <h1 class="names">
+          <span class="script" data-copy="names.first"></span>
+          <span class="script names__amp">&amp;</span>
+          <span class="script" data-copy="names.second"></span>
+        </h1>
+      </div>
+
+      <!-- Lotus-crowned arch frame (original SVG) holding the photo booth strip -->
+      <div class="arch-frame">
+        <svg class="arch-frame__svg" viewBox="0 0 180 440" aria-hidden="true">
+          <path class="arch-frame__fill" d="M6 436 V128 C6 84 40 62 70 44 C82 37 88 26 90 10 C92 26 98 37 110 44 C140 62 174 84 174 128 V436 Z" />
+          <path class="draw draw--gold" pathLength="1" d="M6 436 V128 C6 84 40 62 70 44 C82 37 88 26 90 10 C92 26 98 37 110 44 C140 62 174 84 174 128 V436 Z" />
+          <path class="draw draw--blue" pathLength="1" d="M14 428 V131 C14 92 45 72 74 53 C84 47 88 39 90 27 C92 39 96 47 106 53 C135 72 166 92 166 131 V428 Z" />
+          <path class="draw draw--dots" pathLength="1" d="M21 421 V134 C21 99 50 80 77 62 C85 57 88 50 90 42 C92 50 95 57 103 62 C130 80 159 99 159 134 V421 Z" />
+          <!-- hanging bells at the springing points -->
+          <g class="bells">
+            <path d="M6 128 V146 M174 128 V146" />
+            <circle cx="6" cy="150" r="3.4" />
+            <circle cx="174" cy="150" r="3.4" />
+          </g>
+          <use class="arch-frame__crest" href="#lotus" x="58" y="-18" width="64" height="38" />
+          <use class="arch-frame__base" href="#lotus" x="72" y="424" width="36" height="22" />
         </svg>
-
-        <div class="frame">
-          <!-- Corner flourishes: one original SVG, rotated per corner -->
-          <svg class="frame__corner frame__corner--tl" viewBox="0 0 60 60" aria-hidden="true"><use href="#flourish" /></svg>
-          <svg class="frame__corner frame__corner--tr" viewBox="0 0 60 60" aria-hidden="true"><use href="#flourish" /></svg>
-          <svg class="frame__corner frame__corner--bl" viewBox="0 0 60 60" aria-hidden="true"><use href="#flourish" /></svg>
-          <svg class="frame__corner frame__corner--br" viewBox="0 0 60 60" aria-hidden="true"><use href="#flourish" /></svg>
-
-          <div class="frame__window">
-            <!-- Photo booth strip: swap assets/strip-1..3.jpg -->
-            <div class="strip strip--landing">
-              <img src="assets/strip-1.jpg" alt="" loading="eager">
-              <img src="assets/strip-2.jpg" alt="" loading="eager">
-              <img src="assets/strip-3.jpg" alt="" loading="eager">
-              <span class="strip__caption caps" data-copy="initialsLine"></span>
-            </div>
+        <div class="arch-frame__window">
+          <!-- Photo booth strip: swap assets/strip-1..3.jpg -->
+          <div class="strip strip--landing">
+            <img src="assets/strip-1.jpg" alt="Jessica and Gaurav by the lake" loading="eager">
+            <img src="assets/strip-2.jpg" alt="Jessica laughing with Gaurav on a wooden bench" loading="eager">
+            <img src="assets/strip-3.jpg" alt="Jessica and Gaurav under the trees by a lamppost" loading="eager">
+            <span class="strip__caption caps" data-copy="initialsLine"></span>
           </div>
         </div>
       </div>
 
       <a class="open-prompt caps reveal r-prompt" href="#save-the-date" id="open-prompt">
-        <span data-copy="landing.prompt"></span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
+        <span data-copy="landing.prompt"></span>
       </a>
     </section>
 
@@ -99,10 +104,12 @@
           <div class="std__text">
             <h2 class="script std__title" data-copy="saveTheDate.title"></h2>
             <p class="std__date" data-copy="saveTheDate.date"></p>
-            <span class="rule rule--short" aria-hidden="true"></span>
+            <span class="rule rule--short" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
             <p class="caps std__sub" data-copy="saveTheDate.sub"></p>
           </div>
         </div>
+
+        <svg class="std__crest reveal r-crest" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
 
         <!--
           DECOR SLOT: flowers / ribbon artwork.
@@ -114,9 +121,9 @@
 
         <!-- Tilted strip: swap assets/strip-4..6.jpg -->
         <div class="strip strip--tilted reveal r-strip">
-          <img src="assets/strip-4.jpg" alt="" loading="lazy">
-          <img src="assets/strip-5.jpg" alt="" loading="lazy">
-          <img src="assets/strip-6.jpg" alt="" loading="lazy">
+          <img src="assets/strip-4.jpg" alt="Jessica and Gaurav walking up stone steps hand in hand" loading="lazy">
+          <img src="assets/strip-5.jpg" alt="Jessica showing her engagement ring" loading="lazy">
+          <img src="assets/strip-6.jpg" alt="Jessica and Gaurav by the water" loading="lazy">
         </div>
 
         <div class="lockets" aria-hidden="true">
@@ -128,21 +135,40 @@
       <p class="std__line reveal r-line" data-copy="saveTheDate.line"></p>
     </section>
 
-    <!-- ============ SCREEN 3 · DETAILS, COUNTDOWN & RSVP ============ -->
-    <section class="screen screen--details" id="details" aria-label="Details and RSVP">
+    <!-- ============ SCREEN 3 · REVEAL, COUNTDOWN & RSVP ============ -->
+    <section class="screen screen--details" id="details" aria-label="Where, when and RSVP">
       <div class="details">
-        <p class="caps eyebrow reveal r-1" data-copy="details.whereEyebrow"></p>
 
-        <div class="venue reveal r-1" id="venue">
-          <p class="venue__teaser" id="venue-teaser" data-copy="details.teaser"></p>
-          <div class="venue__revealed" id="venue-revealed" hidden>
-            <p class="script venue__name" id="venue-name"></p>
-            <p class="caps venue__city" id="venue-city"></p>
-            <a class="venue__link caps" id="venue-link" target="_blank" rel="noopener"></a>
+        <!-- The big reveal: palace doors open onto the dates and venue -->
+        <div class="reveal-doors reveal r-1" id="reveal-doors">
+          <div class="reveal-doors__arch">
+            <div class="reveal-doors__clip">
+            <div class="reveal-doors__inside">
+              <svg class="inside__lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
+              <p class="caps inside__eyebrow" data-copy="reveal.eyebrow"></p>
+              <p class="inside__days" data-copy="reveal.days"></p>
+              <p class="caps inside__month" data-copy="reveal.month"></p>
+              <span class="rule rule--short inside__rule" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
+              <div id="venue-revealed" hidden>
+                <p class="script inside__venue" id="venue-name"></p>
+                <p class="caps inside__city" id="venue-city" hidden></p>
+                <a class="inside__link caps" id="venue-link" target="_blank" rel="noopener" hidden></a>
+              </div>
+              <p class="inside__teaser" id="venue-teaser" data-copy="reveal.teaser"></p>
+            </div>
+
+            <div class="door door--left" aria-hidden="true"><div class="door__panel"><span class="door__ring"></span></div></div>
+            <div class="door door--right" aria-hidden="true"><div class="door__panel"><span class="door__ring"></span></div></div>
+            </div>
+
+            <svg class="reveal-doors__outline" viewBox="0 0 300 400" aria-hidden="true">
+              <path d="M1 399 V120 C1 68 60 40 114 20 C132 13 145 7 150 1 C155 7 168 13 186 20 C240 40 299 68 299 120 V399 Z" />
+            </svg>
           </div>
+          <button class="pill reveal-doors__btn" id="reveal-btn" type="button" aria-controls="reveal-doors">
+            <span data-copy="reveal.button"></span>
+          </button>
         </div>
-
-        <span class="rule reveal r-2" aria-hidden="true"></span>
 
         <p class="caps eyebrow reveal r-2" data-copy="details.countdownEyebrow"></p>
         <div class="countdown reveal r-2" id="countdown" role="timer" aria-live="off">
@@ -228,9 +254,10 @@
             </form>
 
             <div class="thanks" id="rsvp-thanks" hidden tabindex="-1">
+              <svg class="thanks__lotus" viewBox="0 0 100 60" aria-hidden="true"><use href="#lotus" /></svg>
               <p class="script thanks__title" id="thanks-title"></p>
               <p class="thanks__text" id="thanks-text"></p>
-              <span class="rule rule--short" aria-hidden="true"></span>
+              <span class="rule rule--short" aria-hidden="true"><svg viewBox="0 0 100 60"><use href="#lotus" /></svg></span>
               <p class="thanks__update" data-copy="thanks.update"></p>
               <button class="link-button caps" id="rsvp-again" type="button" data-copy="thanks.again"></button>
             </div>
@@ -245,29 +272,45 @@
     </section>
   </main>
 
-  <!-- Shared SVG symbols (original artwork) -->
+  <!-- Shared SVG artwork (all original). Colours come from CSS variables in styles.css. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#d9c48e" />
-        <stop offset="0.5" stop-color="#b8975a" />
-        <stop offset="1" stop-color="#dcc996" />
+        <stop offset="0" style="stop-color: var(--gold-soft)" />
+        <stop offset="0.5" style="stop-color: var(--gold)" />
+        <stop offset="1" style="stop-color: var(--gold-soft)" />
       </linearGradient>
-      <symbol id="flourish" viewBox="0 0 60 60">
-        <path d="M4 56 V 22 C 4 10, 10 4, 22 4 H 56" fill="none" stroke="url(#gold-grad)" stroke-width="1.2" />
-        <path d="M10 56 V 26 C 10 16, 16 10, 26 10 H 56" fill="none" stroke="url(#gold-grad)" stroke-width="0.6" />
-        <path d="M18 26 C 18 18, 24 14, 30 18 C 34 21, 30 27, 26 24" fill="none" stroke="url(#gold-grad)" stroke-width="0.9" />
-        <path d="M26 18 C 30 12, 38 12, 42 16" fill="none" stroke="url(#gold-grad)" stroke-width="0.7" />
-        <path d="M18 26 C 12 30, 12 38, 16 42" fill="none" stroke="url(#gold-grad)" stroke-width="0.7" />
-        <circle cx="16" cy="16" r="1.8" fill="url(#gold-grad)" />
+      <linearGradient id="enamel-grad" x1="0" y1="0" x2="0.4" y2="1">
+        <stop offset="0" style="stop-color: var(--royal-light)" />
+        <stop offset="1" style="stop-color: var(--royal)" />
+      </linearGradient>
+
+      <!-- Blue lotus -->
+      <symbol id="lotus" viewBox="0 0 100 60" overflow="visible">
+        <g style="stroke: var(--gold); stroke-width: 0.9; stroke-linejoin: round">
+          <path style="fill: var(--lotus-outer)" d="M50 53 C33 53 15 44 6 29 C23 28 40 37 50 53 Z" />
+          <path style="fill: var(--lotus-outer)" d="M50 53 C67 53 85 44 94 29 C77 28 60 37 50 53 Z" />
+          <path style="fill: var(--lotus-mid)" d="M50 52 C38 46 27 32 27 15 C39 22 48 35 50 52 Z" />
+          <path style="fill: var(--lotus-mid)" d="M50 52 C62 46 73 32 73 15 C61 22 52 35 50 52 Z" />
+          <path style="fill: var(--lotus-inner)" d="M50 4 C59 18 60 37 50 52 C40 37 41 18 50 4 Z" />
+        </g>
+        <path d="M24 57 Q50 62 76 57" style="fill: none; stroke: var(--gold); stroke-width: 0.9; stroke-linecap: round" />
+        <circle cx="50" cy="1" r="1.4" style="fill: var(--gold)" />
       </symbol>
+
+      <!-- Heart locket, blue enamel with gold edge -->
       <symbol id="locket" viewBox="0 0 100 110">
         <circle cx="50" cy="12" r="6" fill="none" stroke="url(#gold-grad)" stroke-width="2" />
         <path d="M50 104 C 22 84, 6 66, 6 46 C 6 30, 17 20, 31 20 C 40 20, 46 25, 50 32 C 54 25, 60 20, 69 20 C 83 20, 94 30, 94 46 C 94 66, 78 84, 50 104 Z"
-              fill="#fdfaf3" stroke="url(#gold-grad)" stroke-width="2.4" />
+              fill="url(#enamel-grad)" stroke="url(#gold-grad)" stroke-width="3" />
         <path d="M50 94 C 27 78, 14 63, 14 47 C 14 35, 22 28, 32 28 C 40 28, 46 33, 50 40 C 54 33, 60 28, 68 28 C 78 28, 86 35, 86 47 C 86 63, 73 78, 50 94 Z"
-              fill="none" stroke="url(#gold-grad)" stroke-width="0.8" stroke-dasharray="1.5 2.5" />
+              fill="none" stroke="url(#gold-grad)" stroke-width="0.9" stroke-dasharray="1.5 2.5" />
       </symbol>
+
+      <!-- Arch shape for the reveal doors (scales with the box) -->
+      <clipPath id="arch-clip" clipPathUnits="objectBoundingBox">
+        <path d="M0 1 V0.3 C0 0.17 0.2 0.1 0.38 0.05 C0.44 0.032 0.483 0.017 0.5 0 C0.517 0.017 0.56 0.032 0.62 0.05 C0.8 0.1 1 0.17 1 0.3 V1 Z" />
+      </clipPath>
     </defs>
   </svg>
 
