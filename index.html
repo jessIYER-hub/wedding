@@ -5,187 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#f8f1e4">
-  <title>Jessica &amp; Gaurav · Save the Date</title>
-  <meta name="description" content="A little save-the-date for the people we love.">
+  <title>Jessica &amp; Gaurav · 6 · 7 · 8 November 2027</title>
+  <meta name="description" content="Our wedding in Udaipur. RSVP here; schedule, themes and travel coming soon.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site.css">
 </head>
-<body class="is-locked">
+<!--
+  The wedding website. The save the date lives in Canva; its
+  "Share your details" button links here, to index.html#rsvp.
+  All wording is in CONFIG (script.js). The old envelope save the date
+  is still in save-the-date.html.
+-->
+<body data-page="site">
 
-  <!-- ============ GUEST GATE ============ -->
-  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
-    <div class="gate__card">
-      <p class="script gate__names" data-copy="namesLine"></p>
-      <span class="rule" aria-hidden="true"></span>
-      <h2 class="caps gate__title" id="gate-title" data-copy="gate.title"></h2>
-      <p class="gate__text" data-copy="gate.text"></p>
-      <form class="gate__form" id="gate-form" novalidate>
-        <label class="visually-hidden" for="gate-input" data-copy="gate.placeholder"></label>
-        <input class="field__input gate__input" id="gate-input" name="passphrase" type="text"
-               autocomplete="off" autocapitalize="none" spellcheck="false" required>
-        <button class="btn btn--solid" type="submit" data-copy="gate.button"></button>
-        <p class="gate__error" id="gate-error" role="alert" aria-live="polite"></p>
-      </form>
-    </div>
-  </div>
+  <header class="topbar" id="topbar">
+    <a class="topbar__mono" href="#home" aria-label="Home">
+      <span class="mono mono--small" aria-hidden="true"><span>J</span><span>G</span></span>
+    </a>
+    <nav class="topbar__nav" aria-label="Sections">
+      <a href="#rsvp" data-copy="site.nav.rsvp"></a>
+      <a href="#schedule" data-copy="site.nav.schedule"></a>
+      <a href="#themes" data-copy="site.nav.themes"></a>
+      <a href="#travel" data-copy="site.nav.travel"></a>
+      <a href="#faqs" data-copy="site.nav.faqs"></a>
+    </nav>
+  </header>
 
-  <!-- Drifting petals: off by default (CONFIG.decor.petals) -->
-  <div class="petals" id="petals" aria-hidden="true"></div>
-
-
-  <!--
-    Each screen holds one 9:16 card. Everything inside a card is sized
-    relative to the card, so it fits any phone without being cut off.
-  -->
-  <main class="screens" id="screens">
-
-    <!-- ============ SCREEN 1 · LANDING ============ -->
-    <section class="screen" id="landing" aria-label="We're getting married">
-      <div class="card card--landing">
-        <!-- Toran garland (built by script.js) -->
-        <div class="toran" id="toran" aria-hidden="true"></div>
-
-        <div class="landing__top">
-          <p class="caps eyebrow reveal r-eyebrow" data-copy="landing.eyebrow"></p>
-          <h1 class="names">
-            <span class="script" data-copy="names.first"></span>
-            <span class="script names__amp">&amp;</span>
-            <span class="script" data-copy="names.second"></span>
-          </h1>
-        </div>
-
-        <!-- Lotus-crowned arch frame (original SVG) holding the photo booth strip -->
-        <div class="arch-frame">
-          <svg class="arch-frame__svg" viewBox="0 0 160 404" aria-hidden="true">
-            <path class="arch-frame__fill" d="M5 400 V92 C5 60 34 46 58 34 C70 28 77 20 80 8 C83 20 90 28 102 34 C126 46 155 60 155 92 V400 Z" />
-            <path class="draw draw--gold" pathLength="1" d="M5 400 V92 C5 60 34 46 58 34 C70 28 77 20 80 8 C83 20 90 28 102 34 C126 46 155 60 155 92 V400 Z" />
-            <path class="draw draw--blue" pathLength="1" d="M12 393 V95 C12 66 39 53 61 41 C72 35 78 28 80 19 C82 28 88 35 99 41 C121 53 148 66 148 95 V393 Z" />
-            <g class="bells">
-              <path d="M5 92 V106 M155 92 V106" />
-              <circle cx="5" cy="109.5" r="3.2" />
-              <circle cx="155" cy="109.5" r="3.2" />
-            </g>
-          </svg>
-          <div class="arch-frame__window">
-            <!-- Photo booth strip: swap assets/strip-1..3.jpg -->
-            <div class="strip strip--landing">
-              <img src="assets/strip-1.jpg" alt="Jessica and Gaurav holding each other on a bridge in the park" loading="eager">
-              <img src="assets/strip-2.jpg" alt="Jessica laughing in Gaurav's arms on a wooden bench" loading="eager">
-              <img src="assets/strip-3.jpg" alt="Gaurav kissing Jessica's forehead by the lake" loading="eager">
-              <span class="strip__caption caps" data-copy="initialsLine"></span>
-            </div>
-          </div>
-        </div>
-
-        <a class="open-prompt caps reveal r-prompt" href="#save-the-date" id="open-prompt">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
-          <span data-copy="landing.prompt"></span>
-        </a>
+  <main>
+    <!-- ============ HOME ============ -->
+    <section class="hero" id="home" aria-label="Jessica and Gaurav">
+      <!--
+        MONOGRAM: to use the exact monogram from Canva, download it as a
+        transparent PNG and save it as assets/monogram.png. Until then a
+        lettered version is drawn instead.
+      -->
+      <div class="hero__mono rv">
+        <img class="mono-img" src="assets/monogram.png" alt="" hidden>
+        <span class="mono mono--large" aria-hidden="true"><span>J</span><span>G</span></span>
       </div>
+      <p class="caps hero__eyebrow rv" data-copy="site.hero.eyebrow"></p>
+      <h1 class="script hero__names rv" data-copy="namesLine"></h1>
+
+      <figure class="hero__arch rv">
+        <img src="assets/engagement/lake.jpg" alt="Jessica and Gaurav by the lake" loading="eager">
+        <svg class="hero__arch-line" viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M1 399 V128 C1 74 62 46 116 25 C133 18 145 10 150 1 C155 10 167 18 184 25 C238 46 299 74 299 128 V399 Z" />
+        </svg>
+      </figure>
+
+      <p class="hero__dates rv" data-copy="site.hero.dates"></p>
+      <p class="script hero__venue rv" id="venue-name"></p>
+      <p class="caps hero__city rv" id="venue-city"></p>
+
+      <div class="countdown hero__countdown rv" id="countdown" role="timer" aria-live="off">
+        <div class="countdown__unit"><span class="countdown__num" data-unit="days">000</span><span class="caps countdown__label" data-copy="details.units.days"></span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-unit="hours">00</span><span class="caps countdown__label" data-copy="details.units.hours"></span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-unit="mins">00</span><span class="caps countdown__label" data-copy="details.units.mins"></span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-unit="secs">00</span><span class="caps countdown__label" data-copy="details.units.secs"></span></div>
+      </div>
+
+      <a class="btn btn--solid hero__cta rv" href="#rsvp" data-copy="site.hero.rsvpButton"></a>
     </section>
 
-    <!-- ============ SCREEN 2 · SAVE THE DATE ============ -->
-    <section class="screen" id="save-the-date" aria-label="Save the date">
-      <div class="card card--std">
-        <div class="std">
-          <div class="std__oval reveal r-oval">
-            <svg class="oval-svg" viewBox="0 0 300 400" aria-hidden="true">
-              <path class="oval-svg__scallop" id="oval-scallop" />
-              <ellipse class="oval-svg__inner" cx="150" cy="200" rx="124" ry="170" />
-              <ellipse class="oval-svg__inner oval-svg__inner--fine" cx="150" cy="200" rx="116" ry="162" />
-            </svg>
-            <div class="std__text">
-              <h2 class="script std__title" data-copy="saveTheDate.title"></h2>
-              <p class="std__date" data-copy="saveTheDate.date"></p>
-              <span class="rule rule--short" aria-hidden="true"></span>
-              <p class="caps std__sub" data-copy="saveTheDate.sub"></p>
-            </div>
-          </div>
-
-
-          <!--
-            DECOR SLOT: flowers / ribbon artwork.
-            Set CONFIG.decor.flowers (e.g. "assets/flowers.png") and CONFIG.decor.ribbon
-            in script.js and the images will be placed here. Transparent PNGs work best.
-          -->
-          <div class="decor-slot decor-slot--flowers" id="decor-flowers" aria-hidden="true"></div>
-          <div class="decor-slot decor-slot--ribbon" id="decor-ribbon" aria-hidden="true"></div>
-
-          <!-- Tilted strip: swap assets/strip-4..6.jpg -->
-          <div class="strip strip--tilted reveal r-strip">
-            <img src="assets/strip-4.jpg" alt="Jessica and Gaurav walking up stone steps hand in hand" loading="lazy">
-            <img src="assets/strip-5.jpg" alt="Jessica and Gaurav smiling at each other under the trees" loading="lazy">
-            <img src="assets/strip-6.jpg" alt="Jessica showing her engagement ring" loading="lazy">
-          </div>
-
-          <div class="lockets" aria-hidden="true">
-            <svg class="locket locket--one reveal r-locket-1" viewBox="0 0 100 110"><use href="#locket" /><text x="50" y="72" class="locket__initial" data-copy="names.initials.0"></text></svg>
-            <svg class="locket locket--two reveal r-locket-2" viewBox="0 0 100 110"><use href="#locket" /><text x="50" y="72" class="locket__initial" data-copy="names.initials.1"></text></svg>
-          </div>
-        </div>
-
-        <p class="std__line reveal r-line" data-copy="saveTheDate.line"></p>
-      </div>
-    </section>
-
-    <!-- ============ SCREEN 3 · WHERE & WHEN, COUNTDOWN, RSVP ============ -->
-    <section class="screen" id="details" aria-label="Where, when and RSVP">
-      <div class="card card--details">
-
-        <!-- The reveal: the arch draws itself, then the dates and venue are written in -->
-        <div class="venue-arch" id="venue-arch">
-          <svg class="venue-arch__svg" viewBox="0 0 300 400" aria-hidden="true">
-            <path class="venue-arch__fill" d="M2 398 V120 C2 70 60 42 114 22 C132 15 145 9 150 2 C155 9 168 15 186 22 C240 42 298 70 298 120 V398 Z" />
-            <path class="vdraw vdraw--gold" pathLength="1" d="M2 398 V120 C2 70 60 42 114 22 C132 15 145 9 150 2 C155 9 168 15 186 22 C240 42 298 70 298 120 V398 Z" />
-            <path class="vdraw vdraw--blue" pathLength="1" d="M12 388 V123 C12 77 67 51 118 32 C135 25 146 19 150 13 C154 19 165 25 182 32 C233 51 288 77 288 123 V388 Z" />
-          </svg>
-          <div class="venue-arch__inside">
-            <p class="rv rv-2 caps inside__eyebrow" data-copy="reveal.eyebrow"></p>
-            <p class="rv rv-3 inside__days" data-copy="reveal.days"></p>
-            <p class="rv rv-4 caps inside__month" data-copy="reveal.month"></p>
-            <span class="rv rv-5 rule rule--short inside__rule" aria-hidden="true"></span>
-            <div class="inside__venue-wrap" id="venue-revealed" hidden>
-              <p class="script inside__venue" id="venue-name"></p>
-              <p class="rv rv-7 caps inside__city" id="venue-city" hidden></p>
-              <a class="rv rv-7 inside__link" id="venue-link" target="_blank" rel="noopener" hidden></a>
-            </div>
-            <p class="rv rv-6 inside__teaser" id="venue-teaser" data-copy="reveal.teaser"></p>
-          </div>
-        </div>
-
-        <div class="details__lower">
-          <p class="caps eyebrow reveal r-2" data-copy="details.countdownEyebrow"></p>
-          <div class="countdown reveal r-2" id="countdown" role="timer" aria-live="off">
-            <div class="countdown__unit"><span class="countdown__num" data-unit="days">000</span><span class="caps countdown__label" data-copy="details.units.days"></span></div>
-            <div class="countdown__unit"><span class="countdown__num" data-unit="hours">00</span><span class="caps countdown__label" data-copy="details.units.hours"></span></div>
-            <div class="countdown__unit"><span class="countdown__num" data-unit="mins">00</span><span class="caps countdown__label" data-copy="details.units.mins"></span></div>
-            <div class="countdown__unit"><span class="countdown__num" data-unit="secs">00</span><span class="caps countdown__label" data-copy="details.units.secs"></span></div>
-          </div>
-
-          <p class="details__formal reveal r-3" data-copy="details.formalLine"></p>
-
-          <button class="btn btn--solid btn--rsvp reveal r-3" id="rsvp-open" type="button"
-                  aria-haspopup="dialog" aria-controls="rsvp-sheet" data-copy="details.rsvpButton"></button>
-
-          <p class="script signoff reveal r-4" data-copy="signoff"></p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ============ RSVP SHEET (slides up over the card) ============ -->
-  <div class="sheet" id="rsvp-sheet" role="dialog" aria-modal="true" aria-labelledby="rsvp-title" hidden>
-    <div class="sheet__backdrop" data-close></div>
-    <div class="sheet__panel">
-      <button class="sheet__close" type="button" data-close>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-        <span class="visually-hidden" data-copy="rsvp.close"></span>
-      </button>
-      <div class="sheet__scroll" id="sheet-scroll">
-
+    <!-- ============ RSVP (live) ============ -->
+    <section class="block block--rsvp" id="rsvp" aria-labelledby="rsvp-title">
+      <div class="rsvp-card rv">
         <form class="rsvp" id="rsvp-form" novalidate>
           <h2 class="script rsvp__title" id="rsvp-title" data-copy="rsvp.title"></h2>
           <p class="rsvp__intro" data-copy="rsvp.intro"></p>
@@ -261,32 +149,22 @@
         </div>
 
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Shared SVG artwork (all original). Colours come from CSS variables in styles.css. -->
+    <!-- ============ COMING SOON SECTIONS (built from CONFIG.site.sections) ============ -->
+    <div id="sections"></div>
+  </main>
+
+  <footer class="site-foot">
+    <span class="mono mono--small" aria-hidden="true"><span>J</span><span>G</span></span>
+    <p class="script site-foot__signoff" data-copy="signoff"></p>
+  </footer>
+
+  <!-- Pointed arch shape for the hero photo, matching the Canva arch -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <defs>
-      <linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" style="stop-color: var(--gold-soft)" />
-        <stop offset="0.5" style="stop-color: var(--gold)" />
-        <stop offset="1" style="stop-color: var(--gold-soft)" />
-      </linearGradient>
-      <linearGradient id="enamel-grad" x1="0" y1="0" x2="0.4" y2="1">
-        <stop offset="0" style="stop-color: var(--dusty-blue)" />
-        <stop offset="1" style="stop-color: var(--navy-soft)" />
-      </linearGradient>
-
-
-      <!-- Heart locket, blue enamel with gold edge -->
-      <symbol id="locket" viewBox="0 0 100 110">
-        <circle cx="50" cy="12" r="6" fill="none" stroke="url(#gold-grad)" stroke-width="2" />
-        <path d="M50 104 C 22 84, 6 66, 6 46 C 6 30, 17 20, 31 20 C 40 20, 46 25, 50 32 C 54 25, 60 20, 69 20 C 83 20, 94 30, 94 46 C 94 66, 78 84, 50 104 Z"
-              fill="url(#enamel-grad)" stroke="url(#gold-grad)" stroke-width="3" />
-        <path d="M50 94 C 27 78, 14 63, 14 47 C 14 35, 22 28, 32 28 C 40 28, 46 33, 50 40 C 54 33, 60 28, 68 28 C 78 28, 86 35, 86 47 C 86 63, 73 78, 50 94 Z"
-              fill="none" stroke="url(#gold-grad)" stroke-width="0.9" stroke-dasharray="1.5 2.5" />
-      </symbol>
-    </defs>
+    <clipPath id="hero-arch" clipPathUnits="objectBoundingBox">
+      <path d="M0 1 V0.33 C0 0.2 0.2 0.13 0.37 0.08 C0.43 0.06 0.48 0.035 0.5 0 C0.52 0.035 0.57 0.06 0.63 0.08 C0.8 0.13 1 0.2 1 0.33 V1 Z" />
+    </clipPath>
   </svg>
 
   <script src="script.js"></script>

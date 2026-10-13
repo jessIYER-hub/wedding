@@ -97,15 +97,24 @@ It isn't case sensitive.
 
 ---
 
-## The RSVP page for the Canva save the date
+## How it fits together
 
-`rsvp.html` is a standalone RSVP page: the same questions, wording and Google Sheet as the full site, styled to match the Canva design, with no password screen. Once the site is online, link the **Share your details** button in Canva to:
+- **Save the date:** your Canva design, published as a Canva website and sent on WhatsApp.
+- **Wedding website (`index.html`):** your monogram, names, dates, venue, a live countdown, and the RSVP form. Schedule, Themes, Travel and FAQs show "Coming soon" for now.
+- In Canva, link the **Share your details** button to `https://<your-site-address>/#rsvp`. It opens the website straight at the RSVP form.
+- The old envelope-style save the date is still in `save-the-date.html` if you ever want it.
 
+### Filling in the "coming soon" sections
+
+In `script.js`, find `site: { ... sections: [ ... ] }`. For each section, change `soon: true` to `soon: false` and write your paragraphs in `body`, e.g.
+
+```js
+body: ["Day 1: Mehendi by the lake, from 4pm.", "Day 2: ..."],
 ```
-https://<your-site-address>/rsvp.html
-```
 
-(In Canva: select the button text, click the link icon, paste the address.)
+### Using your Canva monogram
+
+Download the monogram from Canva as a PNG with a transparent background and save it as `assets/monogram.png`. The site picks it up automatically; until then it shows a lettered J G.
 
 ## Connecting the RSVP form to Google Sheets
 

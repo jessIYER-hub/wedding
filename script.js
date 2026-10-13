@@ -128,6 +128,62 @@ const CONFIG = {
 
   signoff: "With love, Jessica & Gaurav",
 
+  // The wedding website (index.html). The save the date lives in Canva.
+  site: {
+    hero: {
+      eyebrow: "We are getting married",
+      dates: "6 · 7 · 8 November 2027",
+      rsvpButton: "Share your details",
+      scrollHint: "Scroll",
+    },
+    nav: {
+      home: "Home",
+      rsvp: "RSVP",
+      schedule: "Schedule",
+      themes: "Themes",
+      travel: "Travel",
+      faqs: "FAQs",
+    },
+    rsvpEyebrow: "Will you be there?",
+    soonLabel: "Coming soon",
+    // Each section shows "Coming soon" until you write it.
+    // To open one up: set `soon: false` and add `body` (paragraphs).
+    sections: [
+      {
+        id: "schedule",
+        eyebrow: "6 · 7 · 8 November",
+        title: "The Celebrations",
+        teaser: "Three days of ceremonies, music and food. The full schedule is on its way.",
+        soon: true,
+        body: [],
+      },
+      {
+        id: "themes",
+        eyebrow: "What to wear",
+        title: "Themes",
+        teaser: "Every day has its own look, and we cannot wait to show you. Start dreaming, but do not start shopping just yet.",
+        soon: true,
+        body: [],
+      },
+      {
+        id: "travel",
+        eyebrow: "Getting there",
+        title: "Travel & Stay",
+        teaser: "Flights, transfers and your room at Royal Retreat. All the details will be right here.",
+        soon: true,
+        body: [],
+      },
+      {
+        id: "faqs",
+        eyebrow: "Good to know",
+        title: "Questions",
+        teaser: "Anything you might be wondering about, answered in one place.",
+        soon: true,
+        body: [],
+      },
+    ],
+  },
+
   decor: {
     // Transparent PNGs for the save-the-date screen. Leave empty to show nothing.
     flowers: "", // e.g. "assets/flowers.png"
@@ -607,11 +663,82 @@ const CONFIG = {
     }
   }
 
+  /* ---------- Wedding website (index.html) ---------- */
+  function buildSections() {
+    const host = $("#sections");
+    CONFIG.site.sections.forEach((sec) => {
+      const el = document.createElement("section");
+      el.className = "block block--section" + (sec.soon ? " is-soon" : "");
+      el.id = sec.id;
+      const card = document.createElement("div");
+      card.className = "section-card rv";
+      const add = (tag, cls, text) => {
+        const n = document.createElement(tag);
+        n.className = cls;
+        n.textContent = text;
+        card.appendChild(n);
+        return n;
+      };
+      add("p", "caps section-card__eyebrow", sec.eyebrow);
+      add("h2", "script section-card__title", sec.title);
+      const rule = add("span", "rule rule--short", "");
+      rule.setAttribute("aria-hidden", "true");
+      if (sec.soon || !sec.body.length) {
+        add("p", "section-card__teaser", sec.teaser);
+        add("p", "caps section-card__soon", CONFIG.site.soonLabel);
+      } else {
+        sec.body.forEach((para) => add("p", "section-card__body", para));
+      }
+      el.appendChild(card);
+      host.appendChild(el);
+    });
+  }
+
+  function initSite() {
+    $("#venue-name").textContent = CONFIG.venue.name;
+    $("#venue-city").textContent = CONFIG.venue.city;
+
+    // Use the Canva monogram if assets/monogram.png exists, otherwise the lettered one.
+    const monoImg = $(".mono-img");
+    monoImg.addEventListener("load", () => {
+      monoImg.hidden = false;
+      $(".hero__mono .mono").hidden = true;
+    });
+    if (monoImg.complete && monoImg.naturalWidth) monoImg.dispatchEvent(new Event("load"));
+
+    buildSections();
+
+    // Fade things in as they scroll into view.
+    const items = $$(".rv");
+    if (!("IntersectionObserver" in window)) {
+      items.forEach((el) => el.classList.add("is-in"));
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -5% 0px" });
+      items.forEach((el) => io.observe(el));
+    }
+
+    // Soften the top bar once the page has scrolled.
+    const bar = $("#topbar");
+    const onScroll = () => bar.classList.toggle("is-scrolled", window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    initCountdown();
+    initRsvp();
+  }
+
   /* ---------- Go ---------- */
   applyCopy();
-  // rsvp.html: just the form, no password screen (guests arrive from the Canva site).
-  if (document.body.dataset.page === "rsvp") {
-    initRsvp();
+  // index.html: the wedding website. Guests arrive from the Canva save the date,
+  // so there is no password screen; the passphrase is still sent with each RSVP.
+  if (document.body.dataset.page === "site") {
+    initSite();
     return;
   }
   initSaveTheDate();

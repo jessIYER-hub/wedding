@@ -1,0 +1,231 @@
+/* ==========================================================================
+   Wedding website (index.html). Builds on styles.css (colours, fonts,
+   form and button styles); this file only adds the page layout.
+   ========================================================================== */
+
+body[data-page="site"] {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+body[data-page="site"] :target { scroll-margin-top: 72px; }
+
+/* Gentle fade-up as things scroll into view */
+body[data-page="site"] .rv {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+body[data-page="site"] .rv.is-in { opacity: 1; transform: none; }
+.hero .rv:nth-child(2) { transition-delay: 0.15s; }
+.hero .rv:nth-child(3) { transition-delay: 0.3s; }
+.hero .rv:nth-child(4) { transition-delay: 0.5s; }
+.hero .rv:nth-child(5) { transition-delay: 0.7s; }
+.hero .rv:nth-child(6) { transition-delay: 0.85s; }
+.hero .rv:nth-child(7) { transition-delay: 1s; }
+.hero .rv:nth-child(8) { transition-delay: 1.15s; }
+.hero .rv:nth-child(9) { transition-delay: 1.3s; }
+
+/* ---------- Monogram (lettered stand-in for assets/monogram.png) ---------- */
+.mono {
+  position: relative;
+  display: inline-block;
+  font-family: "Pinyon Script", var(--font-script);
+  font-style: normal;
+  color: var(--dusty-blue);
+  line-height: 1;
+}
+.mono span:first-child { position: relative; z-index: 1; }
+.mono span:last-child { margin-left: -0.32em; position: relative; top: 0.12em; }
+.mono--large { font-size: 5.2rem; }
+.mono--small { font-size: 1.9rem; }
+.mono-img { width: 120px; height: auto; margin: 0 auto; }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: max(8px, env(safe-area-inset-top)) 12px 8px;
+  background: rgba(248, 241, 228, 0);
+  transition: background-color 0.8s var(--ease-out), box-shadow 0.8s var(--ease-out);
+}
+.topbar.is-scrolled {
+  background: rgba(248, 241, 228, 0.94);
+  box-shadow: 0 1px 0 var(--gold-faint);
+}
+.topbar__mono { text-decoration: none; flex: none; padding: 2px 4px; }
+.topbar__nav {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.topbar__nav::-webkit-scrollbar { display: none; }
+.topbar__nav a {
+  flex: none;
+  padding: 10px 7px;
+  font-family: var(--font-serif);
+  font-variant: small-caps;
+  text-transform: lowercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--navy);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.topbar__nav a:hover { color: var(--royal); }
+
+/* ---------- Hero ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: calc(76px + env(safe-area-inset-top)) 16px 64px;
+  min-height: 100vh;
+}
+.hero__mono { margin-bottom: 0.4rem; }
+.hero__eyebrow { margin: 0; font-size: 0.9rem; }
+.hero__names {
+  margin: 0.2rem 0 1.4rem;
+  font-size: clamp(2.6rem, 12vw, 4.6rem);
+  color: var(--navy);
+  white-space: nowrap;
+}
+.hero__arch {
+  position: relative;
+  margin: 0 0 1.6rem;
+  width: min(68vw, 300px);
+  aspect-ratio: 3 / 4;
+  filter: drop-shadow(0 22px 26px rgba(74, 56, 30, 0.16));
+}
+.hero__arch img {
+  position: absolute;
+  inset: 9px;
+  width: calc(100% - 18px);
+  height: calc(100% - 18px);
+  object-fit: cover;
+  object-position: 50% 62%;
+  clip-path: url(#hero-arch);
+}
+.hero__arch-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.hero__arch-line path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+.hero__dates {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--navy);
+}
+.hero__venue { margin: 0.5rem 0 0; font-size: 2rem; color: var(--navy); }
+.hero__city { margin: 0.4rem 0 0; font-size: 0.85rem; }
+
+body[data-page="site"] .hero__countdown {
+  width: min(100%, 340px);
+  margin: 1.8rem auto 1.8rem;
+  gap: 8px;
+}
+body[data-page="site"] .countdown__unit { padding: 14px 0 8px; }
+body[data-page="site"] .countdown__num { font-size: 1.9rem; }
+body[data-page="site"] .countdown__label { font-size: 0.68rem; margin-top: 2px; }
+
+.hero__cta { text-decoration: none; }
+
+/* ---------- Content blocks ---------- */
+.block {
+  padding: 56px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.rsvp-card,
+.section-card {
+  width: min(100%, 520px);
+  background: var(--paper-light) url("assets/paper-texture.png");
+  border: 1px solid var(--gold);
+  outline: 1px solid var(--gold-faint);
+  outline-offset: -8px;
+  box-shadow: 0 24px 60px -36px var(--paper-shadow);
+}
+.rsvp-card {
+  padding: 30px 22px 28px;
+  border-radius: 999px 999px 4px 4px / 130px 130px 4px 4px;
+}
+.rsvp-card .rsvp,
+.rsvp-card .thanks { max-width: none; }
+.rsvp-card .rsvp__title { margin-top: 1.6rem; }
+.rsvp-card .thanks { padding: 2.6rem 0 1rem; }
+
+.section-card {
+  padding: 40px 26px 34px;
+  text-align: center;
+}
+.section-card__eyebrow { margin: 0; font-size: 0.85rem; }
+.section-card__title { margin: 0.3rem 0 0; font-size: 2.4rem; color: var(--navy); }
+.section-card__teaser,
+.section-card__body {
+  margin: 0 auto 0.8rem;
+  max-width: 34ch;
+  font-size: 1.12rem;
+  line-height: 1.55;
+  color: var(--navy-soft);
+  text-wrap: balance;
+}
+.section-card__soon {
+  display: inline-block;
+  margin: 0.8rem 0 0;
+  padding: 8px 18px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--gold);
+}
+.is-soon .section-card__soon { animation: soft-pulse 3.6s ease-in-out infinite; }
+
+/* Themes gets a little extra anticipation */
+#themes .section-card {
+  background:
+    radial-gradient(70% 60% at 50% 0%, var(--blue-mist), transparent 70%),
+    var(--paper-light) url("assets/paper-texture.png");
+}
+
+/* ---------- Footer ---------- */
+.site-foot {
+  padding: 24px 16px max(48px, env(safe-area-inset-bottom));
+  text-align: center;
+}
+.site-foot__signoff { margin: 0.4rem 0 0; font-size: 1.6rem; color: var(--dusty-blue); }
+
+@media (min-width: 700px) {
+  .topbar { justify-content: center; }
+  .topbar__mono { position: absolute; left: 20px; }
+  .block { padding: 72px 24px; }
+  .rsvp-card { padding: 44px 44px 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="site"] { scroll-behavior: auto; }
+  body[data-page="site"] .rv { transform: none !important; }
+  .is-soon .section-card__soon { animation: none; }
+}
