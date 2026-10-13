@@ -45,8 +45,8 @@ _redirects             keeps apps-script/ and dashboard/ off the public site
 ## B. Put the site online (Netlify, free)
 
 1. Go to [netlify.com](https://www.netlify.com) and sign up free (your Google account works).
-2. Download this project folder. On GitHub: the green **Code** button → **Download ZIP**, then unzip it.
-3. In Netlify: **Add new site → Deploy manually**, then drag the unzipped folder onto the page.
+2. Unzip **`jessica-and-gaurav-site.zip`** (in this project). It holds only the public site files, in a folder called `jessica-and-gaurav`.
+3. In Netlify: **Add new site → Deploy manually**, then drag that `jessica-and-gaurav` folder onto the page.
 4. Once it's up: **Site configuration → Change site name** → type `jessica-and-gaurav` → **Save**.
    Your site is now **https://jessica-and-gaurav.netlify.app**. That's the link to send with the save-the-date.
 
