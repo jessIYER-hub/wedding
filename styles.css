@@ -434,11 +434,6 @@ main > section + section { border-top: var(--line); }
 .wear__text { max-width: var(--measure); }
 .wear strong { font-weight: 600; }
 
-/* Swatches are a colour guide for guests, not part of our palette */
-.swatches { display: flex; gap: 4px; margin-top: var(--s2); max-width: 15rem; }
-.swatches span { flex: 1; height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(27, 36, 51, 0.12); }
-.swatches--ombre { height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(27, 36, 51, 0.12); }
-
 /* ---------- Footer ---------- */
 .footer {
   max-width: var(--page);

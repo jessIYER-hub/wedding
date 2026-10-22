@@ -14,9 +14,6 @@
                         italic reveal, and focus/selection. Never for big areas. */
   --stone: #d9cfc1;  /* Neutral. Lines, borders, quiet fills. */
 
-  /* The swatch strips under "What to wear" use guests' outfit colours. They are
-     content, not part of this palette, and appear nowhere else. */
-
   /* Tints of the above (not new colours) */
   --navy-soft: #4a5263;   /* secondary text: navy at reading contrast on cream */
   --paper: #fbf8f2;       /* inputs and the RSVP card: a lighter cream */

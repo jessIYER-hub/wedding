@@ -597,19 +597,6 @@ const COUNTRY_CODES = [
   function rich(text) {
     return String(text || "").split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? h("strong", { text: part }) : part));
   }
-  const isColour = (c) => /^#[0-9a-f]{6}$/i.test(String(c));
-
-  function swatchStrip(sw) {
-    const colours = (sw && sw.colours || []).filter(isColour);
-    if (!colours.length) return null;
-    if (sw.ombre) {
-      return h("div", { class: "swatches swatches--ombre", "aria-hidden": "true",
-        style: `background: linear-gradient(90deg, ${colours.join(", ")})` });
-    }
-    return h("div", { class: "swatches", "aria-hidden": "true" },
-      colours.map((c) => h("span", { style: `background: ${c}` })));
-  }
-
   // "Saturday 6 November · Colours of Home": keep the date and the theme each on
   // one line, so any line break falls after the dot. The words are unchanged.
   function headingParts(text) {
@@ -628,9 +615,7 @@ const COUNTRY_CODES = [
           h("div", { class: "wear__meta" },
             h("h4", { class: "wear__heading" }, headingParts(ev.heading)),
             ev.subtitle ? h("p", { class: "wear__sub", text: ev.subtitle }) : null),
-          h("div", { class: "wear__body" },
-            h("p", { class: "wear__text" }, rich(ev.text)),
-            swatchStrip(ev.swatches))))));
+          h("p", { class: "wear__text" }, rich(ev.text))))));
   }
 
   /* ---------- Updating an earlier RSVP ---------- */
