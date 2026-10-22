@@ -22,7 +22,14 @@ const SHEET_NAME = 'RSVPs';
 // so "Dark Sugars", "darksugars" and "DARK SUGARS" all work.
 const INVITE_CODE = 'dark sugars';
 
-// Shown only to guests who RSVP yes.
+// WHAT GUESTS SEE AFTER A YES
+// Right now the site is just for RSVPs, so both are off. In January, set them to
+// true and redeploy (Deploy → Manage deployments → pencil → New version → Deploy).
+// Guests who already said yes will see them next time they open the site.
+const SHOW_SCHEDULE = false;      // the schedule, "Room details to follow." and the guest guide link
+const SHOW_WHAT_TO_WEAR = false;  // the themes (only shown when the schedule is on)
+
+// Shown only to guests who RSVP yes, once SHOW_SCHEDULE is true.
 const SCHEDULE = {
   title: 'Schedule',
   intro: "Here's the shape of each day.",
@@ -197,12 +204,13 @@ function save_(d) {
   } finally {
     lock.releaseLock();
   }
-  return { ok: true, updated: updated, schedule: yes ? withWear_() : null };
+  return { ok: true, updated: updated, schedule: yes ? details_() : null };
 }
 
-// The schedule plus "What to wear", sent together after a yes.
-function withWear_() {
-  return Object.assign({}, SCHEDULE, { wear: WEAR });
+// What a "yes" guest gets back: nothing until the switches at the top are on.
+function details_() {
+  if (!SHOW_SCHEDULE) return null;
+  return SHOW_WHAT_TO_WEAR ? Object.assign({}, SCHEDULE, { wear: WEAR }) : SCHEDULE;
 }
 
 /* ---------- Find an RSVP to edit ---------- */
@@ -235,7 +243,7 @@ function lookup_(d) {
       accessNotes: get('access notes'),
       message: get('message for the couple'),
     },
-    schedule: yes ? withWear_() : null,
+    schedule: yes ? details_() : null,
   };
 }
 

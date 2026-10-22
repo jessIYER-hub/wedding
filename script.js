@@ -90,6 +90,7 @@ const COPY = {
   done: {
     yesTitle: (name) => `Thank you, ${name}.`,
     yesText: "You're on the list. We can't wait to see you in Udaipur.",
+    later: "We'll add the schedule and more details here in the new year.",
     noTitle: (name) => `Thank you, ${name}.`,
     noText: "We'll miss you, and we'll celebrate together another time.",
     summary: "What you told us",
@@ -123,7 +124,7 @@ const COUNTRY_CODES = [
 (function () {
   "use strict";
 
-  const KEYS = { code: "jg-code", draft: "jg-draft", schedule: "jg-schedule" };
+  const KEYS = { code: "jg-code", draft: "jg-draft", schedule: "jg-schedule", me: "jg-me" };
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -499,6 +500,7 @@ const COUNTRY_CODES = [
     try {
       const res = await api(Object.assign({ action: "rsvp", code: store.get(KEYS.code) || "", source: "site" }, data));
       store.drop(KEYS.draft);
+      if (data.attending === "Yes") store.set(KEYS.me, data.email); else store.drop(KEYS.me);
       if (res.schedule) store.set(KEYS.schedule, res.schedule);
       else store.drop(KEYS.schedule);
       showDone(data, res.schedule);
@@ -549,6 +551,7 @@ const COUNTRY_CODES = [
     done.replaceChildren(
       h("h3", { class: "done__title", text: (yes ? COPY.done.yesTitle : COPY.done.noTitle)(first) }),
       h("p", { class: "lead", text: yes ? COPY.done.yesText : COPY.done.noText }),
+      yes && !schedule ? h("p", { text: COPY.done.later }) : null,
       h("p", { class: "label", text: COPY.done.summary }),
       h("dl", { class: "summary" }, summaryRows(d).map(([k, v]) => h("div", null, h("dt", { text: k }), h("dd", { text: v })))),
       h("p", { class: "hint", text: COPY.done.edit }),
@@ -642,6 +645,7 @@ const COUNTRY_CODES = [
         $("#done").hidden = true;
         form.hidden = false;
         fill(res.rsvp);
+        if (res.rsvp && res.rsvp.attending === "Yes") store.set(KEYS.me, email);
         if (res.schedule) { store.set(KEYS.schedule, res.schedule); renderSchedule(res.schedule); }
         box.hidden = true;
         toggle.setAttribute("aria-expanded", "false");
@@ -674,6 +678,20 @@ const COUNTRY_CODES = [
     n.hidden = false;
   }
 
+  /* ---------- Returning "yes" guests get the latest details ---------- */
+  async function refreshDetails() {
+    const email = store.get(KEYS.me);
+    const code = store.get(KEYS.code);
+    if (!email || !code) return;
+    try {
+      const res = await api({ action: "lookup", code, email });
+      if (res.schedule) store.set(KEYS.schedule, res.schedule); else store.drop(KEYS.schedule);
+      renderSchedule(res.schedule || null);
+    } catch (e) {
+      // Offline or not found: keep whatever we already showed.
+    }
+  }
+
   /* ---------- Gentle entrance for the story ---------- */
   function startFades() {
     if (reduceMotion || !("IntersectionObserver" in window)) return;
@@ -697,4 +715,5 @@ const COUNTRY_CODES = [
   initLookup();
   initCountdown();
   initGate();
+  refreshDetails();
 })();

@@ -62,6 +62,21 @@ You check them in the sheet. Then, in the sheet's menu bar, click **Wedding → 
 
 ---
 
+## In January: switching on the schedule and "What to wear"
+
+For now the site is only for RSVPs. A "yes" gets a thank-you that says the schedule and more details will follow in the new year.
+
+When you're ready:
+1. Open the sheet → **Extensions → Apps Script**.
+2. Near the top of `Code.gs`, change both lines to `true`:
+   ```js
+   const SHOW_SCHEDULE = true;
+   const SHOW_WHAT_TO_WEAR = true;
+   ```
+3. Save, then **Deploy → Manage deployments**, click the pencil, choose **Version: New version**, then **Deploy**.
+
+Guests who've already said yes will see the schedule and "What to wear" next time they open the site on the same phone, or straight away if they use "Update your RSVP" with their email. Nothing on the website itself needs changing.
+
 ## Changing things
 
 | What | Where |
@@ -69,6 +84,7 @@ You check them in the sheet. Then, in the sheet's menu bar, click **Wedding → 
 | Our story, hero line, dates on the page | `index.html` |
 | Form questions, hints, error messages, the thank-you note | `COPY` at the top of `script.js` |
 | Schedule, "Room details to follow.", guest guide link | `SCHEDULE` at the top of `apps-script/Code.gs` (then redeploy, see A) |
+| What to wear | `WEAR` in `apps-script/Code.gs` (then redeploy) |
 | Invite code | `INVITE_CODE` in `apps-script/Code.gs` (then redeploy). Capitals and spaces never matter. |
 | Colours, fonts, sizes | `tokens.css` only |
 | Photos | Replace both the `.webp` and `.jpg` with the same name in `photos/` (or send them to Claude to compress) |
@@ -92,5 +108,5 @@ A private page on Claude that reads the sheet through your Google Drive connecti
 - It keeps casual visitors and search engines out (the page also tells search engines not to list it).
 - The code is checked by the Google script, so it isn't written anywhere in the website's files. No guest list is in the website either.
 - Anyone who has the code can see the page and RSVP, so treat it like a door code, not a password.
-- The schedule is only sent to someone who has just RSVP'd yes or looked up a "yes" RSVP by email.
+- The schedule and "What to wear" are only sent to someone whose RSVP is a yes, and only once you switch them on (see "In January").
 - After 40 wrong codes in 10 minutes, the script pauses new tries for a few minutes.
