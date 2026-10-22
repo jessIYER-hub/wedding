@@ -31,7 +31,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 ::selection { background: var(--cocoa); color: var(--cream); }
 :focus-visible { outline: 2px solid var(--cocoa); outline-offset: 3px; }
 
-h1, h2, h3, p { margin: 0; }
+h1, h2, h3, h4, p { margin: 0; }
 
 /* ---------- Type roles ---------- */
 .heading {
@@ -392,7 +392,7 @@ main > section + section { border-top: var(--line); }
 
 /* ---------- Schedule ---------- */
 .schedule { display: grid; gap: var(--s4); }
-.days { display: grid; gap: 0; border-top: var(--line); max-width: 48rem; }
+.days { display: grid; gap: 0; border-top: var(--line); max-width: 62rem; }
 .day { display: grid; gap: var(--s1); padding: var(--s3) 0; border-bottom: var(--line); }
 .day h3 {
   font-family: var(--font-display);
@@ -406,6 +406,38 @@ main > section + section { border-top: var(--line); }
 @media (min-width: 768px) {
   .day { grid-template-columns: 16rem 1fr; gap: var(--s4); align-items: baseline; }
 }
+
+/* ---------- What to wear (shown with the schedule) ---------- */
+.wear { display: grid; gap: var(--s4); margin-top: var(--s5); padding-top: var(--s5); border-top: var(--line); max-width: 44rem; }
+.wear__title {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144;
+  font-weight: 300;
+  font-size: var(--step-3);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.wear__intro { font-size: var(--step-1); line-height: 1.55; max-width: var(--measure); }
+.wear__events { display: grid; border-top: var(--line); }
+.wear__event { display: grid; gap: var(--s2); padding: var(--s4) 0; border-bottom: var(--line); }
+.wear__meta { display: grid; gap: var(--s1); align-content: start; }
+.nowrap { white-space: nowrap; }
+.wear__heading {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 72;
+  font-weight: 400;
+  font-size: var(--step-2);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.wear__sub { font-style: italic; color: var(--navy-soft); font-size: var(--step--1); }
+.wear__text { max-width: var(--measure); }
+.wear strong { font-weight: 600; }
+
+/* Swatches are a colour guide for guests, not part of our palette */
+.swatches { display: flex; gap: 4px; margin-top: var(--s2); max-width: 15rem; }
+.swatches span { flex: 1; height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(27, 36, 51, 0.12); }
+.swatches--ombre { height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(27, 36, 51, 0.12); }
 
 /* ---------- Footer ---------- */
 .footer {

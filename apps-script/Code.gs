@@ -38,6 +38,72 @@ const SCHEDULE = {
   guideLabel: 'Our guest guide',
 };
 
+
+// "What to wear". Shown with the schedule, only after a yes. Copy is exactly as written;
+// **double stars** mark the bold phrases. Swatch colours are a guide for guests, not
+// part of our own palette. Colours of Home and Chandni Raat have none: those are open.
+const WEAR = {
+  "title": "What to wear",
+  "intro": "Please **do not buy new outfits for us**. Every dress code is built around what you already own, so raid your wardrobe, borrow from family and rewear your favourites. One small request: **please save black for the reception**. We would love the rest of the weekend to be full of colour.",
+  "events": [
+    {
+      "heading": "Saturday 6 November · Colours of Home",
+      "subtitle": "Welcome dinner and mehendi · Indian casual or Indo-western",
+      "text": "Wear a colour inspired by **a place you call home**. It could come from your flag, your national team's jersey (think Dutch orange or Indian blue), the terracotta rooftops of Spain or the gold of the UAE. Get creative, and we cannot wait to hear the stories behind your choices."
+    },
+    {
+      "heading": "Sunday 7 November · Peeli Dhoop",
+      "subtitle": "Haldi · Indian casual",
+      "text": "**Warm, sunny colours** like yellows, oranges and reds, or white if you prefer. Expect water pistols, so wear something comfortable that you do not mind getting soaked.",
+      "swatches": {
+        "colours": [
+          "#f2c230",
+          "#f4a321",
+          "#e8772e",
+          "#c9452b",
+          "#ffffff"
+        ]
+      }
+    },
+    {
+      "heading": "Sunday 7 November · Shringaar",
+      "subtitle": "Sangeet · Indian festive",
+      "text": "Let **your favourite piece of jewellery** inspire your outfit. It could be the colour of your birthstone, the pinks and blues of a meenakari piece you love, the ivory of pearls or the sparkle of diamonds. Even a stack of colourful glass bangles could give you an idea.",
+      "swatches": {
+        "colours": [
+          "#c94f7c",
+          "#2f5da8",
+          "#f3ead7",
+          "#dfe4ea"
+        ]
+      }
+    },
+    {
+      "heading": "Monday 8 November · Mangal Prabhat",
+      "subtitle": "The wedding · Indian traditional",
+      "text": "Our wedding begins at first light, and we would love to celebrate **India's craftsmanship** with you. Wear a handwoven textile or hand embroidery you love, whether that is a banarasi, kanjivaram, paithani, patola, bandhani or ikat, work like zardozi, gota patti, chikankari, phulkari or mirror work, or any other craft close to your heart. For colour, think **shades of sunrise**, from the violet just before dawn through pink, peach, amber and gold to sky blue and cloud white, or anything in between. Ombré works beautifully too.",
+      "swatches": {
+        "colours": [
+          "#5b4b8a",
+          "#c98bb0",
+          "#f4b3a6",
+          "#f6c49a",
+          "#e8a33d",
+          "#d9b44a",
+          "#9cc7e6",
+          "#f7f6f1"
+        ],
+        "ombre": true
+      }
+    },
+    {
+      "heading": "Monday 8 November · Chandni Raat",
+      "subtitle": "Reception and after-party · dress to dance",
+      "text": "Wear whatever you feel great in and **can dance in all night**. Dresses, jumpsuits, suits, tuxedos, lehengas, sarees, black or any colour. Dress up as much or as little as you like."
+    }
+  ]
+};
+
 const HEADERS = [
   'timestamp',
   'lead guest',
@@ -162,7 +228,12 @@ function save_(d) {
   } finally {
     lock.releaseLock();
   }
-  return { ok: true, updated: updated, schedule: yes ? SCHEDULE : null };
+  return { ok: true, updated: updated, schedule: yes ? withWear_() : null };
+}
+
+// The schedule plus "What to wear", sent together after a yes.
+function withWear_() {
+  return Object.assign({}, SCHEDULE, { wear: WEAR });
 }
 
 /* ---------- Find an RSVP to edit ---------- */
@@ -195,7 +266,7 @@ function lookup_(d) {
       accessNotes: get('access notes'),
       message: get('message for the couple'),
     },
-    schedule: yes ? SCHEDULE : null,
+    schedule: yes ? withWear_() : null,
   };
 }
 

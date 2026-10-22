@@ -587,9 +587,50 @@ const COUNTRY_CODES = [
           h("ul", null, (day.items || []).map((item) => h("li", { text: item })))))),
       s.note ? h("p", { text: s.note }) : null,
       s.lodging ? h("p", { class: "lead", text: s.lodging }) : null,
-      guide ? h("p", null, h("a", { class: "button button--quiet", href: guide, target: "_blank", rel: "noopener", text: s.guideLabel || "Our guest guide" })) : null);
+      guide ? h("p", null, h("a", { class: "button button--quiet", href: guide, target: "_blank", rel: "noopener", text: s.guideLabel || "Our guest guide" })) : null,
+      renderWear(s.wear));
     sec.hidden = false;
     $("#nav-schedule").hidden = false;
+  }
+
+  // Text with **bold** phrases, built as text nodes and <strong>s (never as HTML).
+  function rich(text) {
+    return String(text || "").split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? h("strong", { text: part }) : part));
+  }
+  const isColour = (c) => /^#[0-9a-f]{6}$/i.test(String(c));
+
+  function swatchStrip(sw) {
+    const colours = (sw && sw.colours || []).filter(isColour);
+    if (!colours.length) return null;
+    if (sw.ombre) {
+      return h("div", { class: "swatches swatches--ombre", "aria-hidden": "true",
+        style: `background: linear-gradient(90deg, ${colours.join(", ")})` });
+    }
+    return h("div", { class: "swatches", "aria-hidden": "true" },
+      colours.map((c) => h("span", { style: `background: ${c}` })));
+  }
+
+  // "Saturday 6 November · Colours of Home": keep the date and the theme each on
+  // one line, so any line break falls after the dot. The words are unchanged.
+  function headingParts(text) {
+    const i = String(text).indexOf(" · ");
+    if (i < 0) return text;
+    return [h("span", { class: "nowrap", text: text.slice(0, i + 2) }), " ", h("span", { class: "nowrap", text: text.slice(i + 3) })];
+  }
+
+  function renderWear(w) {
+    if (!w || !Array.isArray(w.events)) return null;
+    return h("div", { class: "wear", id: "what-to-wear" },
+      h("h3", { class: "wear__title", text: w.title || "What to wear" }),
+      w.intro ? h("p", { class: "wear__intro" }, rich(w.intro)) : null,
+      h("div", { class: "wear__events" }, w.events.map((ev) =>
+        h("article", { class: "wear__event" },
+          h("div", { class: "wear__meta" },
+            h("h4", { class: "wear__heading" }, headingParts(ev.heading)),
+            ev.subtitle ? h("p", { class: "wear__sub", text: ev.subtitle }) : null),
+          h("div", { class: "wear__body" },
+            h("p", { class: "wear__text" }, rich(ev.text)),
+            swatchStrip(ev.swatches))))));
   }
 
   /* ---------- Updating an earlier RSVP ---------- */
